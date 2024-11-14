@@ -10,9 +10,6 @@ use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    /**
-     * Menampilkan halaman login.
-     */
     public function indexLogin()
     {
         return view('pages.LandingPages.login', [
@@ -21,9 +18,6 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Menampilkan halaman registrasi.
-     */
     public function indexRegister()
     {
         return view('pages.LandingPages.register', [
@@ -32,75 +26,71 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Menampilkan halaman untuk mengedit profil pengguna.
-     */
     public function editProfile($id)
     {
-        $user = AkunPengguna::findOrFail($id);   // Mengambil data pengguna yang sedang login
-        return view('pages.UserPages.settings', compact('user')); // Mengirimkan data pengguna ke halaman settings
+        $user = Auth::user();
+
+        // Pastikan hanya pengguna yang sedang login yang bisa mengedit profilnya sendiri
+        if (!$user || $user->id != $id) {
+            return redirect()->route('profile.settings', ['id' => $user->id])
+                             ->with('error', 'Anda tidak memiliki akses untuk mengedit profil ini.');
+        }
+
+        return view('pages.UserPages.settings', compact('user'));
     }
 
-    /**
-     * Proses memperbarui data profil pengguna.
-     */
     public function updateProfile(Request $request, $id)
-    {
-    // Mendapatkan data pengguna yang sedang login
-    $user = AkunPengguna::findOrFail($id);  // Mengambil user berdasarkan ID yang sedang login
+{
+    // Cari data pengguna berdasarkan ID
+    $user = AkunPengguna::findOrFail($id);
 
-    // Validasi data input
-     $request->validate([
+    // Validasi data yang dimasukkan
+    $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|unique:akun_Pengguna,email',
-        'password' => 'required|min:8|confirmed',
-        'role' => ['required', Rule::in(['ahli pakar', 'user'])],
+        'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $id, // Pastikan email bisa diperbarui jika sama
+        'password' => 'nullable|min:8|confirmed', // Validasi password jika diubah
+        'role' => 'required|string', // Anda bisa menambahkan role validasi lebih lanjut
         'spesialis' => 'nullable|string|max:255',
     ]);
 
-    // Mengupdate data nama dan email pengguna
+    // Update data pengguna
     $user->nama = $request->input('nama');
     $user->email = $request->input('email');
-    $user->password = $request->input('password');
     $user->role = $request->input('role');
     $user->spesialis = $request->input('spesialis');
 
-    // Jika password diisi, update password setelah enkripsi
-    if (!empty($validatedData['password'])) {
-        $user->password = Hash::make($validatedData['password']);
+    // Jika password diubah, hash password baru
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->input('password'));
     }
 
-    // Simpan perubahan ke dalam database
+    // Simpan perubahan ke database
     $user->save();
 
-    // Redirect kembali dengan pesan sukses
-    return redirect()->route('pages.UserPages.settings')->with('success', 'Profil berhasil diperbarui.');
+    // Redirect ke halaman pengaturan profil dengan pesan sukses
+    return redirect()->route('profile.settings', ['id' => $user->id])
+                     ->with('success', 'Profil berhasil diperbarui!');
 }
 
-    /**
-     * Proses registrasi pengguna baru.
-     */
+
+
     public function register(Request $request)
     {
+        // Validasi data registrasi
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:akun_Pengguna,email',
+            'email' => 'required|email|unique:akun_pengguna,email',
             'password' => 'required|min:8|confirmed',
             'role' => ['required', Rule::in(['ahli pakar', 'user'])],
             'spesialis' => 'nullable|string|max:255',
         ]);
 
-        // Enkripsi password
+        // Hash password sebelum disimpan
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-        // Simpan data ke dalam tabel akun_Pengguna
-        AkunPengguna::create([
-            'nama' => $validatedData['nama'],
-            'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
-            'role' => $validatedData['role'],
-            'spesialis' => $validatedData['spesialis'] ?? null,
-        ]);
+        // Buat akun pengguna baru
+        AkunPengguna::create($validatedData);
+
         return redirect('/login')->with('success', 'Registrasi berhasil. Silakan login.');
     }
 
@@ -133,16 +123,11 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Proses logout pengguna.
-     */
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/login')->with('success', 'Logout berhasil.');
     }
 }

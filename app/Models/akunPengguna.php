@@ -13,21 +13,19 @@ class AkunPengguna extends Authenticatable
 
     protected $table = 'akun_pengguna';
     protected $primaryKey = 'id';
-    public $incrementing = false; 
-    protected $keyType = 'string'; // Jika ID adalah string, ini tetap benar
     protected $fillable = ['nama', 'email', 'password', 'role', 'spesialis'];
 
-    // Fungsi boot untuk membuat ID secara otomatis dengan 5 karakter
-    protected static function boot()
-    {
-        parent::boot();
+    // // Fungsi boot untuk membuat ID secara otomatis dengan 5 karakter
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::random(5);
-            }
-        });
-    }
+    //     static::creating(function ($model) {
+    //         if (empty($model->{$model->getKeyName()})) {
+    //             $model->{$model->getKeyName()} = Str::random(5);
+    //         }
+    //     });
+    // }
 
     protected $hidden = [
         'password',
