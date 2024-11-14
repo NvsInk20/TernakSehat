@@ -1,0 +1,10 @@
+@import "/public/style/landing.css";
+@import "/public/style/login.css";
+@import "/public/style/peternak.css";
+@import "animate.css/animate.min.css"; /* Jika Anda menggunakan animate.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+[x-cloak] {
+  display: none;
+}
