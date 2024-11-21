@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('akun_Pengguna', function (Blueprint $table) {
             $table->id()->primary(); 
             $table->string('nama');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
             $table->string('spesialis')->nullable(); // Menambahkan nullable agar bisa kosong
             $table->enum('role', ['admin', 'ahli pakar', 'user']);

@@ -14,7 +14,6 @@ class AkunPenggunaSeeder extends Seeder
     public function run(): void
     {
         DB::table('akun_Pengguna')->insert([
-            'id' => 'ADM01',
             'nama' => 'Admin Utama',
             'email' => 'admin@google.com',
             'password' => Hash::make('Admin2024'), 

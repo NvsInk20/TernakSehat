@@ -1,0 +1,5 @@
+php artisan db:seed --class=GejalaSeeder
+php artisan db:seed --class=AkunPenggunaSeeder
+php artisan db:seed --class=PenyakitSeeder
+php artisan db:seed --class=SolusiSeeder
+php artisan db:seed --class=AturanPenyakitSeeder

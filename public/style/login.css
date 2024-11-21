@@ -84,3 +84,7 @@ body, html {
     color: black;
     border: #FF5A1F 2px solid;
 }
+#logoutAdmin{
+    background-color: #FED7AA;
+    border-radius: 7px;
+}

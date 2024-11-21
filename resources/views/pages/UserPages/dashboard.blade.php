@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard</title>
     <!-- Alpine.js -->
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Flowbite CSS -->
     @vite('resources/css/app.css')
     <link rel="icon" href="/images/logo.png">
@@ -23,6 +23,7 @@
 <body class="bg-gray-100">
     @include('components.navbar')
 
+    @include('components.dropSettings')
     <main>
         <div class="py-10 px-0">
             <div id="halamanAtas">
@@ -119,7 +120,9 @@
         </div>
     </main>
     {{-- Footer --}}
-    <div class="p-5 bg-orange-500 mx-auto"></div>
+    <footer class="p-5 bg-orange-500 text-center text-white mt-12">
+        <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
+    </footer>
 </body>
 
 </html>

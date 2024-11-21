@@ -76,7 +76,9 @@
     </div>
     </div>
     {{-- Footer --}}
-    <div class="p-5 bg-orange-500 mx-auto"></div>
+    <footer class="p-5 bg-orange-500 text-center text-white mt-12">
+        <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
+    </footer>
 </body>
 <script>
     // Correct selector to target links with href="#tengah" or href="#bawah"

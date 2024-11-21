@@ -26,37 +26,31 @@ class AuthController extends Controller
         ]);
     }
 
-    public function editProfile($id)
-    {
-        $user = Auth::user();
-
-        // Pastikan hanya pengguna yang sedang login yang bisa mengedit profilnya sendiri
-        if (!$user || $user->id != $id) {
-            return redirect()->route('profile.settings', ['id' => $user->id])
-                             ->with('error', 'Anda tidak memiliki akses untuk mengedit profil ini.');
-        }
-
-        return view('pages.UserPages.settings', compact('user'));
-    }
-
-    public function updateProfile(Request $request, $id)
+    public function editProfile()
 {
-    // Cari data pengguna berdasarkan ID
-    $user = AkunPengguna::findOrFail($id);
+    // Ambil data pengguna yang sedang login
+    $user = Auth::user();
+
+    // Kirim data pengguna ke halaman edit profil
+    return view('pages.UserPages.settings', compact('user'));
+}
+
+public function updateProfile(Request $request)
+{
+    // Ambil data pengguna yang sedang login
+    $user = Auth::user();
 
     // Validasi data yang dimasukkan
     $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $id, // Pastikan email bisa diperbarui jika sama
+        'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $user->id, // Validasi email dengan pengecualian untuk pengguna yang sama
         'password' => 'nullable|min:8|confirmed', // Validasi password jika diubah
-        'role' => 'required|string', // Anda bisa menambahkan role validasi lebih lanjut
         'spesialis' => 'nullable|string|max:255',
     ]);
 
     // Update data pengguna
     $user->nama = $request->input('nama');
     $user->email = $request->input('email');
-    $user->role = $request->input('role');
     $user->spesialis = $request->input('spesialis');
 
     // Jika password diubah, hash password baru
@@ -68,9 +62,10 @@ class AuthController extends Controller
     $user->save();
 
     // Redirect ke halaman pengaturan profil dengan pesan sukses
-    return redirect()->route('profile.settings', ['id' => $user->id])
+    return redirect()->route('profile.settings')
                      ->with('success', 'Profil berhasil diperbarui!');
 }
+
 
 
 
@@ -91,7 +86,7 @@ class AuthController extends Controller
         // Buat akun pengguna baru
         AkunPengguna::create($validatedData);
 
-        return redirect('/login')->with('success', 'Registrasi berhasil. Silakan login.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
     }
 
     /**
@@ -113,6 +108,8 @@ class AuthController extends Controller
                 return redirect()->intended('/LandingPage');
             } elseif ($userRole === 'user') {
                 return redirect()->intended('/User/Dashboard');
+            } elseif ($userRole === 'admin') {
+                return redirect()->intended('/Admin/Dashboard');
             } else {
                 return redirect()->intended('/Register');
             }
@@ -128,6 +125,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login')->with('success', 'Logout berhasil.');
+        return redirect()->route('login')->with('success', 'Logout berhasil.');
     }
 }

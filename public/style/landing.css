@@ -183,3 +183,7 @@ body, html {
     background-color: #FF5A1F;
     border: 1px solid #000;
 }
+
+#tabelPenyakit, #tabelGejala, #tabelSolusi{
+    margin-top: 7%;
+}
