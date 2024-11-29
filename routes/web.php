@@ -41,19 +41,31 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/User/Diagnosa', 'pages.UserPages.diagnosa')->name('user.diagnosa');
     // Route::view('/User/Diagnosa', 'pages.UserPages.diagnosa')->name('diagnosa');
     Route::view('/User/Riwayat', 'pages.UserPages.riwayat')->name('riwayat');
+    
+    Route::get('/User/penyakit', [AturanPenyakitController::class, 'indexUser'])->name('user.aturanPenyakit');
 
     // Profile Routes
     Route::get('/profile', [AuthController::class, 'editProfile'])->name('profile.settings');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
-
+    
+    
     // Admin Pages
     Route::view('/Admin/Dashboard', 'pages.AdminPages.dashboard')->name('admin.dashboard');
     Route::view('/Admin/akunPengguna', 'pages.AdminPages.tabelUser')->name('admin.akunPengguna');
     Route::view('/Admin/penyakit', 'pages.AdminPages.tabelPenyakit')->name('admin.penyakit');
     Route::view('/Admin/Riwayat', 'pages.AdminPages.tabelRiwayat')->name('admin.riwayat');
+    Route::view('/Admin/RulesPenyakit', 'pages.UserPages.tabelAturan')->name('admin.AturanPenyakit');
+    
+    // Pakar Pages
+    Route::view('/ahli_pakar/Dashboard', 'pages.PakarPages.dashboard')->name('pakar.dashboard');
+    Route::view('/ahli_pakar/akunPengguna', 'pages.PakarPages.tabelUser')->name('pakar.akunPengguna');
+    Route::view('/ahli_pakar/penyakit', 'pages.PakarPages.tabelPenyakit')->name('pakar.penyakit');
+    Route::view('/ahli_pakar/Riwayat', 'pages.PakarPages.tabelRiwayat')->name('pakar.riwayat');
+    Route::view('/ahli_pakar/RulesPenyakit', 'pages.UserPages.tabelAturan')->name('pakar.AturanPenyakit');
     
     // Penyakit Pages 
     Route::get('/Admin/penyakit', [PenyakitController::class, 'index'])->name('Admin.penyakit');
+    Route::get('/ahli_pakar/penyakit', [PenyakitController::class, 'index'])->name('Pakar.penyakit');
     Route::get('/dashboard', [PenyakitController::class, 'dashboard'])->name('dashboard');
     Route::get('/penyakit/add', [PenyakitController::class, 'create'])->name('penyakit.create');
     Route::post('/penyakit/add', [PenyakitController::class, 'store'])->name('penyakit.addItems');
@@ -63,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
    
     // Gejala Pages 
     Route::get('/Admin/gejala', [GejalaController::class, 'index'])->name('Admin.gejala');
+    Route::get('/ahli_pakar/gejala', [GejalaController::class, 'index'])->name('Pakar.gejala');
     Route::get('/dashboard', [GejalaController::class, 'dashboard'])->name('dashboard');
     Route::get('/gejala/add', [GejalaController::class, 'create'])->name('gejala.create');
     Route::post('/gejala/add', [GejalaController::class, 'store'])->name('gejala.addItems');
@@ -72,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Solusi Pages 
     Route::get('/Admin/solusi', [SolusiController::class, 'index'])->name('Admin.solusi');
+    Route::get('/ahli_pakar/solusi', [SolusiController::class, 'index'])->name('Paar.solusi');
     Route::get('/dashboard', [SolusiController::class, 'dashboard'])->name('dashboard');
     Route::get('/solusi/add', [SolusiController::class, 'create'])->name('solusi.create');
     Route::post('/solusi/add', [SolusiController::class, 'store'])->name('solusi.addItems');
@@ -81,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
     
     // AturanPenyakit Pages 
     Route::get('/Admin/aturanPenyakit', [AturanPenyakitController::class, 'index'])->name('Admin.aturanPenyakit');
+    Route::get('/ahli_pakar/aturanPenyakit', [AturanPenyakitController::class, 'index'])->name('Pakar.aturanPenyakit');
     Route::get('/dashboard', [AturanPenyakitController::class, 'dashboard'])->name('dashboard');
     Route::get('/aturanPenyakit/add', [AturanPenyakitController::class, 'create'])->name('aturanPenyakit.create');
     Route::post('/aturanPenyakit/add', [AturanPenyakitController::class, 'store'])->name('aturanPenyakit.addItems');

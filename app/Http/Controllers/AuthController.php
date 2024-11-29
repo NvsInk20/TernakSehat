@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\AkunPengguna;
+use App\Models\AhliPakar;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -26,72 +27,144 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Fungsi untuk registrasi akun baru
+     */
+    public function register(Request $request)
+{
+    // Validasi input
+    $validatedData = $request->validate([
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|unique:akun_pengguna,email',
+        'password' => 'required|min:8|confirmed',
+        'role' => 'required|in:ahli pakar,user',
+        'spesialis' => 'nullable|string|max:255',
+        'nomor_telp' => 'nullable|string|max:15',
+    ]);
+
+    // Ambil nomor urut terakhir dari database
+    $lastNo = AkunPengguna::max('No'); // Ambil nilai tertinggi dari kolom No
+    $nextNo = $lastNo ? $lastNo + 1 : 1; // Jika ada data, tambahkan 1, jika tidak mulai dari 1
+
+    // Tambahkan No ke data validasi
+    $validatedData['No'] = $nextNo;
+    $validatedData['password'] = Hash::make($validatedData['password']); // Enkripsi password
+
+    // Simpan ke tabel relasi berdasarkan role
+    if ($validatedData['role'] === 'ahli pakar') {
+        // Buat data ahli pakar
+        $ahliPakar = AhliPakar::create([
+            'No' => $validatedData['No'],
+            'kode_ahliPakar' => 'AP-' . strtoupper(uniqid()), // Generate kode_ahliPakar
+            'nama' => $validatedData['nama'],
+            'nomor_telp' => $validatedData['nomor_telp'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'spesialis' => $validatedData['spesialis'],
+        ]);
+
+        // Tambahkan kode_ahliPakar ke data akun_pengguna
+        $validatedData['kode_ahliPakar'] = $ahliPakar->kode_ahliPakar;
+        $validatedData['kode_user'] = null; // Karena bukan user biasa
+    } else {
+        // Buat data user
+        $pengguna = Pengguna::create([
+            'No' => $validatedData['No'],
+            'kode_user' => 'USR-' . strtoupper(uniqid()), // Generate kode_user
+            'nama' => $validatedData['nama'],
+            'nomor_telp' => $validatedData['nomor_telp'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+        ]);
+
+        // Tambahkan kode_user ke data akun_pengguna
+        $validatedData['kode_user'] = $pengguna->kode_user;
+        $validatedData['kode_ahliPakar'] = null; // Karena bukan ahli pakar
+    }
+
+    // Simpan data ke tabel akun_Pengguna
+    AkunPengguna::create($validatedData);
+
+    // Redirect ke halaman login dengan pesan sukses
+    return redirect()->route('login')->with('success', 'Registrasi berhasil!');
+}
+
+
     public function editProfile()
 {
     // Ambil data pengguna yang sedang login
     $user = Auth::user();
 
-    // Kirim data pengguna ke halaman edit profil
-    return view('pages.UserPages.settings', compact('user'));
+    // Jika pengguna memiliki role 'user', ambil data nomor telepon dari tabel relasi
+    if ($user->role === 'user') {
+        $userDetails = Pengguna::where('kode_user', $user->kode_user)->first();
+    } elseif ($user->role === 'ahli pakar') {
+        $userDetails = AhliPakar::where('kode_ahliPakar', $user->kode_ahliPakar)->first();
+    } else {
+        $userDetails = null;
+    }
+
+    // Kirim data ke view
+    return view('pages.UserPages.settings', [
+        'user' => $user,
+        'userDetails' => $userDetails, // Relasi detail user
+    ]);
 }
 
-public function updateProfile(Request $request)
+
+    public function updateProfile(Request $request)
 {
-    // Ambil data pengguna yang sedang login
+    // Ambil pengguna yang sedang login
     $user = Auth::user();
 
-    // Validasi data yang dimasukkan
-    $request->validate([
+    // Validasi input
+    $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $user->id, // Validasi email dengan pengecualian untuk pengguna yang sama
-        'password' => 'nullable|min:8|confirmed', // Validasi password jika diubah
+        'email' => 'required|email|max:255', // Hapus validasi unique di sini
+        'password' => 'nullable|min:8|confirmed',
+        'nomor_telp' => 'nullable|string|max:255',
         'spesialis' => 'nullable|string|max:255',
     ]);
 
-    // Update data pengguna
-    $user->nama = $request->input('nama');
-    $user->email = $request->input('email');
-    $user->spesialis = $request->input('spesialis');
+    // Update data pengguna utama
+    $user->nama = $validatedData['nama'];
+    $user->email = $validatedData['email'];
 
-    // Jika password diubah, hash password baru
+    // Jika password diisi, lakukan hashing
     if ($request->filled('password')) {
-        $user->password = Hash::make($request->input('password'));
+        $user->password = Hash::make($validatedData['password']);
     }
 
-    // Simpan perubahan ke database
     $user->save();
 
-    // Redirect ke halaman pengaturan profil dengan pesan sukses
-    return redirect()->route('profile.settings')
-                     ->with('success', 'Profil berhasil diperbarui!');
+    // Update tabel relasi berdasarkan role
+    if ($user->role === 'ahli pakar') {
+        // Update data di tabel ahli pakar
+        $ahliPakar = AhliPakar::where('kode_ahliPakar', $user->kode_ahliPakar)->first();
+        if ($ahliPakar) {
+            $ahliPakar->update([
+                'nama' => $validatedData['nama'],
+                'email' => $validatedData['email'],
+                'nomor_telp' => $validatedData['nomor_telp'], // Update nomor telepon
+                'spesialis' => $validatedData['spesialis'],
+            ]);
+        }
+    } elseif ($user->role === 'user') {
+        // Update data di tabel pengguna
+        $pengguna = Pengguna::where('kode_user', $user->kode_user)->first();
+        if ($pengguna) {
+            $pengguna->update([
+                'nama' => $validatedData['nama'],
+                'email' => $validatedData['email'],
+                'nomor_telp' => $validatedData['nomor_telp'], // Update nomor telepon
+            ]);
+        }
+    }
+
+    return redirect()->route('profile.settings')->with('success', 'Profil berhasil diperbarui!');
 }
 
 
-
-
-    public function register(Request $request)
-    {
-        // Validasi data registrasi
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:akun_pengguna,email',
-            'password' => 'required|min:8|confirmed',
-            'role' => ['required', Rule::in(['ahli pakar', 'user'])],
-            'spesialis' => 'nullable|string|max:255',
-        ]);
-
-        // Hash password sebelum disimpan
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        // Buat akun pengguna baru
-        AkunPengguna::create($validatedData);
-
-        return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
-    }
-
-    /**
-     * Proses autentikasi pengguna.
-     */
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
@@ -102,7 +175,6 @@ public function updateProfile(Request $request)
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Redirect berdasarkan peran
             $userRole = Auth::user()->role;
             if ($userRole === 'ahli pakar') {
                 return redirect()->intended('/LandingPage');

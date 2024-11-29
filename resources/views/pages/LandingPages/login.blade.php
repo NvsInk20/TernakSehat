@@ -15,6 +15,17 @@
 </head>
 
 <body>
+    @if (session('success'))
+        <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="text-red-600 text-sm mb-4 text-center">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="container">
         <div class="left">
             <div class="image-container">

@@ -40,6 +40,36 @@ class AturanPenyakitController extends Controller
     ]);
 }
 
+
+
+
+    public function indexUser(Request $request)
+{
+    // Ambil penyakit unik dengan eager load relasi aturanPenyakit, gejala, dan solusi
+    $query = Penyakit::with([
+        'aturanPenyakit.gejala', 
+        'aturanPenyakit.solusi'
+    ]);
+
+    // Pencarian berdasarkan nama penyakit atau gejala
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->input('search');
+        $query->where('nama_penyakit', 'like', "%{$search}%")
+              ->orWhereHas('aturanPenyakit.gejala', function ($query) use ($search) {
+                  $query->where('nama_gejala', 'like', "%{$search}%");
+              });
+    }
+
+    // Paginate berdasarkan penyakit unik
+    $penyakitPaginated = $query->distinct()->paginate(3);
+
+    return view('pages.UserPages.tabelAturan', [
+        'title' => 'Aturan Penyakit',
+        'penyakitPaginated' => $penyakitPaginated,
+        'activePage' => 'pages.UserPages.tabelAturan',
+    ]);
+}
+
     
 
     /**

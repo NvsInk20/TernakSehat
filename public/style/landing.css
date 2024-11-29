@@ -187,3 +187,25 @@ body, html {
 #tabelPenyakit, #tabelGejala, #tabelSolusi{
     margin-top: 7%;
 }
+
+/* dropmenu */
+.dropdown-container {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 10%;
+    gap: 80px;
+}
+.dropdown {
+    flex: 1;
+    background-color: #3489d2;
+    border-radius: 7px;
+    max-width: 19%; /* Adjust as needed */
+}
+.dropdown button {
+    width: max-content;
+    margin: 0 auto;
+}
+.dropdown-content {
+    margin-top: 10px;
+}

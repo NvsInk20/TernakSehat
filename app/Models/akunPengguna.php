@@ -12,20 +12,29 @@ class AkunPengguna extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'akun_pengguna';
-    protected $primaryKey = 'id';
-    protected $fillable = ['nama', 'email', 'password', 'role', 'spesialis'];
+    protected $primaryKey = 'kode_auth';
+    protected $fillable = ['No', 'nama', 'kode_auth', 'kode_ahliPakar', 'kode_user', 'email', 'password', 'role', 'spesialis'];
 
-    // // Fungsi boot untuk membuat ID secara otomatis dengan 5 karakter
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    protected static function boot()
+    {
+        parent::boot();
 
-    //     static::creating(function ($model) {
-    //         if (empty($model->{$model->getKeyName()})) {
-    //             $model->{$model->getKeyName()} = Str::random(5);
-    //         }
-    //     });
-    // }
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                // Generate kode_ahliPakar otomatis
+                $model->{$model->getKeyName()} = 'AUT-' . strtoupper(Str::random(5));
+            }
+        });
+    }
+    public function user()
+{
+    return $this->belongsTo(Pengguna::class, 'kode_user', 'kode_user');
+}
+
+public function ahliPakar()
+{
+    return $this->belongsTo(AhliPakar::class, 'kode_ahliPakar', 'kode_ahliPakar');
+}
 
     protected $hidden = [
         'password',

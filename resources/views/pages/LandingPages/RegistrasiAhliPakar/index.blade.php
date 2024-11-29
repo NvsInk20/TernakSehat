@@ -15,6 +15,17 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    @if (session('success'))
+        <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="text-red-600 text-sm mb-4 text-center">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="bg-white shadow-lg rounded-lg w-full max-w-md mx-auto p-6 sm:p-10 lg:max-w-lg">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
@@ -41,6 +52,17 @@
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
                     placeholder="Masukkan email" value="{{ old('email') }}">
                 @error('email')
+                    <div class="text-red-600 text-sm">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Nomor Telepon Field -->
+            <div class="relative mb-6">
+                <label for="nomor_telp" class="text-gray-600 text-sm">Nomor Telepon (Opsional)</label>
+                <input type="text" id="nomor_telp" name="nomor_telp"
+                    class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                    placeholder="Masukkan nomor telepon (opsional)" value="{{ old('nomor_telp') }}">
+                @error('nomor_telp')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>

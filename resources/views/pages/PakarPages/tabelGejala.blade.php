@@ -66,7 +66,7 @@
             </div>
             <div class="ml-3">
                 <div class="w-full max-w-sm min-w-[200px] relative">
-                    <form method="GET" action="{{ route('Admin.gejala') }}" class="relative mr-3">
+                    <form method="GET" action="{{ route('Pakar.gejala') }}" class="relative mr-3">
                         <input
                             class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                             placeholder="Cari gejala..." name="search" value="{{ request('search') }}" />

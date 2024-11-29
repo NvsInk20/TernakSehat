@@ -12,13 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('akun_Pengguna', function (Blueprint $table) {
-            $table->id()->primary(); 
+            $table->unsignedBigInteger('No'); 
+            $table->string('kode_auth')->primary(); 
             $table->string('nama');
+            $table->string('kode_ahliPakar')->nullable();;
+            $table->string('kode_user')->nullable();;
             $table->string('email')->unique();
             $table->string('password');
             $table->string('spesialis')->nullable(); // Menambahkan nullable agar bisa kosong
             $table->enum('role', ['admin', 'ahli pakar', 'user']);
             $table->timestamps();
+
+            $table->foreign('kode_user')
+            ->references('kode_user')->on('user_pengguna')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
+            $table->foreign('kode_ahliPakar')
+            ->references('kode_ahliPakar')->on('user_pakar')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
         });
     }
 

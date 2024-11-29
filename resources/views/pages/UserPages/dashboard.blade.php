@@ -78,8 +78,8 @@
                             untuk
                             meningkatkan kesehatan hewan.</p>
                         <button
-                            class="mt-6 bg-orange-400 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">Cek
-                            Detail</button>
+                            class="mt-6 bg-orange-400 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">
+                            <a href="/User/penyakit">Cek Penyakit</a></button>
                     </div>
                 </div>
             </div>

@@ -69,13 +69,11 @@
                 <label for="nomor_telp" class="text-gray-600 text-sm">Nomor Telepon (Opsional)</label>
                 <input type="text" id="nomor_telp" name="nomor_telp"
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    placeholder="Masukkan nomor telepon (opsional)"
-                    value="{{ old('nomor_telp', $userDetails?->nomor_telp ?? $user->nomor_telp) }}">
+                    placeholder="Masukkan nomor telepon (opsional)" value="{{ old('nomor_telp') }}">
                 @error('nomor_telp')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>
-
 
             <!-- Password Field (Optional) -->
             <div class="mb-6">
@@ -95,6 +93,16 @@
                 <input type="password" id="password_confirmation" name="password_confirmation"
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
             </div>
+            <!-- Spesialis Field -->
+            <div class="relative mb-6">
+                <label for="spesialis" class="text-gray-600 text-sm">Spesialis</label>
+                <input type="text" id="spesialis" name="spesialis" required
+                    class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                    placeholder="Masukkan spesialis">
+                @error('spesialis')
+                    <div class="text-red-600 text-sm">{{ $message }}</div>
+                @enderror
+            </div>
             <!-- Submit Button -->
             <div class="flex justify-center">
                 <button type="submit"
@@ -108,7 +116,7 @@
             $dashboardRoute = match (auth()->user()->role) {
                 'admin' => 'admin.dashboard',
                 'user' => 'user.dashboard',
-                'ahli pakar' => 'expert.dashboard',
+                'ahli_pakar' => 'pakar.dashboard',
                 default => 'login', // Default redirect jika peran tidak dikenali
             };
         @endphp

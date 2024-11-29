@@ -65,16 +65,12 @@
                     class="mt-8 inline-block bg-orange-400 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-500">
                     Mulai Lakukan Diagnosa
                 </a>
-                <a href="{{ route('user.dashboard') }}"
-                    class="mt-4 inline-block bg-gray-400 text-white font-semibold py-3 px-8 rounded-full hover:bg-gray-500">
-                    Kembali ke Dashboard
-                </a>
             @endif
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white mt-28">
+    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full mt-28">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>

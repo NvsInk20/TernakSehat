@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Gejala</title>
+    <title>Data Penyakit</title>
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -23,8 +23,11 @@
 
 <body class="bg-gray-100 min-h-full flex">
 
+    <!-- drop tabel -->
+
     <!-- Sidebar -->
     @include('components.sidebar')
+
 
     <?php
     use Carbon\Carbon;
@@ -41,7 +44,7 @@
         </div>
     @endif
 
-    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelGejala">
+    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelPenyakit">
         <div class="relative flex items-center justify-between">
             <!-- Dropdown Menu -->
             <div>
@@ -50,7 +53,7 @@
 
             <!-- Add Items Button -->
             <div>
-                <a href="/gejala/add">
+                <a href="/penyakit/add">
                     <button type="button"
                         class="border border-blue-800 font-bold text-blue-500 rounded-md px-4 py-2 m-2 transition duration-500 ease-in-out select-none hover:text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline">
                         Add Items +
@@ -62,14 +65,14 @@
         <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3 bg-customOrange">
             <div>
                 <h3 class="text-lg font-medium text-black">Sistem Diagnosa Kesehatan Sapi</h3>
-                <p class="text-white font-bold">Data Gejala</p>
+                <p class="text-white font-bold">Data Penyakit</p>
             </div>
             <div class="ml-3">
                 <div class="w-full max-w-sm min-w-[200px] relative">
-                    <form method="GET" action="{{ route('Admin.gejala') }}" class="relative mr-3">
+                    <form method="GET" action="{{ route('Pakar.penyakit') }}" class="relative mr-3">
                         <input
                             class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                            placeholder="Cari gejala..." name="search" value="{{ request('search') }}" />
+                            placeholder="Cari penyakit..." name="search" value="{{ request('search') }}" />
                         <button
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 flex items-center justify-center bg-white rounded cursor-pointer"
                             type="submit">
@@ -90,30 +93,29 @@
                 <thead class="bg-gray-50 text-gray-600 text-center">
                     <tr>
                         <th class="px-6 py-3 border border-gray-300 font-semibold w-1/12">No</th>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-2/12">Kode Gejala</th>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-5/12">Nama Gejala</th>
+                        <th class="px-6 py-3 border border-gray-300 font-semibold w-2/12">Kode Penyakit</th>
+                        <th class="px-6 py-3 border border-gray-300 font-semibold w-5/12">Nama Penyakit</th>
                         <th class="px-6 py-3 border border-gray-300 font-semibold w-2/12">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($gejala as $index => $item)
+                    @forelse ($penyakit as $index => $item)
                         <tr class="border-b hover:bg-gray-50 text-center">
-                            <td class="px-6 py-4 border border-gray-300">{{ $gejala->firstItem() + $index }}</td>
-                            <td class="px-6 py-4 border border-gray-300">{{ $item->kode_gejala }}</td>
-                            <td class="px-6 py-4 border border-gray-300">{{ $item->nama_gejala }}</td>
+                            <td class="px-6 py-4 border border-gray-300">{{ $penyakit->firstItem() + $index }}</td>
+                            <td class="px-6 py-4 border border-gray-300">{{ $item->kode_penyakit }}</td>
+                            <td class="px-6 py-4 border border-gray-300">{{ $item->nama_penyakit }}</td>
                             <td class="px-6 py-4 border border-gray-300">
                                 <div class="flex justify-center">
                                     <!-- Tombol Edit -->
-                                    <a href="{{ route('gejala.edit', $item->kode_gejala) }}">
+                                    <a href="{{ route('penyakit.edit', $item->kode_penyakit) }}">
                                         <button type="button"
                                             class="border border-green-400 font-bold text-green-400 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-green-400">
                                             Edit
                                         </button>
                                     </a>
-
                                     <!-- Form Delete -->
-                                    <form action="{{ route('gejala.destroy', $item->kode_gejala) }}" method="POST"
-                                        id="deleteForm-{{ $item->kode_gejala }}"
+                                    <form action="{{ route('penyakit.destroy', $item->kode_penyakit) }}" method="POST"
+                                        id="deleteForm-{{ $item->kode_penyakit }}"
                                         onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
                                         @csrf
                                         @method('DELETE')
@@ -136,27 +138,27 @@
             <!-- Pagination -->
             <div class="flex justify-between items-center px-6 py-4 bg-gray-50">
                 <div class="text-sm text-gray-500">
-                    Menampilkan <b>{{ $gejala->firstItem() ?? 0 }}-{{ $gejala->lastItem() ?? 0 }}</b> dari
-                    {{ $gejala->total() }}
+                    Menampilkan <b>{{ $penyakit->firstItem() ?? 0 }}-{{ $penyakit->lastItem() ?? 0 }}</b> dari
+                    {{ $penyakit->total() }}
                 </div>
                 <div class="flex space-x-2 items-center">
-                    <p class="text-sm text-gray-500">Showing {{ $gejala->firstItem() ?? 0 }} to
-                        {{ $gejala->lastItem() ?? 0 }} of {{ $gejala->total() }}</p>
+                    <p class="text-sm text-gray-500">Showing {{ $penyakit->firstItem() ?? 0 }} to
+                        {{ $penyakit->lastItem() ?? 0 }} of {{ $penyakit->total() }}</p>
                     <div class="flex space-x-1">
-                        @if ($gejala->onFirstPage())
+                        @if ($penyakit->onFirstPage())
                             <button
                                 class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-gray-400 bg-white border border-gray-200 rounded cursor-not-allowed">
                                 Prev
                             </button>
                         @else
-                            <a href="{{ $gejala->previousPageUrl() }}"
+                            <a href="{{ $penyakit->previousPageUrl() }}"
                                 class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
                                 Prev
                             </a>
                         @endif
 
-                        @foreach ($gejala->getUrlRange(1, $gejala->lastPage()) as $page => $url)
-                            @if ($page == $gejala->currentPage())
+                        @foreach ($penyakit->getUrlRange(1, $penyakit->lastPage()) as $page => $url)
+                            @if ($page == $penyakit->currentPage())
                                 <button
                                     class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
                                     {{ $page }}
@@ -169,8 +171,8 @@
                             @endif
                         @endforeach
 
-                        @if ($gejala->hasMorePages())
-                            <a href="{{ $gejala->nextPageUrl() }}"
+                        @if ($penyakit->hasMorePages())
+                            <a href="{{ $penyakit->nextPageUrl() }}"
                                 class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
                                 Next
                             </a>
@@ -215,6 +217,7 @@
         detailsRow.classList.toggle('hidden');
     }
 </script> --}}
+
 
 </body>
 

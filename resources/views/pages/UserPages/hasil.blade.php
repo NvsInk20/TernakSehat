@@ -71,7 +71,8 @@
             <!-- Penyakit Tertinggi dan Kedua -->
             @if ($penyakitTertinggi)
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Penyakit dengan Kemungkinan Tertinggi</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Penyakit dengan Kemungkinan Alternatif
+                        Pertama</h3>
                     <p class="text-lg text-gray-700 mb-2">
                         <strong class="text-orange-500">Penyakit:</strong> {{ $penyakitTertinggi }}
                     </p>
@@ -86,7 +87,7 @@
 
             @if ($penyakitKedua)
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Penyakit Kedua dengan Kemungkinan Tertinggi
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Penyakit dengan Kemungkinan Altenatif Kedua
                     </h3>
                     <p class="text-lg text-gray-700 mb-2">
                         <strong class="text-orange-500">Penyakit:</strong> {{ $penyakitKedua }}
