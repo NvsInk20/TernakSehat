@@ -19,13 +19,12 @@
         <div x-show="openSort1" x-transition class="absolute right-0 mt-3 w-48 rounded-lg shadow-lg bg-white z-20">
             <div class="py-3">
                 <!-- Form untuk Settings -->
-                <form action="/profile" method="GET">
-                    <button type="submit"
-                        class="block px-5 py-3 text-md text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
-                        <img src="/images/settings.png" alt="settings" class="mr-3 w-6">
-                        Settings
-                    </button>
-                </form>
+                <a href="{{ route('profile.settings', Auth::user()->kode_auth) }}"
+                    class="block px-5 py-3 text-md text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
+                    <img src="/images/settings.png" alt="settings" class="mr-3 w-6">
+                    Settings
+                </a>
+
 
                 <!-- Form untuk Logout -->
                 <form action="/logout" method="POST">

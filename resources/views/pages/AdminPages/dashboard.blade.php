@@ -22,7 +22,7 @@
 
 <body class="bg-gray-100 h-screen flex">
     <!-- Sidebar -->
-    @include('components.sidebar')
+    @include('components.sidebar_admin')
 
     <!-- Main Content -->
     <div class="flex-1 bg-white p-6">

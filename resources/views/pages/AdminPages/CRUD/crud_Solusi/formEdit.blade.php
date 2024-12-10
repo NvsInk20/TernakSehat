@@ -24,18 +24,23 @@
     @include('components.dropSettings')
 
     @if (session('success'))
-        <div class="text-green-600 text-sm mb-2 mt-6 text-center">{{ session('success') }}</div>
+        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+            {{ session('success') }}
+        </div>
     @endif
 
     @if (session('error'))
-        <div class="text-red-600 text-sm mb-4 text-center">{{ session('error') }}</div>
+        <div class="bg-red-500 text-white p-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
     @endif
 
     <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-lg mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
-        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Edit Solui</h1>
+        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Edit Solusi</h1>
 
         <!-- Form untuk Mengedit Gejala -->
         <form action="{{ route('solusi.update', ['kode_solusi' => $solusi->kode_solusi]) }}" method="POST">
@@ -69,8 +74,6 @@
                 </button>
             </div>
         </form>
-
-
         @php
             // Menentukan rute dashboard berdasarkan peran pengguna
             $dashboardRoute = match (auth()->user()->role) {
@@ -82,7 +85,16 @@
         @endphp
 
         <div class="text-center mt-6">
-            <a href="{{ route($dashboardRoute) }}" class="text-orange-500 hover:underline">Kembali ke Dashboard</a>
+            <a href="{{ route($dashboardRoute) }}"
+                class="flex items-center justify-center p-4 rounded-lg border border-orange-500 text-orange-500 
+        hover:bg-orange-500 hover:text-white transition group">
+                <span>Kembali</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+            </a>
         </div>
     </div>
 </body>

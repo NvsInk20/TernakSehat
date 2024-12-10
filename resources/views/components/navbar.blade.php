@@ -17,14 +17,13 @@
                 </li>
                 <li>
                     <a href="/User/Diagnosa"
-                        class="{{ request()->is('User/Diagnosa') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
+                        class="{{ request()->is('User/Diagnosa*') || request()->is('diagnosa*') || request()->is('another-pattern*') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
                         Diagnosa
                     </a>
-
                 </li>
                 <li>
-                    <a href="/User/Riwayat"
-                        class="{{ request()->is('User/Riwayat') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
+                    <a href="/user/riwayat-diagnosa"
+                        class="{{ request()->is('user/riwayat-diagnosa') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
                         Riwayat
                     </a>
                 </li>

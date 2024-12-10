@@ -78,7 +78,6 @@ class PenyakitController extends Controller
             $nextKode = 'P01';
         }
 
-
         // Kirimkan kode penyakit berikutnya dan nomor urut ke view
         return view('pages.AdminPages.CRUD.crud_Penyakit.formAdd', compact('nextKode', 'nextNo'));
     }
@@ -102,6 +101,10 @@ class PenyakitController extends Controller
             'kode_penyakit' => $request->kode_penyakit,
             'nama_penyakit' => $request->nama_penyakit,
         ]);
+        // Simpan URL halaman sebelumnya ke dalam session
+    if (url()->previous() !== url()->current()) {
+        session(['previous_url' => url()->previous()]);
+    }
 
         // Mengarahkan kembali ke halaman daftar penyakit dengan pesan sukses
         return redirect()->route('penyakit.create')->with('success', 'Penyakit berhasil ditambahkan!');

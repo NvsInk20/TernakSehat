@@ -23,11 +23,16 @@
 <body class="bg-orange-100">
     @include('components.dropSettings')
     @if (session('success'))
-        <div class="text-green-600 text-sm mb-2 mt-6 text-center">{{ session('success') }}</div>
+        <div class="bg-green-500 text-white p-3 mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+            {{ session('success') }}
+        </div>
     @endif
 
     @if (session('error'))
-        <div class="text-red-600 text-sm mb-4 text-center">{{ session('error') }}</div>
+        <div class="bg-red-500 text-white p-3 mb-4">
+            {{ session('error') }}
+        </div>
     @endif
 
     <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-lg mx-auto p-6 sm:p-10">
@@ -37,7 +42,8 @@
         <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Perbarui Akun</h1>
 
         <!-- Update Profile Form -->
-        <form action="{{ route('profile.update', ['role' => auth()->user()->role, 'id' => auth()->user()->id]) }}}"
+        <form
+            action="{{ route('admin.updateUser', ['role' => $role, 'kode' => $user->kode_user ?? $user->kode_ahliPakar]) }}"
             method="POST">
             @csrf
             @method('PUT') <!-- This will make the form use PUT method -->
@@ -69,13 +75,13 @@
                 <label for="nomor_telp" class="text-gray-600 text-sm">Nomor Telepon (Opsional)</label>
                 <input type="text" id="nomor_telp" name="nomor_telp"
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    placeholder="Masukkan nomor telepon (opsional)" value="{{ old('nomor_telp') }}">
+                    placeholder="Masukkan nomor telepon (opsional)" value="{{ old('nomor_telp', $nomorTelepon) }}">
                 @error('nomor_telp')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>
 
-            <!-- Password Field (Optional) -->
+            <!-- Password Field -->
             <div class="mb-6">
                 <label for="password" class="block text-gray-700 text-sm font-medium">Password</label>
                 <input type="password" id="password" name="password"
@@ -86,46 +92,37 @@
                 @enderror
             </div>
 
-            <!-- Password Confirmation Field (Optional) -->
+            <!-- Password Confirmation Field -->
             <div class="mb-6">
                 <label for="password_confirmation" class="block text-gray-700 text-sm font-medium">Konfirmasi
                     Password</label>
                 <input type="password" id="password_confirmation" name="password_confirmation"
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
             </div>
-            <!-- Spesialis Field -->
-            <div class="relative mb-6">
-                <label for="spesialis" class="text-gray-600 text-sm">Spesialis</label>
-                <input type="text" id="spesialis" name="spesialis" required
-                    class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    placeholder="Masukkan spesialis">
-                @error('spesialis')
-                    <div class="text-red-600 text-sm">{{ $message }}</div>
-                @enderror
-            </div>
+
             <!-- Submit Button -->
             <div class="flex justify-center">
                 <button type="submit"
-                    class="bg-orange-500 text-white text-sm px-6 py-3 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200">
+                    class="bg-orange-500 text-white text-sm px-6 py-3 rounded-lg hover:bg-orange-600 
+               hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 
+               focus:ring-orange-400 transition-transform duration-300 ease-in-out">
                     Perbarui Profil
                 </button>
             </div>
         </form>
-        @php
-            // Menentukan rute dashboard berdasarkan peran pengguna
-            $dashboardRoute = match (auth()->user()->role) {
-                'admin' => 'admin.dashboard',
-                'user' => 'user.dashboard',
-                'ahli_pakar' => 'pakar.dashboard',
-                default => 'login', // Default redirect jika peran tidak dikenali
-            };
-        @endphp
 
         <div class="text-center mt-6">
-            <a href="{{ route($dashboardRoute) }}" class="text-orange-500 hover:underline">Kembali ke Dashboard</a>
+            <a href="{{ session('previous_url', route('dashboard')) }}"
+                class="flex items-center justify-center p-4 rounded-lg border border-orange-500 text-orange-500 
+        hover:bg-orange-500 hover:text-white transition group">
+                <span>Kembali</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+            </a>
         </div>
-
-
     </div>
 </body>
 

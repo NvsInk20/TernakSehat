@@ -92,7 +92,7 @@ class SolusiController extends Controller
         // Validasi input
         $validated = $request->validate([
             'kode_solusi' => 'required|unique:solusi,kode_solusi',
-            'solusi' => 'required',
+            'solusi' => 'required|max:10000',
             'No' => 'required|integer',  // Validasi nomor urut (No)
         ]);
 
@@ -128,7 +128,7 @@ class SolusiController extends Controller
     {
         // Validasi input
         $request->validate([
-            'solusi' => 'required|string|max:255',
+            'solusi' => 'required|string|max:10000',
         ]);
 
         // Cari penyakit berdasarkan kode_solusi

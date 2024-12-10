@@ -7,6 +7,7 @@ use App\Http\Controllers\SolusiController;
 use App\Http\Controllers\DiagnosaController;
 use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\AturanPenyakitController;
+use App\Http\Controllers\RiwayatDiagnosaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,14 +41,30 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/User/Dashboard', 'pages.UserPages.dashboard')->name('user.dashboard');
     Route::view('/User/Diagnosa', 'pages.UserPages.diagnosa')->name('user.diagnosa');
     // Route::view('/User/Diagnosa', 'pages.UserPages.diagnosa')->name('diagnosa');
-    Route::view('/User/Riwayat', 'pages.UserPages.riwayat')->name('riwayat');
+    // Route::view('/User/Riwayat', 'pages.UserPages.Riwayat')->name('riwayat');
     
     Route::get('/User/penyakit', [AturanPenyakitController::class, 'indexUser'])->name('user.aturanPenyakit');
+    Route::get('/user/riwayat-diagnosa', [RiwayatDiagnosaController::class, 'index'])->name('riwayatDiagnosa.index');
+    Route::delete('/riwayat-diagnosa/{kode_riwayat}', [RiwayatDiagnosaController::class, 'destroy'])->name('riwayatDiagnosa.destroy');
+    Route::get('/riwayat-diagnosa/{kode_riwayat}/pdf', [RiwayatDiagnosaController::class, 'cetakPDF'])->name('riwayatDiagnosa.pdf');
+
 
     // Profile Routes
-    Route::get('/profile', [AuthController::class, 'editProfile'])->name('profile.settings');
-    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
-    
+    Route::get('/profile/{kode_auth}', [AuthController::class, 'editProfile'])
+        ->name('profile.settings')
+        ->middleware('auth');
+
+    Route::put('/profile/{kode_auth}/update', [AuthController::class, 'updateProfile'])
+    ->name('profile.update')
+    ->middleware('auth');
+
+    Route::get('/admin/users', [AuthController::class, 'showUsers'])->name('admin.users')->middleware('auth');
+    Route::delete('/admin/users/{kode_user}', [AuthController::class, 'deleteUser'])->name('admin.deleteUser')->middleware('auth');
+
+    Route::get('/admin/users/edit/{role}/{kode}', [AuthController::class, 'editUser'])->name('admin.editUser');
+    Route::put('/admin/users/update/{role}/{kode}', [AuthController::class, 'updateUser'])->name('admin.updateUser');
+
+
     
     // Admin Pages
     Route::view('/Admin/Dashboard', 'pages.AdminPages.dashboard')->name('admin.dashboard');
@@ -58,7 +75,6 @@ Route::middleware(['auth'])->group(function () {
     
     // Pakar Pages
     Route::view('/ahli_pakar/Dashboard', 'pages.PakarPages.dashboard')->name('pakar.dashboard');
-    Route::view('/ahli_pakar/akunPengguna', 'pages.PakarPages.tabelUser')->name('pakar.akunPengguna');
     Route::view('/ahli_pakar/penyakit', 'pages.PakarPages.tabelPenyakit')->name('pakar.penyakit');
     Route::view('/ahli_pakar/Riwayat', 'pages.PakarPages.tabelRiwayat')->name('pakar.riwayat');
     Route::view('/ahli_pakar/RulesPenyakit', 'pages.UserPages.tabelAturan')->name('pakar.AturanPenyakit');
@@ -108,16 +124,19 @@ Route::middleware(['auth'])->group(function () {
     // Route Diagnosa
     Route::prefix('diagnosa')->group(function () {
         // Menampilkan pertanyaan pertama
-        Route::get('/diagnosa', [DiagnosaController::class, 'index'])->name('diagnosa.index');
+        Route::get('/', [DiagnosaController::class, 'index'])->name('diagnosa.index');
         
         // Menyimpan jawaban pengguna
-        Route::post('/diagnosa/answer', [DiagnosaController::class, 'answerQuestion'])->name('diagnosa.answer');
+        Route::post('/answer', [DiagnosaController::class, 'answerQuestion'])->name('diagnosa.answer');
         
         // Menampilkan hasil diagnosa
-        Route::get('/diagnosa/result', [DiagnosaController::class, 'showResult'])->name('diagnosa.result');
+        Route::get('/result', [DiagnosaController::class, 'showResult'])->name('diagnosa.result');
         
         // Mereset sesi diagnosa
-        Route::get('/diagnosa/reset', [DiagnosaController::class, 'resetDiagnosa'])->name('diagnosa.reset');
+        Route::get('/reset', [DiagnosaController::class, 'resetDiagnosa'])->name('diagnosa.reset');
+        Route::get('/hasil', [DiagnosaController::class, 'getDiagnosaHasil'])->name('diagnosa.hasil');
+        Route::post('/simpan', [DiagnosaController::class, 'simpanHasil'])->name('diagnosa.simpanHasil');
+
     });
 
 });

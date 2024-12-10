@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AkunPengguna;
 use App\Models\AhliPakar;
+use App\Models\admin;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,128 +43,206 @@ class AuthController extends Controller
         'nomor_telp' => 'nullable|string|max:15',
     ]);
 
-    // Ambil nomor urut terakhir dari database
-    $lastNo = AkunPengguna::max('No'); // Ambil nilai tertinggi dari kolom No
-    $nextNo = $lastNo ? $lastNo + 1 : 1; // Jika ada data, tambahkan 1, jika tidak mulai dari 1
-
-    // Tambahkan No ke data validasi
-    $validatedData['No'] = $nextNo;
-    $validatedData['password'] = Hash::make($validatedData['password']); // Enkripsi password
-
-    // Simpan ke tabel relasi berdasarkan role
+    // Tentukan nomor urut untuk user/ahli pakar
     if ($validatedData['role'] === 'ahli pakar') {
+        $lastNoAhliPakar = AhliPakar::max('No');
+        $nextNo = $lastNoAhliPakar ? $lastNoAhliPakar + 1 : 1;
+
         // Buat data ahli pakar
         $ahliPakar = AhliPakar::create([
-            'No' => $validatedData['No'],
-            'kode_ahliPakar' => 'AP-' . strtoupper(uniqid()), // Generate kode_ahliPakar
+            'No' => $nextNo,
+            'kode_ahliPakar' => 'AP-' . strtoupper(uniqid()),
             'nama' => $validatedData['nama'],
             'nomor_telp' => $validatedData['nomor_telp'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'password' => Hash::make($validatedData['password']),
             'spesialis' => $validatedData['spesialis'],
         ]);
 
-        // Tambahkan kode_ahliPakar ke data akun_pengguna
+        // Tambahkan kode ke akun_pengguna
         $validatedData['kode_ahliPakar'] = $ahliPakar->kode_ahliPakar;
-        $validatedData['kode_user'] = null; // Karena bukan user biasa
+        $validatedData['kode_user'] = null;
     } else {
+        $lastNoUser = Pengguna::max('No');
+        $nextNo = $lastNoUser ? $lastNoUser + 1 : 1;
+
         // Buat data user
         $pengguna = Pengguna::create([
-            'No' => $validatedData['No'],
-            'kode_user' => 'USR-' . strtoupper(uniqid()), // Generate kode_user
+            'No' => $nextNo,
+            'kode_user' => 'USR-' . strtoupper(uniqid()),
             'nama' => $validatedData['nama'],
             'nomor_telp' => $validatedData['nomor_telp'],
             'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
-        // Tambahkan kode_user ke data akun_pengguna
+        // Tambahkan kode ke akun_pengguna
         $validatedData['kode_user'] = $pengguna->kode_user;
-        $validatedData['kode_ahliPakar'] = null; // Karena bukan ahli pakar
+        $validatedData['kode_ahliPakar'] = null;
     }
 
-    // Simpan data ke tabel akun_Pengguna
+    // **Periksa dan urutkan ulang data di tabel akun_pengguna**
+    $validatedData['No'] = AkunPengguna::max('No') + 1; // Nomor urut berikutnya
     AkunPengguna::create($validatedData);
 
-    // Redirect ke halaman login dengan pesan sukses
+    // **Urutkan ulang data setelah menambahkan yang baru**
+    $akunPengguna = AkunPengguna::orderBy('No', 'asc')->get(); // Urutkan berdasarkan created_at
+    foreach ($akunPengguna as $index => $data) {
+        $data->update(['No' => $index + 1]); // Update kolom No agar urut
+    }
+
+    // Redirect ke halaman login
     return redirect()->route('login')->with('success', 'Registrasi berhasil!');
 }
 
-
-    public function editProfile()
+    public function showUsers(Request $request)
 {
-    // Ambil data pengguna yang sedang login
-    $user = Auth::user();
+    // Periksa apakah pengguna memiliki role "admin"
+    if (Auth::user()->role !== 'admin') {
+        abort(403, 'Unauthorized action.'); // Tampilkan error jika bukan admin
+    }
 
-    // Jika pengguna memiliki role 'user', ambil data nomor telepon dari tabel relasi
-    if ($user->role === 'user') {
-        $userDetails = Pengguna::where('kode_user', $user->kode_user)->first();
-    } elseif ($user->role === 'ahli pakar') {
-        $userDetails = AhliPakar::where('kode_ahliPakar', $user->kode_ahliPakar)->first();
-    } else {
-        $userDetails = null;
+    // Mulai query dari model Pengguna
+    $query = Pengguna::query();
+
+    // Menambahkan logika pencarian
+    if ($request->has('search') && !empty($request->search)) {
+        $search = $request->input('search');
+        $query->where('kode_user', 'like', "%{$search}%")
+            ->orWhere('nama', 'like', "%{$search}%");
+    }
+
+    // Lakukan paginasi untuk hasil query
+    $users = $query->orderBy('No', 'asc')->paginate(10);
+
+    // Kirim data ke view
+    return view('pages.AdminPages.tabelUser', [
+        'title' => 'Kelola Pengguna',
+        'users' => $users,
+    ]);
+}
+
+
+
+    public function editProfile($kode_auth)
+{
+    $akunPengguna = Auth::user();
+
+    if (!$akunPengguna || $akunPengguna->kode_auth !== $kode_auth) {
+        return redirect()->route('login')->withErrors('Anda tidak memiliki akses ke profil ini.');
+    }
+
+    $userDetails = null;
+
+    // Ambil data relasi berdasarkan role
+    switch ($akunPengguna->role) {
+        case 'user':
+            $userDetails = Pengguna::where('kode_user', $akunPengguna->kode_user)->first();
+            break;
+
+        case 'ahli pakar':
+            $userDetails = AhliPakar::where('kode_ahliPakar', $akunPengguna->kode_ahliPakar)->first();
+            break;
+
+        case 'admin':
+            $userDetails = Admin::where('kode_admin', $akunPengguna->kode_admin)->first();
+            break;
+
+        default:
+            return redirect()->route('login')->withErrors('Role pengguna tidak valid.');
+    }
+
+    if (!$userDetails) {
+        return redirect()->route('login')->withErrors('Data pengguna tidak ditemukan.');
+    }
+
+    // Simpan URL halaman sebelumnya ke dalam session
+    if (url()->previous() !== url()->current()) {
+        session(['previous_url' => url()->previous()]);
     }
 
     // Kirim data ke view
-    return view('pages.UserPages.settings', [
-        'user' => $user,
-        'userDetails' => $userDetails, // Relasi detail user
+    return view('components.settings', [
+        'user' => $akunPengguna,
+        'userDetails' => $userDetails,
+        'nomorTelepon' => $userDetails->nomor_telp ?? '',
     ]);
 }
 
 
-    public function updateProfile(Request $request)
-{
-    // Ambil pengguna yang sedang login
-    $user = Auth::user();
+public function updateProfile(Request $request)
+    {
+        // Ambil data pengguna yang sedang login
+        $user = Auth::user();
 
-    // Validasi input
-    $validatedData = $request->validate([
-        'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255', // Hapus validasi unique di sini
-        'password' => 'nullable|min:8|confirmed',
-        'nomor_telp' => 'nullable|string|max:255',
-        'spesialis' => 'nullable|string|max:255',
-    ]);
+        // Validasi input
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $user->kode_auth . ',kode_auth',
+            'password' => 'nullable|min:8|confirmed',
+            'nomor_telp' => 'nullable|string|max:15',
+            'spesialis' => 'nullable|string|max:255', // Relevan untuk ahli pakar
+        ]);
 
-    // Update data pengguna utama
-    $user->nama = $validatedData['nama'];
-    $user->email = $validatedData['email'];
-
-    // Jika password diisi, lakukan hashing
-    if ($request->filled('password')) {
-        $user->password = Hash::make($validatedData['password']);
-    }
-
-    $user->save();
-
-    // Update tabel relasi berdasarkan role
-    if ($user->role === 'ahli pakar') {
-        // Update data di tabel ahli pakar
-        $ahliPakar = AhliPakar::where('kode_ahliPakar', $user->kode_ahliPakar)->first();
-        if ($ahliPakar) {
-            $ahliPakar->update([
-                'nama' => $validatedData['nama'],
-                'email' => $validatedData['email'],
-                'nomor_telp' => $validatedData['nomor_telp'], // Update nomor telepon
-                'spesialis' => $validatedData['spesialis'],
-            ]);
+        // Hash password jika diisi
+        $hashedPassword = $user->password;
+        if ($request->filled('password')) {
+            $hashedPassword = Hash::make($validatedData['password']);
         }
-    } elseif ($user->role === 'user') {
-        // Update data di tabel pengguna
-        $pengguna = Pengguna::where('kode_user', $user->kode_user)->first();
-        if ($pengguna) {
-            $pengguna->update([
-                'nama' => $validatedData['nama'],
-                'email' => $validatedData['email'],
-                'nomor_telp' => $validatedData['nomor_telp'], // Update nomor telepon
-            ]);
+
+        // Update data di tabel `akun_pengguna`
+        AkunPengguna::where('kode_auth', $user->kode_auth)->update([
+            'nama' => $validatedData['nama'],
+            'email' => $validatedData['email'],
+            'password' => $hashedPassword,
+        ]);
+
+        // Update data di tabel spesifik berdasarkan role
+        switch ($user->role) {
+            case 'ahli pakar':
+                $ahliPakar = AhliPakar::where('kode_ahliPakar', $user->kode_ahliPakar)->first();
+                if ($ahliPakar) {
+                    $ahliPakar->update([
+                        'nama' => $validatedData['nama'],
+                        'email' => $validatedData['email'],
+                        'nomor_telp' => $validatedData['nomor_telp'],
+                        'spesialis' => $validatedData['spesialis'],
+                        'password' => $hashedPassword,
+                    ]);
+                }
+                break;
+
+            case 'user':
+                $pengguna = Pengguna::where('kode_user', $user->kode_user)->first();
+                if ($pengguna) {
+                    $pengguna->update([
+                        'nama' => $validatedData['nama'],
+                        'email' => $validatedData['email'],
+                        'nomor_telp' => $validatedData['nomor_telp'],
+                        'password' => $hashedPassword,
+                    ]);
+                }
+                break;
+
+            case 'admin':
+                $admin = Admin::where('kode_admin', $user->kode_admin)->first();
+                if ($admin) {
+                    $admin->update([
+                        'nama' => $validatedData['nama'],
+                        'email' => $validatedData['email'],
+                        'nomor_telp' => $validatedData['nomor_telp'],
+                        'password' => $hashedPassword,
+                    ]);
+                }
+                break;
+
+            default:
+                return redirect()->route('login')->withErrors('Role pengguna tidak valid.');
         }
+
+        return redirect()->route('profile.settings', ['kode_auth' => $user->kode_auth])
+            ->with('success', 'Profil berhasil diperbarui!');
     }
-
-    return redirect()->route('profile.settings')->with('success', 'Profil berhasil diperbarui!');
-}
-
 
     public function authenticate(Request $request)
     {
@@ -172,25 +251,131 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
+            // Redirect berdasarkan role
             $userRole = Auth::user()->role;
-            if ($userRole === 'ahli pakar') {
-                return redirect()->intended('/LandingPage');
-            } elseif ($userRole === 'user') {
-                return redirect()->intended('/User/Dashboard');
-            } elseif ($userRole === 'admin') {
-                return redirect()->intended('/Admin/Dashboard');
-            } else {
-                return redirect()->intended('/Register');
+            switch ($userRole) {
+                case 'ahli pakar':
+                    return redirect()->intended('/ahli_pakar/Dashboard');
+                case 'user':
+                    return redirect()->intended('/User/Dashboard');
+                case 'admin':
+                    return redirect()->intended('/Admin/Dashboard');
+                default:
+                    return redirect()->route('login')->withErrors('Role tidak dikenali.');
             }
         }
 
-        return back()->withErrors([
-            'login' => 'Email atau Password tidak sesuai.',
-        ])->onlyInput('email');
+        return back()->withErrors(['login' => 'Email atau password salah.'])->onlyInput('email');
     }
+
+    public function deleteUser($kode_user)
+{
+    // Periksa apakah pengguna memiliki role "admin"
+    if (Auth::user()->role !== 'admin') {
+        abort(403, 'Unauthorized action.');
+    }
+
+    // Cari data pengguna berdasarkan kode_user
+    $user = Pengguna::where('kode_user', $kode_user)->first();
+
+    if (!$user) {
+        return redirect()->route('admin.users')->withErrors('Pengguna tidak ditemukan.');
+    }
+
+    // Hapus data pengguna
+    $user->delete();
+
+    // Hapus juga data relasinya di tabel akun_pengguna (opsional, jika ada)
+    AkunPengguna::where('kode_user', $kode_user)->delete();
+
+    return redirect()->route('admin.users')->with('success', 'Pengguna berhasil dihapus.');
+}
+
+
+    public function editUser($role, $kode)
+{
+    $userDetails = null;
+
+    if ($role === 'user') {
+        $userDetails = Pengguna::where('kode_user', $kode)->first();
+    } elseif ($role === 'ahli pakar') {
+        $userDetails = AhliPakar::where('kode_ahliPakar', $kode)->first();
+    }
+
+    if (!$userDetails) {
+        return redirect()->route('admin.users')->withErrors('Data pengguna tidak ditemukan.');
+    }
+
+    // Simpan URL halaman sebelumnya ke dalam session
+    if (url()->previous() !== url()->current()) {
+        session(['previous_url' => url()->previous()]);
+    }
+    return view('pages.AdminPages.editUser', [
+        'user' => $userDetails,
+        'role' => $role,
+        'nomorTelepon' => $userDetails->nomor_telp ?? null, // Kirim nomor telepon (opsional)
+    ]);
+}
+    public function updateUser(Request $request, $role, $kode)
+{
+    // Memastikan pengguna adalah admin
+    if (Auth::user()->role !== 'admin') {
+        abort(403, 'Unauthorized action.');
+    }
+
+    // Validasi data yang diterima
+    $validatedData = $request->validate([
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:' . ($role === 'user' ? 'pengguna' : 'ahli_pakar') . ',email,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'password' => 'nullable|min:8|confirmed',
+        'nomor_telp' => 'nullable|string|max:15',
+        'spesialis' => 'nullable|string|max:255', // Khusus untuk ahli pakar
+    ]);
+    // Hash password jika diisi
+        $hashedPassword = $user->password;
+        if ($request->filled('password')) {
+            $hashedPassword = Hash::make($validatedData['password']);
+        }
+
+        // Update data di tabel `akun_pengguna`
+        AkunPengguna::where('kode_auth', $user->kode_auth)->update([
+            'nama' => $validatedData['nama'],
+            'email' => $validatedData['email'],
+            'password' => $hashedPassword,
+        ]);
+
+    // Mencari data berdasarkan role dan kode
+    $userDetails = null;
+    if ($role === 'user') {
+        $userDetails = Pengguna::where('kode_user', $kode)->first();
+    } elseif ($role === 'ahli pakar') {
+        $userDetails = AhliPakar::where('kode_ahliPakar', $kode)->first();
+    }
+
+    // Jika data tidak ditemukan
+    if (!$userDetails) {
+        return redirect()->route('admin.users')->withErrors('Data pengguna tidak ditemukan.');
+    }
+
+    // Menangani password jika diisi
+    if ($request->filled('password')) {
+        // Hash password jika diubah
+        $validatedData['password'] = Hash::make($validatedData['password']);
+    } else {
+        // Hapus password jika tidak diubah
+        unset($validatedData['password']);
+    }
+
+    // Mengupdate data pengguna
+    $userDetails->update($validatedData);
+
+    // Redirect ke halaman daftar pengguna dengan pesan sukses
+    return redirect()->route('admin.users')->with('success', 'Data pengguna berhasil diperbarui.');
+}
+
 
     public function logout(Request $request)
     {

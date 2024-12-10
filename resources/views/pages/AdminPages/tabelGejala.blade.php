@@ -12,6 +12,7 @@
     <!-- Flowbite CSS -->
     @vite('resources/css/app.css')
     <link rel="icon" href="/images/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,20 +25,40 @@
 <body class="bg-gray-100 min-h-full flex">
 
     <!-- Sidebar -->
-    @include('components.sidebar')
+    @include('components.sidebar_admin')
 
     <?php
     use Carbon\Carbon;
     ?>
-    @if (session('success'))
-        <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
-            {{ session('success') }}
-        </div>
-    @endif
+    @if (session('success') || session('error'))
+        <div class="absolute top-10 left-1/2 ml-28 transform -translate-x-1/2 bg-white shadow-lg rounded-lg p-4 w-[90%] sm:w-[400px] flex items-center space-x-4 z-50 transition-opacity duration-300"
+            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+            @if (session('success'))
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-green-600 text-sm font-medium">{{ session('success') }}</span>
+                </div>
+            @endif
 
-    @if (session('error'))
-        <div class="text-red-600 text-sm mb-4 text-center">
-            {{ session('error') }}
+            @if (session('error'))
+                <div class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    <span class="text-red-600 text-sm font-medium">{{ session('error') }}</span>
+                </div>
+            @endif
+
+            <button @click="show = false" class="text-gray-500 hover:text-gray-700 ml-auto focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
     @endif
 
@@ -89,19 +110,19 @@
             <table class="w-full table-fixed text-sm text-gray-700">
                 <thead class="bg-gray-50 text-gray-600 text-center">
                     <tr>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-1/12">No</th>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-2/12">Kode Gejala</th>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-5/12">Nama Gejala</th>
-                        <th class="px-6 py-3 border border-gray-300 font-semibold w-2/12">Aksi</th>
+                        <th class="px-4 py-2 border border-gray-300 w-1/12">No</th>
+                        <th class="px-4 py-2 border border-gray-300 w-2/12">Kode Gejala</th>
+                        <th class="px-4 py-2 border border-gray-300 w-5/12">Nama Gejala</th>
+                        <th class="px-4 py-2 border border-gray-300 w-2/12">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($gejala as $index => $item)
                         <tr class="border-b hover:bg-gray-50 text-center">
-                            <td class="px-6 py-4 border border-gray-300">{{ $gejala->firstItem() + $index }}</td>
-                            <td class="px-6 py-4 border border-gray-300">{{ $item->kode_gejala }}</td>
-                            <td class="px-6 py-4 border border-gray-300">{{ $item->nama_gejala }}</td>
-                            <td class="px-6 py-4 border border-gray-300">
+                            <td class="px-4 py-2 border border-gray-300">{{ $gejala->firstItem() + $index }}</td>
+                            <td class="px-4 py-2 border border-gray-300">{{ $item->kode_gejala }}</td>
+                            <td class="px-4 py-2 border border-gray-300">{{ $item->nama_gejala }}</td>
+                            <td class="px-4 py-2 border border-gray-300">
                                 <div class="flex justify-center">
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('gejala.edit', $item->kode_gejala) }}">
@@ -112,16 +133,17 @@
                                     </a>
 
                                     <!-- Form Delete -->
-                                    <form action="{{ route('gejala.destroy', $item->kode_gejala) }}" method="POST"
-                                        id="deleteForm-{{ $item->kode_gejala }}"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
+                                    <form id="deleteForm-{{ $item->kode_gejala }}"
+                                        action="{{ route('gejala.destroy', $item->kode_gejala) }}" method="POST"
+                                        style="display:none;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="border border-red-500 font-bold text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
-                                            Hapus
-                                        </button>
                                     </form>
+
+                                    <button onclick="confirmDelete('{{ $item->kode_gejala }}')"
+                                        class="border border-red-500 font-bold text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
+                                        Hapus
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -187,35 +209,24 @@
         </div>
 
     </div>
-
-
-    {{-- <script>
-    function toggleDeleteButton() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        const deleteButton = document.getElementById('deleteButton');
-        deleteButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked);
-    }
-
-    function submitDeleteForm() {
-        const form = document.getElementById('deleteForm');
-        const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-
-        if (checkboxes.length === 0) {
-            alert('Silakan pilih setidaknya satu diagnosa untuk dihapus.');
-            return;
+    <script>
+        function confirmDelete(kode_riwayat) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`deleteForm-${kode_riwayat}`).submit();
+                }
+            });
         }
-
-        if (confirm('Anda yakin ingin menghapus diagnosa yang dipilih?')) {
-            form.submit();
-        }
-    }
-
-    function toggleDetails(id) {
-        const detailsRow = document.getElementById(id);
-        detailsRow.classList.toggle('hidden');
-    }
-</script> --}}
-
+    </script>
 </body>
 
 </html>

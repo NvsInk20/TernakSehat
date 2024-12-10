@@ -24,6 +24,13 @@
     <!-- Navbar -->
     @include('components.navbar')
     @include('components.dropSettings')
+    @if (session('success'))
+        <div class="text-green-600 text-sm mb-2 mt-6 text-center">{{ session('success') }}</div>
+    @endif
+
+    @if (session('error'))
+        <div class="text-red-600 text-sm mb-4 text-center">{{ session('error') }}</div>
+    @endif
 
     <!-- Main Content -->
     <main class="flex flex-col items-center justify-center min-h-screen px-4" id="diagnosaContent">
@@ -102,12 +109,19 @@
             @endif
 
             <!-- Tombol Reset Diagnosa -->
-            <div class="mt-8">
+            <div class="mt-8 flex space-x-4">
                 <form method="GET" action="{{ route('diagnosa.reset') }}">
                     @csrf
                     <button type="submit"
                         class="bg-red-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-red-600 transition-all duration-300">
                         Reset Diagnosa
+                    </button>
+                </form>
+                <form method="GET" action="{{ route('diagnosa.hasil') }}">
+                    @csrf
+                    <button type="submit"
+                        class="bg-green-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-600 transition-all duration-300">
+                        Simpan Diagnosa
                     </button>
                 </form>
             </div>

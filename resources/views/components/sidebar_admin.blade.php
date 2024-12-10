@@ -34,8 +34,8 @@
 
             <!-- Akun Pengguna -->
             <li>
-                <a href="{{ route('admin.akunPengguna') }}"
-                    class="flex bg-orange-200 items-center space-x-3 p-2 rounded-md font-medium shadow-md {{ Route::is('admin.akunPengguna') ? 'bg-gray-100 text-black font-bold' : 'text-gray-700 hover:bg-gray-200' }}">
+                <a href="{{ route('admin.users') }}"
+                    class="flex bg-orange-200 items-center space-x-3 p-2 rounded-md font-medium shadow-md {{ Route::is('admin.users') ? 'bg-gray-100 text-black font-bold' : 'text-gray-700 hover:bg-gray-200' }}">
                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -114,8 +114,9 @@
 
             <!-- Settings -->
             <li>
-                <a href="{{ route('profile.settings') }}"
-                    class="flex bg-orange-200 items-center space-x-3 p-2 rounded-md font-medium shadow-md {{ Route::is('profile.settings') ? 'bg-gray-100 text-black font-bold' : 'text-gray-700 hover:bg-gray-200' }}">
+                <a href="{{ route('profile.settings', Auth::user()->kode_auth) }}"
+                    class="flex items-center space-x-3 p-2 rounded-md font-medium shadow-md
+           {{ Request::routeIs('profile.settings') ? 'bg-gray-100 text-black font-bold' : 'bg-orange-200 text-gray-700 hover:bg-gray-200' }}">
                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -124,6 +125,7 @@
                     </svg>
                     <span>Settings</span>
                 </a>
+
             </li>
 
             <!-- Logout -->

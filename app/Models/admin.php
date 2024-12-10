@@ -9,23 +9,28 @@ use Illuminate\Support\Str;
 
 class admin extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    protected $table = 'user_admin'; // Nama tabel
+    protected $primaryKey = 'kode_admin'; // Primary key adalah kode_penyakit
+    public $incrementing = false; // Non-incrementing primary key
+    protected $keyType = 'string'; // Tipe primary key adalah string
+    protected $fillable = ['No', 'nama', 'kode_admin', 'email', 'password', 'nomor_telp', 'role'];
 
-    protected $table = 'user_admin';
-    protected $primaryKey = 'id';
-    protected $fillable = ['nama', 'email', 'password', 'nomor_telp', 'role'];
+    protected static function boot()
+    {
+        parent::boot();
 
-    // // Fungsi boot untuk membuat ID secara otomatis dengan 5 karakter
-    // protected static function boot()
-    // {
-    //     parent::boot();
+        // Hapus data relasi pada AkunPengguna saat Admin dihapus
+        static::deleting(function ($admin) {
+            AkunPengguna::where('kode_admin', $admin->kode_admin)->delete();
+        });
+    }
 
-    //     static::creating(function ($model) {
-    //         if (empty($model->{$model->getKeyName()})) {
-    //             $model->{$model->getKeyName()} = Str::random(5);
-    //         }
-    //     });
-    // }
+    public function akunPengguna()
+{
+    return $this->hasMany(akunPengguna::class, 'kode_admin', 'kode_admin');
+}
+
 
     protected $hidden = [
         'password',

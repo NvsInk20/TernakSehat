@@ -16,13 +16,14 @@
 
 <body>
     @if (session('success'))
-        <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
+        <div class="bg-green-500 text-white p-3 mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="text-red-600 text-sm mb-4 text-center">
+        <div class="bg-red-500 text-white p-3 mb-4">
             {{ session('error') }}
         </div>
     @endif

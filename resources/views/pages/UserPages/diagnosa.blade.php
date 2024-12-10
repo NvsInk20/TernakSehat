@@ -70,7 +70,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full mt-28">
+    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full mt-32">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>

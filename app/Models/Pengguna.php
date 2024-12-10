@@ -15,28 +15,50 @@ class Pengguna extends Authenticatable
     protected $primaryKey = 'kode_user'; // Primary key adalah kode_user
     public $incrementing = false; // Non-incrementing primary key
     protected $keyType = 'string'; // Tipe primary key adalah string
-    protected $fillable = ['No', 'nama', 'kode_user', 'email', 'password', 'nomor_telp', 'role'];
+
+    protected $fillable = [
+        'No',
+        'nama',
+        'kode_user',
+        'email',
+        'password',
+        'nomor_telp',
+        'role',
+    ];
 
     /**
-     * Fungsi boot untuk membuat kode_user secara otomatis
+     * Boot method untuk event model.
      */
     protected static function boot()
     {
         parent::boot();
 
+        // Generate kode_user otomatis saat data dibuat
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                // Generate kode_user otomatis
                 $model->{$model->getKeyName()} = 'USR-' . strtoupper(Str::random(5));
             }
         });
+
+        // Hapus data relasi pada AkunPengguna saat pengguna dihapus
+        static::deleting(function ($pengguna) {
+            AkunPengguna::where('kode_user', $pengguna->kode_user)->delete();
+        });
     }
 
+    /**
+     * Relasi ke model AkunPengguna
+     */
     public function akunPengguna()
-{
-    return $this->hasMany(akunPengguna::class, 'kode_user', 'kode_user');
-}
+    {
+        return $this->hasMany(AkunPengguna::class, 'kode_user', 'kode_user');
+    }
 
+    // Relasi ke model RiwayatDiagnosa
+    public function riwayatDiagnosa()
+    {
+        return $this->hasMany(RiwayatDiagnosa::class, 'kode_user', 'kode_user');
+    }
     /**
      * Properti yang disembunyikan saat serialisasi
      */

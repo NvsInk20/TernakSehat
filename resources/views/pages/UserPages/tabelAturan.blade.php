@@ -28,7 +28,7 @@
                 <h3 class="text-lg font-semibold">Sistem Diagnosa Kesehatan Sapi</h3>
                 <p class="text-sm">Data Penyakit Kabupaten Boyolali</p>
             </div>
-            <form method="GET" action="{{ route('user.AturanPenyakit') }}" class="relative">
+            <form method="GET" action="{{ route('user.aturanPenyakit') }}" class="relative">
                 <input
                     class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                     placeholder="Cari Penyakit..." name="search" value="{{ request('search') }}" />
