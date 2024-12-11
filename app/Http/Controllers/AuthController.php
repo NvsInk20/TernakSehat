@@ -309,14 +309,14 @@ public function updateProfile(Request $request)
         return redirect()->route('admin.users')->withErrors('Data pengguna tidak ditemukan.');
     }
 
-    // Simpan URL halaman sebelumnya ke dalam session
     if (url()->previous() !== url()->current()) {
         session(['previous_url' => url()->previous()]);
     }
+
     return view('pages.AdminPages.editUser', [
         'user' => $userDetails,
         'role' => $role,
-        'nomorTelepon' => $userDetails->nomor_telp ?? null, // Kirim nomor telepon (opsional)
+        'nomorTelepon' => $userDetails->nomor_telp ?? null,
     ]);
 }
     public function updateUser(Request $request, $role, $kode)
@@ -326,28 +326,16 @@ public function updateProfile(Request $request)
         abort(403, 'Unauthorized action.');
     }
 
-    // Validasi data yang diterima
+    // Validasi data
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:' . ($role === 'user' ? 'pengguna' : 'ahli_pakar') . ',email,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'email' => 'required|email|max:255|unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',email,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
         'spesialis' => 'nullable|string|max:255', // Khusus untuk ahli pakar
     ]);
-    // Hash password jika diisi
-        $hashedPassword = $user->password;
-        if ($request->filled('password')) {
-            $hashedPassword = Hash::make($validatedData['password']);
-        }
 
-        // Update data di tabel `akun_pengguna`
-        AkunPengguna::where('kode_auth', $user->kode_auth)->update([
-            'nama' => $validatedData['nama'],
-            'email' => $validatedData['email'],
-            'password' => $hashedPassword,
-        ]);
-
-    // Mencari data berdasarkan role dan kode
+    // Cari data berdasarkan role
     $userDetails = null;
     if ($role === 'user') {
         $userDetails = Pengguna::where('kode_user', $kode)->first();
@@ -360,22 +348,42 @@ public function updateProfile(Request $request)
         return redirect()->route('admin.users')->withErrors('Data pengguna tidak ditemukan.');
     }
 
-    // Menangani password jika diisi
+    // Hash password jika diisi, gunakan password lama jika tidak diisi
+    $hashedPassword = $userDetails->password;
     if ($request->filled('password')) {
-        // Hash password jika diubah
-        $validatedData['password'] = Hash::make($validatedData['password']);
-    } else {
-        // Hapus password jika tidak diubah
-        unset($validatedData['password']);
+        $hashedPassword = Hash::make($validatedData['password']);
     }
 
-    // Mengupdate data pengguna
-    $userDetails->update($validatedData);
+    // Update data di tabel `akun_pengguna` dengan hash password yang sama
+    AkunPengguna::where('kode_user', $userDetails->kode_user ?? $userDetails->kode_ahliPakar)->update([
+        'nama' => $validatedData['nama'],
+        'email' => $validatedData['email'],
+        'password' => $hashedPassword, // Pastikan hash password yang sama
+    ]);
+
+    // Update tabel sesuai role dengan hash password yang sama
+    if ($role === 'user') {
+        // Update data di tabel `user_pengguna`
+        $userDetails->update([
+            'nama' => $validatedData['nama'],
+            'email' => $validatedData['email'],
+            'nomor_telp' => $validatedData['nomor_telp'],
+            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_pengguna
+        ]);
+    } elseif ($role === 'ahli pakar') {
+        // Update data di tabel `user_ahli`
+        $userDetails->update([
+            'nama' => $validatedData['nama'],
+            'email' => $validatedData['email'],
+            'nomor_telp' => $validatedData['nomor_telp'],
+            'spesialis' => $validatedData['spesialis'],
+            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_ahli
+        ]);
+    }
 
     // Redirect ke halaman daftar pengguna dengan pesan sukses
     return redirect()->route('admin.users')->with('success', 'Data pengguna berhasil diperbarui.');
 }
-
 
     public function logout(Request $request)
     {

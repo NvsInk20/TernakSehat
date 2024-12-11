@@ -125,7 +125,7 @@
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->kode_user }}</td>
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->nama }}</td>
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->email }}</td>
-                            <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->no_telp }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->nomor_telp }}</td>
                             <td class="border border-gray-300 px-4 py-2 flex justify-center ">
                                 <a href="{{ route('admin.editUser', ['role' => $user->role, 'kode' => $user->kode_user]) }}"
                                     class="text-green-400">
