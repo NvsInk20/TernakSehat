@@ -58,6 +58,7 @@ class AkunPengguna extends Authenticatable
             $model->password = \Hash::make($model->password);
         }
     });
+    // coba
 
     // Hapus relasi terkait saat akun_pengguna dihapus
     static::deleting(function ($akunPengguna) {
