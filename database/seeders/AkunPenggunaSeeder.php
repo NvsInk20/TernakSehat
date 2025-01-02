@@ -29,7 +29,7 @@ class AkunPenggunaSeeder extends Seeder
         ]);
 
         // Insert ke tabel akun_pengguna
-        DB::table('akun_pengguna')->insert([
+        DB::table('akun_Pengguna')->insert([
             'No' => 1,
             'nama' => 'Admin Utama',
             'kode_auth' => 'AUT-SP111',
