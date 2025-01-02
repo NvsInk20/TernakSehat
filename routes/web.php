@@ -11,13 +11,13 @@ use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\AturanPenyakitController;
 use App\Http\Controllers\RiwayatDiagnosaController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 // Landing Page
-Route::get('/LandingPage', function () {
+Route::get('/', function () {
     return view('pages.LandingPages.LandingPage');
 })->name('landingpage');
 
