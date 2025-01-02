@@ -50,7 +50,7 @@ class SolusiController extends Controller
             return view('partials.solusiTable', ['solusi' => $solusi]);
         }
 
-        return view('pages.AdminPages.tabelsolusi', [
+        return view('pages.AdminPages.tabelSolusi', [
             'title' => 'Solusi',
             'solusi' => $solusi,
             'activePage' => 'pages.AdminPages.tabelSolusi',
