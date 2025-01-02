@@ -59,7 +59,7 @@
                     <p>Informasi Penyakit</p>
                 </div>
                 </a>
-                <a href="/GuidePage-Riwayat>
+                <a href="/GuidePage-Riwayat">
                     <div class="menu-item">
                     <img src="{{ asset('images/riwayat.png') }}" alt="Ternak Sehat">
                     <p>Riwayat Penyakit</p>
