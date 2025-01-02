@@ -51,7 +51,7 @@ class AturanPenyakitController extends Controller
     public function indexByPakar(Request $request)
 {
     // Ambil penyakit berdasarkan aturanPenyakit dengan eager load relasi gejala dan solusi
-    $query = Penyakit::whereHas('aturanPenyakit', function ($query) {
+    $query = penyakit::whereHas('aturanPenyakit', function ($query) {
         // Memastikan hanya aturanPenyakit yang terkait dengan penyakit yang dipilih
     })
     ->with([
