@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AturanPenyakit;
-use App\Models\Penyakit;
-use App\Models\Gejala;
-use App\Models\Solusi;
+use App\Models\penyakit;
+use App\Models\gejala;
+use App\Models\solusi;
 use Illuminate\Http\Request;
 
 class AturanPenyakitController extends Controller
@@ -16,7 +16,7 @@ class AturanPenyakitController extends Controller
     public function index(Request $request)
 {
     // Ambil penyakit berdasarkan aturanPenyakit dengan eager load relasi gejala dan solusi
-    $query = Penyakit::whereHas('aturanPenyakit', function ($query) {
+    $query = penyakit::whereHas('aturanPenyakit', function ($query) {
         // Memastikan hanya aturanPenyakit yang terkait dengan penyakit yang dipilih
     })
     ->with([
