@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registrasi Ahli Pakar</title>
+    <link rel="icon" href="/images/logo.png">
     <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
     <!-- Flowbite CSS -->
@@ -14,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-orange-100 min-h-screen flex items-center justify-center">
     @if (session('success'))
         <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
             {{ session('success') }}
@@ -26,12 +27,12 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="bg-white shadow-lg rounded-lg w-full max-w-md mx-auto p-6 sm:p-10 lg:max-w-lg">
+    <div class="bg-white shadow-lg rounded-lg mt-10 mb-10 w-full max-w-md mx-auto p-6 sm:p-10 lg:max-w-lg">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
         <h1 class="text-2xl font-semibold text-center mb-6">Registrasi Ahli Pakar</h1>
-        <form action="/Register" method="POST">
+        <form action="/Register" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Nama Field -->
@@ -89,6 +90,15 @@
                 @enderror
             </div>
 
+            <!-- Dokumen Pendukung Field (Untuk Ahli Pakar) -->
+            <div class="relative mb-6" x-data="{ role: '{{ old('role', 'ahli pakar') }}' }" x-show="role === 'ahli pakar'">
+                <label for="dokumen_pendukung" class="text-gray-600 text-sm">Dokumen Pendukung (Wajib)</label>
+                <input type="file" id="dokumen_pendukung" name="dokumen_pendukung" accept="application/pdf"
+                    class="form-control mt-2 peer h-10 w-full text-gray-900 focus:outline-none focus:border-orange-500">
+                @error('dokumen_pendukung')
+                    <div class="text-red-600 text-sm">{{ $message }}</div>
+                @enderror
+            </div>
 
             <!-- Spesialis Field -->
             <div class="relative mb-6">

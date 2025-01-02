@@ -42,7 +42,7 @@
         <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Perbarui Akun</h1>
 
         <!-- Update Profile Form -->
-        <form action="{{ route('profile.update', $user->kode_auth) }}" method="POST">
+        <form action="{{ route('profile.update', $user->kode_auth) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT') <!-- This will make the form use PUT method -->
 
@@ -100,6 +100,46 @@
                 <input type="password" id="password_confirmation" name="password_confirmation"
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
             </div>
+
+            <!-- Field for Ahli Pakar only -->
+            @if ($user->role === 'ahli pakar')
+                <!-- Spesialis Field -->
+                <div class="mb-6">
+                    <label for="spesialis" class="block text-gray-700 text-sm font-medium">Spesialis</label>
+                    <input type="text" id="spesialis" name="spesialis"
+                        class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                        value="{{ old('spesialis', $spesialis) }}">
+                    @error('spesialis')
+                        <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Dokumen Pendukung Field -->
+                <div class="mb-6">
+                    <label for="dokumen_pendukung" class="block text-gray-700 text-sm font-medium">Dokumen
+                        Pendukung</label>
+
+                    <!-- Keterangan file -->
+                    @if ($dokumenPendukung)
+                        <p class="text-sm text-green-600 mt-1">
+                            <span class="font-semibold">File sudah ada</span>
+                        </p>
+                    @else
+                        <p class="text-sm text-red-500 mt-1">
+                            <span class="font-semibold">Belum ada dokumen pendukung</span>
+                        </p>
+                    @endif
+
+                    <!-- Input untuk upload file -->
+                    <input type="file" id="dokumen_pendukung" name="dokumen_pendukung"
+                        class="mt-2 w-full text-gray-900 border-b-2 border-gray-300 focus:outline-none focus:border-orange-500">
+                    @error('dokumen_pendukung')
+                        <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+            @endif
+
             <!-- Submit Button -->
             <div class="flex justify-center">
                 <button type="submit"
@@ -120,7 +160,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
             </a>
         </div>

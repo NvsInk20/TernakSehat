@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Registrasi Ahli Pakar</title>
+    <title>Registrasi Pengguna</title>
     <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
+    <link rel="icon" href="/images/logo.png">
     <!-- Flowbite CSS -->
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-orange-100 min-h-screen flex items-center justify-center">
     @if (session('success'))
         <div class="text-green-600 absolute text-sm mb-2 mt-10 ml-[50%] text-center">
             {{ session('success') }}
@@ -26,7 +27,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="bg-white shadow-lg rounded-lg w-full max-w-md mx-auto p-6 sm:p-10 lg:max-w-lg">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-md mt-10 mb-10 mx-auto p-6 sm:p-10 lg:max-w-lg">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>

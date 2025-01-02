@@ -22,6 +22,25 @@
     @include('components.navbar')
     @include('components.dropSettings')
 
+    <div class="flex -mb-14">
+        <div class="flex justify-start ml-10">
+            <a href="{{ session('previous_url', route('user.dashboard')) }}"
+                class="flex items-center px-4 py-2 rounded-lg border border-blue-500 text-blue-500 
+        hover:bg-blue-500 hover:text-white transition duration-300 group shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-5 h-5 mr-2 group-hover:-translate-x-2 transition-transform duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                </svg>
+                <span class="text-sm font-medium">Kembali</span>
+            </a>
+        </div>
+        <div class="ml-[25%]">
+            <h1 class="text-2xl font-extrabold text-gray-800 tracking-wide">Data Penyakit Hewan Ternak Sapi</h1>
+        </div>
+    </div>
+
+
     <div class="max-w-5xl mx-auto mb-12" id="tabelSolusi">
         <div class="flex justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg">
             <div>
@@ -92,23 +111,15 @@
             <!-- Pagination -->
             <div class="flex justify-between items-center px-6 py-4 bg-gray-50">
                 <div class="text-sm text-gray-500">
-                    @php
-                        // Hitung jumlah nama_penyakit unik di halaman saat ini
-                        $penyakitUnikSaatIni = $penyakitPaginated->pluck('nama_penyakit')->unique()->count();
-
-                        // Hitung total jumlah nama_penyakit unik dari semua data
-                        $totalPenyakitUnik = \App\Models\Penyakit::distinct('nama_penyakit')->count('nama_penyakit');
-                    @endphp
-
                     Menampilkan
-                    <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}</b>
-                    dari {{ $totalPenyakitUnik }}
+                    <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->lastItem() ?? 0 }}</b>
+                    dari {{ $penyakitPaginated->total() }}
                 </div>
                 <div class="flex space-x-2 items-center">
                     <p class="text-sm text-gray-500">
                         Showing {{ $penyakitPaginated->firstItem() ?? 0 }} to
-                        {{ $penyakitPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}
-                        of {{ $totalPenyakitUnik }}
+                        {{ $penyakitPaginated->lastItem() ?? 0 }}
+                        of {{ $penyakitPaginated->total() }}
                     </p>
                     <div class="flex space-x-1">
                         {{-- Tombol Halaman Sebelumnya --}}

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Aturan Penyakit</title>
+    <title>Data Riwayat Pengguna</title>
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- CSS -->
@@ -63,7 +63,7 @@
                     <tr>
                         <th class="px-4 py-2 border text-center">No</th>
                         <th class="px-4 py-2 border text-center">Tanggal Diagnosa</th>
-                        <th class="px-4 py-2 border text-center">Kode Riwayat</th>
+                        <th class="px-4 py-2 border text-center">Nama Pengguna</th>
                         <th class="px-4 py-2 border text-center">Kode Sapi</th>
                         <th class="px-4 py-2 border text-center">Hasil Diagnosa</th>
                         <th class="px-4 py-2 border text-center">Aksi</th>
@@ -79,7 +79,7 @@
                                 {{ $riwayat->created_at->format('d M Y, H:i') }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
-                                {{ $riwayat->kode_riwayat }}
+                                {{ $riwayat->nama }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
                                 {{ $riwayat->kode_sapi }}
@@ -150,16 +150,23 @@
                     @endphp
 
                     Menampilkan
-                    <b>{{ $riwayatPaginated->firstItem() ?? 0 }}-{{ $riwayatPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}</b>
-                    dari {{ $totalPenyakitUnik }}
+                    <b>{{ $riwayatPaginated->firstItem() ?? 0 }}-{{ $riwayatPaginated->lastItem() ?? 0 }}</b>
+                    dari {{ $riwayatPaginated->total() }}
                 </div>
                 <div class="flex space-x-2 items-center">
-                    {{-- Informasi jumlah --}}
-                    <p class="text-sm text-gray-500">
-                        Showing {{ $riwayatPaginated->firstItem() ?? 0 }} to
-                        {{ $riwayatPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}
-                        of {{ $totalPenyakitUnik }}
-                    </p>
+                    <a href="{{ route('riwayatDiagnosa.cetakSemuaPDFGabungan') }}"
+                        class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded">
+                        Cetak Semua PDF
+                    </a>
+
+                    {{-- Tombol Hapus Semua --}}
+                    <form id="deleteAllForm" action="{{ route('riwayatDiagnosa.hapusSemua') }}" method="POST"
+                        style="display: inline;">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                            Hapus Semua
+                        </button>
+                    </form>
                     <div class="flex space-x-1">
                         {{-- Tombol Halaman Sebelumnya --}}
                         @if ($riwayatPaginated->onFirstPage())
@@ -228,6 +235,27 @@
                 }
             });
         }
+
+        // Konfirmasi untuk Hapus Semua
+        document.getElementById('deleteAllForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah form langsung submit
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Semua data riwayat diagnosa akan dihapus dan tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus semua!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika konfirmasi, kirimkan form
+                    this.submit();
+                }
+            });
+        });
     </script>
 
 </body>

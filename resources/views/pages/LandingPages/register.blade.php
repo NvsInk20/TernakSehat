@@ -9,6 +9,7 @@
     <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
     <!-- Flowbite CSS -->
+    <link rel="icon" href="/images/logo.png">
     @vite('resources/css/app.css')
     <link rel="icon" href="images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,9 +22,22 @@
 </head>
 
 <body>
+    @if (session('success'))
+        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="bg-red-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+            {{ session('error') }}
+        </div>
+    @endif
     {{-- Registrasi Pengguna --}}
     <div class="container-tengah" id="tengah">
-        <a href="{{ route('landingpage') }}">
+        <a href="{{ route('login') }}">
             <div class="back">
                 Kembali
             </div>
@@ -48,7 +62,9 @@
     </div>
     </div>
     {{-- Footer --}}
-    <div class="p-5 bg-orange-500 mx-auto -mt-10"></div>
+    <footer class="p-5 bg-orange-500 text-center text-white mt-12">
+        <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
+    </footer>
 </body>
 
 </html>

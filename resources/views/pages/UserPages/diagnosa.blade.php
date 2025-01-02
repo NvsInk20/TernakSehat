@@ -27,7 +27,7 @@
 
     <!-- Main Content -->
     <main class="flex flex-col items-center justify-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-16">Halaman Diagnosa</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-11">Halaman Diagnosa</h1>
         <div class="relative bg-white rounded-lg shadow-xl p-12 text-center max-w-lg w-full">
             <div
                 class="absolute bg-orange-300 rounded-lg transform -rotate-6 -z-10 top-6 left-6 w-full h-full scale-110">
@@ -61,7 +61,7 @@
                 <p class="text-xl text-red-600 font-semibold">
                     Tolong diperhatikan dengan baik gejala yang akan muncul.
                 </p>
-                <a href="{{ route('diagnosa.result') }}"
+                <a href="{{ route('diagnosa.index') }}"
                     class="mt-8 inline-block bg-orange-400 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-500">
                     Mulai Lakukan Diagnosa
                 </a>
@@ -70,7 +70,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full mt-32">
+    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full bottom-0">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>

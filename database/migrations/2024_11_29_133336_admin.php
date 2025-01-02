@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('dokumen_pendukung')->nullable(); // Menyimpan path file dokumen PDF
             $table->string('nomor_telp', 12)->nullable();
             $table->string('spesialis')->nullable(); // Menambahkan nullable agar bisa kosong
             $table->enum('role', ['admin', 'ahli pakar', 'user'])->default('ahli pakar');;
             $table->primary('kode_ahliPakar');
+            $table->string('status')->default('inactive'); 
             $table->timestamps();
         });
     }

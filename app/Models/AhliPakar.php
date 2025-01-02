@@ -22,9 +22,11 @@ class AhliPakar extends Authenticatable
         'kode_ahliPakar',
         'email',
         'password',
+        'dokumen_pendukung',
         'nomor_telp',
         'role',
         'spesialis',
+        'status',
     ];
 
     /**

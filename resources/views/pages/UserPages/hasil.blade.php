@@ -52,11 +52,29 @@
                         <strong class="text-orange-500">Penyakit:</strong> {{ $diagnosaUtama['penyakit'] }}
                     </p>
                     <p class="text-lg text-gray-700 mb-2">
-                        <strong class="text-orange-500">Gejala:</strong> {{ implode(', ', $diagnosaUtama['gejala']) }}
+                        <strong class="text-orange-500">Gejala:</strong>
+                    <ol class="list-decimal list-inside text-gray-700">
+                        @foreach ($diagnosaUtama['gejala'] as $key => $gejala)
+                            <li>{{ $gejala }}</li>
+                        @endforeach
+                    </ol>
                     </p>
                     <p class="text-lg text-gray-700 mb-2">
                         <strong class="text-orange-500">Solusi:</strong> {{ implode(', ', $diagnosaUtama['solusi']) }}
                     </p>
+                    <!-- Gejala yang Tidak Masuk dalam Hasil Diagnosa -->
+                    @if (!empty($gejalaTidakMasuk))
+                        <div class="border-t-2 border-orange-400 pt-6 mt-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Gejala yang Dipilih Tetapi Tidak
+                                Terdaftar dalam Diagnosa</h3>
+                            <ol class="list-decimal list-inside text-gray-700">
+                                @foreach ($gejalaTidakMasuk as $item)
+                                    <li>{{ $item['gejala'] }}</li>
+                                @endforeach
+                            </ol>
+                        </div>
+                    @endif
+
                 </div>
             @endif
 

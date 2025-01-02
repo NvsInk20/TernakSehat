@@ -21,25 +21,21 @@
 </head>
 
 <body class="bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 font-sans">
-    <!-- Navbar -->
-    @include('components.navbar')
-    @include('components.dropSettings')
-
     @if (session('success'))
-        <div class="text-green-600 text-sm mb-2 mt-6 text-center">
+        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
-    @if ($errors->any())
-        <div class="text-red-600 text-sm mb-4 text-center">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    @if (session('error'))
+        <div class="bg-red-500 text-white p-3 rounded mb-4">
+            {{ session('error') }}
         </div>
     @endif
+    <!-- Navbar -->
+    @include('components.navbar')
+    @include('components.dropSettings')
 
     <!-- Main Content -->
     <main class="flex flex-col items-center justify-center min-h-screen px-4" id="diagnosaContent">
@@ -56,54 +52,66 @@
             @if ($diagnosaUtama || $penyakitTertinggi || $penyakitKedua)
                 <div class="mt-8">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Simpan Hasil Diagnosa</h3>
-                    <form method="POST" action="{{ route('diagnosa.simpanHasil') }}"
-                        class="space-y-4 bg-gray-100 p-6 rounded-lg shadow-lg">
+                    <form method="POST" action="{{ route('diagnosa.simpanHasil') }}" class="space-y-4">
                         @csrf
-
                         <div>
                             <label for="nama" class="block text-sm font-medium text-gray-700">Nama Pengguna</label>
                             <input type="text" id="nama" name="nama"
                                 value="{{ auth()->user()->nama ?? 'Nama Tidak Diketahui' }}"
-                                class="mt-1 p-2 block w-full border border-gray-300 rounded-md" readonly>
+                                class="mt-1 p-2 block w-full border bg-gray-300 border-gray-300 rounded-md" readonly>
                         </div>
 
                         <div>
                             <label for="kode_sapi" class="block text-sm font-medium text-gray-700">Kode Sapi</label>
-
                             <input type="text" id="kode_sapi" name="kode_sapi"
-                                value="SP-{{ strtoupper(Str::random(5)) }}"
+                                value="{{ session('kode_sapi', 'SP-' . strtoupper(Str::random(5))) }}"
                                 class="mt-1 p-2 block w-full border border-gray-300 rounded-md">
                         </div>
 
-                        @if ($diagnosaUtama)
-                            <div>
-                                <label for="penyakit_utama" class="block text-sm font-medium text-gray-700">Penyakit
-                                    Utama</label>
-                                <input type="text" id="penyakit_utama" name="penyakit_utama"
-                                    value="{{ $diagnosaUtama['penyakit'] ?? 'Tidak Ada Penyakit Utama' }}"
-                                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md" readonly>
-                            </div>
+                        <div>
+                            <label for="penyakit_utama" class="block text-sm font-medium text-gray-700">Penyakit
+                                Utama</label>
+                            <input type="text" id="penyakit_utama" name="penyakit_utama"
+                                value="{{ $diagnosaUtama['penyakit'] ?? 'Tidak Ada Penyakit Utama' }}"
+                                class="mt-1 p-2 block w-full border bg-gray-300 border-gray-300 rounded-md" readonly>
+                        </div>
 
-                            <div>
-                                <label for="gejala" class="block text-sm font-medium text-gray-700">Gejala</label>
-                                <textarea id="gejala" name="gejala" rows="3"
-                                    class="mt-1 p-2 block w-full border border-gray-300 text-justify rounded-md" readonly>
-                                    {{ !empty($diagnosaUtama['gejala']) ? implode(', ', $diagnosaUtama['gejala']) : 'Gejala Tidak Tersedia' }}
-                                </textarea>
-                            </div>
+                        <!-- Gabungan Gejala & Solusi -->
+                        <!-- Gabungan Gejala & Solusi -->
+                        <div>
+                            <label for="gejala" class="block text-sm font-medium text-gray-700">Gejala dan
+                                Solusi</label>
+                            <div id="gejala"
+                                class="mt-1 p-3 bg-gray-300 border border-gray-300 rounded-md text-justify">
+                                @php
+                                    // Ambil gejala yang teridentifikasi dari diagnosa
+                                    $gejalaTeridentifikasi = $diagnosaUtama['gejala'] ?? [];
+                                    // Gabungkan semua gejala (teridentifikasi + tidak teridentifikasi)
+                                    $semuaGejala = $gejalaDipilih ?? [];
+                                @endphp
 
-                            <div>
-                                <label for="solusi" class="block text-sm font-medium text-gray-700">Solusi</label>
-                                <textarea id="solusi" name="solusi" rows="3"
-                                    class="mt-1 p-2 block w-full border border-gray-300 text-justify rounded-md" readonly>
-                                    {{ !empty($diagnosaUtama['solusi']) ? implode(', ', $diagnosaUtama['solusi']) : 'Solusi Tidak Tersedia' }}
-                                </textarea>
+                                @if (!empty($semuaGejala))
+                                    <h4 class="font-semibold mb-2">Gejala:</h4>
+                                    <ol class="list-decimal pl-5">
+                                        @foreach ($semuaGejala as $gejala)
+                                            <li>
+                                                {{ $gejala }}
+                                                @if (!in_array($gejala, $gejalaTeridentifikasi))
+                                                    <span class="text-red-500 text-sm"> (gejala berpotensi terdapat di
+                                                        penyakit alternatif)</span>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ol>
+                                @else
+                                    <p>Gejala Tidak Tersedia</p>
+                                @endif
+                                <h4 class="font-semibold mt-4 mb-2">Saran Rekomendasi:</h4>
+                                <p>{{ implode('. ', $diagnosaUtama['solusi'] ?? ['Tidak bisa memberikan rekomendasi yang aman']) }}.
+                                </p>
                             </div>
-                        @else
-                            <div class="text-red-600 text-sm">
-                                Penyakit utama tidak ditemukan.
-                            </div>
-                        @endif
+                        </div>
+
 
                         @if ($penyakitTertinggi)
                             <div>
@@ -111,7 +119,8 @@
                                     class="block text-sm font-medium text-gray-700">Penyakit Alternatif 1</label>
                                 <input type="text" id="penyakit_alternatif_1" name="penyakit_alternatif_1"
                                     value="{{ $penyakitTertinggi }}"
-                                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md" readonly>
+                                    class="mt-1 p-2 block bg-gray-300 w-full border border-gray-300 rounded-md"
+                                    readonly>
                             </div>
                         @endif
 
@@ -121,17 +130,17 @@
                                     class="block text-sm font-medium text-gray-700">Penyakit Alternatif 2</label>
                                 <input type="text" id="penyakit_alternatif_2" name="penyakit_alternatif_2"
                                     value="{{ $penyakitKedua }}"
-                                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md" readonly>
+                                    class="mt-1 p-2 block bg-gray-300 w-full border border-gray-300 rounded-md"
+                                    readonly>
                             </div>
                         @endif
 
-                        <div class="mt-6">
-                            <button type="submit"
-                                class="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-all duration-300">
-                                Simpan Hasil Diagnosa
-                            </button>
-                        </div>
+                        <button type="submit"
+                            class="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-all duration-300">
+                            Simpan Hasil Diagnosa
+                        </button>
                     </form>
+
                 </div>
             @else
                 <div class="text-center text-red-600 font-medium mt-8">
@@ -149,7 +158,16 @@
             @endphp
 
             <div class="text-center mt-6">
-                <a href="{{ route($dashboardRoute) }}" class="text-orange-500 hover:underline">Kembali ke Dashboard</a>
+                <a href="{{ route($dashboardRoute) }}"
+                    class="flex items-center justify-center p-4 rounded-lg border border-orange-500 text-orange-500 
+                     hover:bg-orange-500 hover:text-white transition group"><span>Kembali</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-64">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    </svg>
+                </a>
             </div>
         </div>
     </main>

@@ -24,7 +24,8 @@
     @endif
 
     @if (session('error'))
-        <div class="bg-red-500 text-white p-3 rounded mb-4">
+        <div class="bg-red-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('error') }}
         </div>
     @endif
@@ -116,7 +117,7 @@
             $dashboardRoute = match (auth()->user()->role) {
                 'admin' => 'Admin.aturanPenyakit',
                 'user' => 'user.dashboard',
-                'ahli pakar' => 'expert.dashboard',
+                'ahli pakar' => 'Pakar.aturanPenyakit',
                 default => 'login', // Default redirect jika peran tidak dikenali
             };
         @endphp

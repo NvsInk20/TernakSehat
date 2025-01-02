@@ -16,8 +16,10 @@ class DiagnosaController extends Controller
     // Menampilkan pertanyaan pertama
     public function index()
 {
-    // Ambil gejala yang belum dijawab, urutkan berdasarkan gejala wajib dulu
+    // Ambil jawaban gejala dari sesi
     $answeredGejala = session('answered_gejala', []);
+
+    // Ambil gejala yang belum dijawab
     $question = AturanPenyakit::with('gejala')
         ->whereNotIn('kode_gejala', array_keys($answeredGejala)) // Hindari gejala yang sudah dijawab
         ->orderByRaw("FIELD(jenis_gejala, 'wajib', 'opsional')") // Prioritaskan gejala wajib
@@ -36,12 +38,12 @@ public function answerQuestion(Request $request)
     $answer = $request->input('answer'); // 1 untuk 'Iya', 0 untuk 'Tidak'
     $kodeGejala = $request->input('kode_gejala');
 
-    // Simpan jawaban di sesi
+    // Simpan jawaban ke sesi
     $answeredGejala = session('answered_gejala', []);
-    $answeredGejala[$kodeGejala] = $answer; // Simpan jawaban
+    $answeredGejala[$kodeGejala] = $answer;
     session(['answered_gejala' => $answeredGejala]);
 
-    // Cek apakah semua gejala wajib terpenuhi dan semua gejala opsional sudah dijawab
+    // Ambil semua penyakit dan aturan
     $penyakit = Penyakit::all();
     $aturan = AturanPenyakit::all();
 
@@ -52,23 +54,47 @@ public function answerQuestion(Request $request)
         $wajib = $aturanPenyakit->where('jenis_gejala', 'wajib');
         $opsional = $aturanPenyakit->where('jenis_gejala', 'opsional');
 
-        // Logika AND: Semua gejala wajib harus terpenuhi
+        // Logika gejala wajib: Semua harus "Iya"
         $wajibTerpenuhi = $wajib->every(function ($rule) use ($answeredGejala) {
             return isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1;
         });
 
-        // Logika: Semua gejala opsional harus dijawab
-        $opsionalSudahDijawab = $opsional->every(function ($rule) use ($answeredGejala) {
-            return isset($answeredGejala[$rule->kode_gejala]);
+        // Filter gejala opsional berdasarkan gejala wajib yang sudah dijawab "Iya"
+        $opsionalFiltered = $opsional->filter(function ($rule) use ($answeredGejala, $wajib) {
+            return $wajib->contains(function ($wajibRule) use ($answeredGejala) {
+                return isset($answeredGejala[$wajibRule->kode_gejala]) && $answeredGejala[$wajibRule->kode_gejala] == 1;
+            });
         });
 
-        // Jika semua gejala wajib terpenuhi dan semua opsional sudah dijawab, arahkan ke hasil diagnosa
-        if ($wajibTerpenuhi && $opsionalSudahDijawab) {
+        // Logika gejala opsional: Minimal satu "Iya"
+        $opsionalTerpenuhi = $opsionalFiltered->contains(function ($rule) use ($answeredGejala) {
+            return isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1;
+        });
+
+        // Jika semua gejala wajib terpenuhi dan minimal satu gejala opsional, arahkan ke hasil diagnosa
+        if ($wajibTerpenuhi && $opsionalTerpenuhi) {
+            session(['diagnosed_penyakit' => $p->kode_penyakit]); // Simpan hasil diagnosa ke sesi
             return redirect()->route('diagnosa.result');
+        }
+
+        // Jika ada gejala wajib yang dijawab "Tidak", abaikan penyakit ini sepenuhnya
+        if ($wajib->contains(function ($rule) use ($answeredGejala) {
+            return isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 0;
+        })) {
+            continue; // Lanjutkan ke penyakit berikutnya tanpa menanyakan gejala lain dari penyakit ini
         }
     }
 
-    // Jika kondisi belum terpenuhi, lanjutkan ke pertanyaan berikutnya
+    // Jika gejala wajib dijawab "Tidak", ganti ke gejala wajib penyakit lain
+    $remainingQuestions = AturanPenyakit::whereNotIn('kode_gejala', array_keys($answeredGejala))
+        ->orderByRaw("FIELD(jenis_gejala, 'wajib', 'opsional')")
+        ->get();
+
+    if ($remainingQuestions->isEmpty()) {
+        return redirect()->route('diagnosa.result');
+    }
+
+    // Jika tidak memenuhi logika, lanjutkan ke pertanyaan berikutnya
     return redirect()->route('diagnosa.index');
 }
 
@@ -180,6 +206,32 @@ public function showResult()
         $solusiKedua = $aturanPenyakitKedua->pluck('solusi.solusi')->unique()->toArray();
     }
 
+        // Gejala yang dipilih user tetapi tidak termasuk dalam hasil diagnosa
+    $gejalaTerpilih = collect($answeredGejala)->filter(function ($jawaban) {
+        return $jawaban == 1; // Hanya gejala yang dijawab "Ya"
+    })->keys()->toArray();
+
+    $gejalaTidakMasuk = [];
+
+    if ($diagnosaUtama) {
+        // Ambil gejala yang masuk dalam diagnosa utama
+        $gejalaHasilDiagnosa = $diagnosaUtama['gejala'] ?? [];
+
+        // Bandingkan dengan gejala yang dipilih user
+        $gejalaTidakMasuk = array_filter($gejalaTerpilih, function ($kodeGejala) use ($gejalaHasilDiagnosa, $aturan) {
+            $namaGejala = $aturan->firstWhere('kode_gejala', $kodeGejala)?->gejala->nama_gejala ?? '';
+            return !in_array($namaGejala, $gejalaHasilDiagnosa);
+        });
+
+        // Ambil nama gejala yang tidak masuk, serta nama penyakit yang terkait
+        $gejalaTidakMasuk = array_map(function ($kodeGejala) use ($aturan) {
+            $namaGejala = $aturan->firstWhere('kode_gejala', $kodeGejala)?->gejala->nama_gejala ?? 'Gejala tidak ditemukan';
+            // Dapatkan nama penyakit yang memiliki gejala tersebut
+            $penyakitAsal = $aturan->firstWhere('kode_gejala', $kodeGejala)?->gejala->penyakit->nama_penyakit ?? 'Penyakit tidak ditemukan';
+            return ['gejala' => $namaGejala, 'penyakit' => $penyakitAsal];
+        }, $gejalaTidakMasuk);
+    }
+
     return view('pages.UserPages.hasil', [
         'diagnosaUtama' => $diagnosaUtama,
         'kemungkinan' => $kemungkinan,
@@ -189,9 +241,9 @@ public function showResult()
         'penyakitKedua' => $penyakitKedua,
         'persentaseKedua' => $persentaseKedua,
         'solusiKedua' => $solusiKedua,
+        'gejalaTidakMasuk' => $gejalaTidakMasuk, // Tambahkan ini
     ]);
 }
-
 
     public function getDiagnosaHasil()
 {
@@ -201,11 +253,8 @@ public function showResult()
         return redirect()->route('diagnosa.index')->with('error', 'Silakan jawab pertanyaan terlebih dahulu.');
     }
 
-    // Cek jika semua jawaban "Tidak" (0)
-    $allNoAnswers = collect($answeredGejala)->every(function ($answer) {
-        return $answer == 0;
-    });
-
+     // Cek jika semua jawaban adalah "Tidak" (0)
+    $allNoAnswers = collect($answeredGejala)->every(fn($answer) => $answer == 0);
     if ($allNoAnswers) {
         return view('pages.UserPages.hasilSimpan', [
             'diagnosaUtama' => [
@@ -214,46 +263,41 @@ public function showResult()
                 'solusi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
             ],
             'kemungkinan' => [],
-            'penyakitTertinggi' => null,
-            'persentaseTertinggi' => null,
-            'solusiTertinggi' => null,
-            'penyakitKedua' => null,
-            'persentaseKedua' => null,
-            'solusiKedua' => null,
         ]);
     }
-
-    // Ambil data penyakit dan aturan
     $penyakit = Penyakit::all();
     $aturan = AturanPenyakit::all();
 
     $diagnosaUtama = null;
     $kemungkinan = [];
+    $gejalaTerpenuhi = [];
 
     foreach ($penyakit as $p) {
         $aturanPenyakit = $aturan->where('kode_penyakit', $p->kode_penyakit);
-
-        // Evaluasi aturan dengan logika AND dan OR
         $wajib = $aturanPenyakit->where('jenis_gejala', 'wajib');
         $opsional = $aturanPenyakit->where('jenis_gejala', 'opsional');
 
-        $wajibTerpenuhi = $wajib->every(function ($rule) use ($answeredGejala) {
-            return isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1;
-        });
+        // Logika AND: Semua gejala wajib harus terpenuhi
+        $wajibTerpenuhi = $wajib->every(fn($rule) => isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1);
 
-        $opsionalTerpenuhi = $opsional->filter(function ($rule) use ($answeredGejala) {
-            return isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1;
-        })->count();
+        // Logika OR: Minimal satu gejala opsional terpenuhi
+        $opsionalTerpenuhi = $opsional->filter(fn($rule) => isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1)->count();
 
+        // Jika gejala wajib terpenuhi, diagnosa utama ditentukan
         if ($wajibTerpenuhi) {
+            $gejalaTerpenuhi = $aturanPenyakit->filter(fn($rule) => isset($answeredGejala[$rule->kode_gejala]) && $answeredGejala[$rule->kode_gejala] == 1)
+                ->pluck('gejala.nama_gejala')
+                ->toArray();
+
             $diagnosaUtama = [
                 'penyakit' => $p->nama_penyakit,
-                'gejala' => $aturanPenyakit->pluck('gejala.nama_gejala')->toArray(),
+                'gejala' => $gejalaTerpenuhi,
                 'solusi' => $aturanPenyakit->pluck('solusi.solusi')->unique()->toArray(),
             ];
             break;
         }
 
+        // Hitung kemungkinan untuk penyakit lain jika gejala wajib tidak terpenuhi
         $totalGejala = $wajib->count() + $opsional->count();
         $terpenuhi = ($wajibTerpenuhi ? $wajib->count() : 0) + $opsionalTerpenuhi;
 
@@ -261,97 +305,126 @@ public function showResult()
             $kemungkinan[$p->nama_penyakit] = round(($terpenuhi / $totalGejala) * 100, 2);
         }
     }
-
-    $kemungkinan = array_filter($kemungkinan, function ($persentase) {
-        return $persentase > 0;
-    });
+    // Saring kemungkinan dengan persentase 0%
+    $kemungkinan = array_filter($kemungkinan, fn($persentase) => $persentase > 0);
 
     arsort($kemungkinan);
-
+    // Penyakit dengan kemungkinan tertinggi
     $penyakitTertinggi = key($kemungkinan);
     $persentaseTertinggi = current($kemungkinan);
 
-    $penyakitKedua = null;
-    $persentaseKedua = null;
-    if (count($kemungkinan) > 1) {
-        next($kemungkinan);
-        $penyakitKedua = key($kemungkinan);
-        $persentaseKedua = current($kemungkinan);
-    }
+    // Penyakit kedua jika ada
+    $penyakitKedua = count($kemungkinan) > 1 ? array_keys($kemungkinan)[1] : null;
+    $persentaseKedua = count($kemungkinan) > 1 ? array_values($kemungkinan)[1] : null;
 
-    $solusiTertinggi = $penyakitTertinggi ? $aturan->where('kode_penyakit', $penyakit->firstWhere('nama_penyakit', $penyakitTertinggi)->kode_penyakit)->pluck('solusi.solusi')->unique()->toArray() : [];
-    $solusiKedua = $penyakitKedua ? $aturan->where('kode_penyakit', $penyakit->firstWhere('nama_penyakit', $penyakitKedua)->kode_penyakit)->pluck('solusi.solusi')->unique()->toArray() : [];
+    $gejalaDipilih = collect($answeredGejala)
+        ->filter(fn($jawaban) => $jawaban == 1)
+        ->keys()
+        ->map(fn($kodeGejala) => $aturan->firstWhere('kode_gejala', $kodeGejala)?->gejala->nama_gejala ?? 'Gejala tidak ditemukan')
+        ->toArray();
 
     return view('pages.UserPages.hasilSimpan', [
         'diagnosaUtama' => $diagnosaUtama,
         'kemungkinan' => $kemungkinan,
-        'penyakitTertinggi' => $penyakitTertinggi,
-        'persentaseTertinggi' => $persentaseTertinggi,
-        'solusiTertinggi' => $solusiTertinggi,
-        'penyakitKedua' => $penyakitKedua,
-        'persentaseKedua' => $persentaseKedua,
-        'solusiKedua' => $solusiKedua,
+        'penyakitTertinggi' => key($kemungkinan),
+        'persentaseTertinggi' => current($kemungkinan),
+        'solusiTertinggi' => $diagnosaUtama['solusi'] ?? [],
+        'penyakitKedua' => count($kemungkinan) > 1 ? array_keys($kemungkinan)[1] : null,
+        'persentaseKedua' => count($kemungkinan) > 1 ? array_values($kemungkinan)[1] : null,
+        'gejalaDipilih' => $gejalaDipilih,
     ]);
 }
-
-
-
     public function simpanHasil(Request $request)
 {
-    // Cek apakah pengguna sudah login
+    // Pastikan pengguna sudah login
     if (!auth()->check()) {
         return redirect()->route('login')->withErrors(['login' => 'Harap login terlebih dahulu.']);
     }
 
-    // Validasi input
+    // Ambil kode_sapi dari request atau sesi
+    $kode_sapi = $request->input('kode_sapi', session('kode_sapi'));
+
+    // Jika kode_sapi tidak ada di request dan session, generate otomatis
+    if (!$kode_sapi) {
+        $kode_sapi = 'SP-' . strtoupper(Str::random(5));
+    }
+
+    // Validasi bahwa kode_sapi tersedia
+    if (!$kode_sapi) {
+        return redirect()->back()->withErrors(['kode_sapi' => 'Kode sapi tidak ditemukan. Silakan pilih sapi terlebih dahulu.']);
+    }
+
+    // Validasi input lainnya
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'kode_sapi' => 'required|string|max:255',
-        'penyakit_utama' => 'nullable|string|max:255',
-        'gejala' => 'nullable|string', // Tidak wajib
-        'solusi' => 'nullable|string|max:10000', // Tidak wajib
-        'penyakit_alternatif_1' => 'nullable|string|max:255',
-        'penyakit_alternatif_2' => 'nullable|string|max:255',
+        'gejala' => 'nullable|string|max:5000',
     ]);
 
-    // Pisahkan gejala menjadi array (jika ada)
-    $gejala = $validatedData['gejala'] ?? null;
-    $gejalaArray = $gejala ? explode(', ', $gejala) : [];
+    // Ambil hasil diagnosa dari fungsi lain di controller
+    $diagnosaHasil = $this->getDiagnosaHasil();
+    $kemungkinan = $diagnosaHasil['kemungkinan'] ?? [];
+    $gejalaDipilih = $diagnosaHasil['gejalaDipilih'] ?? [];
+    $penyakitUtama = $diagnosaHasil['diagnosaUtama']['penyakit'] ?? null;
+    $solusi = $diagnosaHasil['diagnosaUtama']['solusi'] ?? ['Tidak bisa memberikan rekomendasi yang aman.'];
 
-    // Cari penyakit utama
-    $penyakitUtama = isset($validatedData['penyakit_utama']) && $validatedData['penyakit_utama'] !== null
-        ? Penyakit::where('nama_penyakit', $validatedData['penyakit_utama'])->first()
-        : null;
+    // Tentukan penyakit alternatif
+    $penyakitAlternatif = array_keys($kemungkinan);
+    $penyakitAlternatif1 = $penyakitAlternatif[0] ?? null;
+    $penyakitAlternatif2 = $penyakitAlternatif[1] ?? null;
 
-    // Cari penyakit alternatif 1 dan 2
-    $penyakitAlternatif1 = isset($validatedData['penyakit_alternatif_1']) && $validatedData['penyakit_alternatif_1'] !== null
-        ? Penyakit::where('nama_penyakit', $validatedData['penyakit_alternatif_1'])->first()
-        : null;
+    // Ambil gejala dari request dan pecah menjadi array
+    $gejalaAlternatif = array_map('trim', explode(',', $request->input('gejala', '')));
 
-    $penyakitAlternatif2 = isset($validatedData['penyakit_alternatif_2']) && $validatedData['penyakit_alternatif_2'] !== null
-        ? Penyakit::where('nama_penyakit', $validatedData['penyakit_alternatif_2'])->first()
-        : null;
+    // Gejala yang ada di penyakit utama
+    $gejalaPenyakitUtama = $diagnosaHasil['diagnosaUtama']['gejala'] ?? [];
 
-    // Ambil nomor urut terakhir untuk 'No' dan tambahkan 1
+    // Menyusun daftar gejala dengan aturan yang benar
+    $gejalaDisimpan = [];
+
+    // Proses gejala dari hasil diagnosa
+    foreach ($gejalaDipilih as $gejala) {
+        if (!in_array($gejala, $gejalaPenyakitUtama)) {
+            if (!in_array($gejala . ' (gejala berpotensi terdapat di penyakit alternatif)', $gejalaDisimpan)) {
+                $gejalaDisimpan[] = $gejala . ' (gejala berpotensi terdapat di penyakit alternatif)';
+            }
+        } else {
+            if (!in_array($gejala, $gejalaDisimpan)) {
+                $gejalaDisimpan[] = $gejala;
+            }
+        }
+    }
+
+    // Proses gejala alternatif
+    foreach ($gejalaAlternatif as $gejala) {
+        if (empty($gejala)) {
+            continue;
+        }
+        if (!in_array($gejala, $gejalaPenyakitUtama)) {
+            if (!in_array($gejala . ' (gejala berpotensi terdapat di penyakit alternatif)', $gejalaDisimpan)) {
+                $gejalaDisimpan[] = $gejala . ' (gejala berpotensi terdapat di penyakit alternatif)';
+            }
+        } else {
+            if (!in_array($gejala, $gejalaDisimpan)) {
+                $gejalaDisimpan[] = $gejala;
+            }
+        }
+    }
+
+    // Ambil nomor urut terakhir untuk No dan tambahkan 1
     $lastNo = RiwayatDiagnosa::max('No');
     $nextNo = $lastNo ? $lastNo + 1 : 1;
 
-    // Pastikan ada setidaknya satu penyakit untuk disimpan
-    if (!$penyakitUtama && !$penyakitAlternatif1 && !$penyakitAlternatif2) {
-        return back()->withErrors(['diagnosa' => 'Diagnosa gagal: Tidak ada penyakit yang dapat disimpan.'])->withInput();
-    }
-
-    // Simpan RiwayatDiagnosa
+    // Simpan ke RiwayatDiagnosa
     RiwayatDiagnosa::create([
         'No' => $nextNo,
         'kode_user' => auth()->user()->kode_user,
         'nama' => $validatedData['nama'],
-        'kode_sapi' => $validatedData['kode_sapi'],
-        'penyakit_utama' => $penyakitUtama ? $penyakitUtama->nama_penyakit : null,  // Simpan nama penyakit utama
-        'gejala' => $gejala ? implode(',', $gejalaArray) : null, // Gejala diproses sebagai string
-        'solusi' => $validatedData['solusi'] ?? null,  // Simpan solusi, bisa null
-        'penyakit_alternatif_1' => $penyakitAlternatif1 ? $penyakitAlternatif1->nama_penyakit : null,  // Simpan nama penyakit alternatif 1
-        'penyakit_alternatif_2' => $penyakitAlternatif2 ? $penyakitAlternatif2->nama_penyakit : null,  // Simpan nama penyakit alternatif 2
+        'kode_sapi' => $kode_sapi,
+        'penyakit_utama' => $penyakitUtama,
+        'gejala' => json_encode($gejalaDisimpan), // Simpan gejala sebagai JSON
+        'solusi' => implode('. ', $solusi),
+        'penyakit_alternatif_1' => $penyakitAlternatif1,
+        'penyakit_alternatif_2' => $penyakitAlternatif2,
         'kode_riwayat' => 'RDG-' . strtoupper(Str::random(5)),
     ]);
 
@@ -359,6 +432,51 @@ public function showResult()
     return redirect()->back()->with('success', 'Hasil diagnosa berhasil disimpan.');
 }
 
+
+
+
+    // Membantu pengguna untuk memilih mekanisme diagnosa
+    public function mulaiDiagnosa(Request $request)
+{
+    // Reset sesi terkait diagnosa
+    session()->forget('answered_gejala');  // Hapus data jawaban gejala sebelumnya
+    session()->forget('diagnosed_penyakit');  // Hapus hasil diagnosa yang sudah ada
+
+    // Memeriksa apakah pengguna memilih diagnosa baru atau berdasarkan riwayat
+    $pilihan = $request->input('pilihan');
+
+    if ($pilihan == 'baru') {
+        // Jika memilih diagnosa baru, generate kode_sapi baru
+        session(['kode_sapi' => 'SP-' . strtoupper(Str::random(5))]); // Generate kode sapi baru dan simpan di session
+        return redirect()->route('user.diagnosa');
+    }
+
+    if ($pilihan == 'riwayat') {
+        // Arahkan ke halaman riwayat diagnosa untuk memilih kode_sapi
+        return redirect()->route('diagnosa.lanjut', ['kode_sapi' => $request->input('kode_sapi')]);
+    }
+
+    // Kembali ke halaman awal dengan pesan kesalahan jika tidak ada pilihan
+    return redirect()->route('diagnosaBaru.index')->with('error', 'Pilih opsi yang valid.');
+}
+
+    public function lanjutDiagnosa($kode_sapi)
+{
+    // Ambil data riwayat diagnosa berdasarkan kode_sapi
+    $riwayatDiagnosa = RiwayatDiagnosa::where('kode_sapi', $kode_sapi)->first();
+
+    if (!$riwayatDiagnosa) {
+        return redirect()->route('diagnosa.index')->with('error', 'Riwayat diagnosa tidak ditemukan untuk kode_sapi ini.');
+    }
+
+    // Simpan kode_sapi ke sesi
+    session(['kode_sapi' => $riwayatDiagnosa->kode_sapi]);
+
+    // Kembalikan ke halaman diagnosa dengan data riwayat diagnosa
+    return view('pages.UserPages.diagnosa', [
+        'riwayatDiagnosa' => $riwayatDiagnosa
+    ]);
+}
 
 
     // Reset sesi jawaban

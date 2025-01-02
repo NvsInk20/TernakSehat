@@ -168,23 +168,15 @@
             <!-- Pagination -->
             <div class="flex justify-between items-center px-6 py-4 bg-gray-50">
                 <div class="text-sm text-gray-500">
-                    @php
-                        // Hitung jumlah nama_penyakit unik di halaman saat ini
-                        $penyakitUnikSaatIni = $penyakitPaginated->pluck('nama_penyakit')->unique()->count();
-
-                        // Hitung total jumlah nama_penyakit unik dari semua data
-                        $totalPenyakitUnik = \App\Models\Penyakit::distinct('nama_penyakit')->count('nama_penyakit');
-                    @endphp
-
                     Menampilkan
-                    <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}</b>
-                    dari {{ $totalPenyakitUnik }}
+                    <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->lastItem() ?? 0 }}</b>
+                    dari {{ $penyakitPaginated->total() }}
                 </div>
                 <div class="flex space-x-2 items-center">
                     <p class="text-sm text-gray-500">
                         Showing {{ $penyakitPaginated->firstItem() ?? 0 }} to
-                        {{ $penyakitPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}
-                        of {{ $totalPenyakitUnik }}
+                        {{ $penyakitPaginated->lastItem() ?? 0 }}
+                        of {{ $penyakitPaginated->total() }}
                     </p>
                     <div class="flex space-x-1">
                         {{-- Tombol Halaman Sebelumnya --}}

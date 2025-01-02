@@ -47,13 +47,15 @@
         <section class="menu-section">
             <h2>Menu</h2>
             <div class="menu-items">
+                <a href="/GuidePage-Diagnosa">
+                    <div class="menu-item">
+                        <img src="{{ asset('images/diagnosa.png') }}" alt="Ternak Sehat">
+                        <p>Diagnosa Penyakit</p>
+                    </div>
+                </a>
                 <div class="menu-item">
-                    <img src="{{ asset('images/diagnosa.png') }}" alt="Ternak Sehat">
-                    <p>Diagnosa Penyakit</p>
-                </div>
-                <div class="menu-item">
-                    <img src="{{ asset('images/cetak.png') }}" alt="Ternak Sehat">
-                    <p>Cetak Riwayat</p>
+                    <img src="{{ asset('images/info.png') }}" alt="Ternak Sehat">
+                    <p>Informasi Penyakit</p>
                 </div>
                 <div class="menu-item">
                     <img src="{{ asset('images/riwayat.png') }}" alt="Ternak Sehat">

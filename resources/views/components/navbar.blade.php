@@ -16,8 +16,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/User/Diagnosa"
-                        class="{{ request()->is('User/Diagnosa*') || request()->is('diagnosa*') || request()->is('another-pattern*') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
+                    <a href="/diagnosa/options"
+                        class="{{ request()->is('/diagnosa/options*') || request()->is('diagnosa*') || request()->is('another-pattern*') ? 'text-black font-bold' : 'text-gray-700' }} hover:text-orange-600">
                         Diagnosa
                     </a>
                 </li>

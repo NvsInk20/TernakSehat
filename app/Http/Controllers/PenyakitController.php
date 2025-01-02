@@ -57,6 +57,32 @@ class PenyakitController extends Controller
         ]);
     }
 
+    public function indexPakar(Request $request)
+    {
+        $query = penyakit::query();
+
+        // Menambahkan logika pencarian
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->input('search');
+            $query->where('kode_penyakit', 'like', "%{$search}%")
+                ->orWhere('nama_penyakit', 'like', "%{$search}%");
+        }
+
+        // Tambahkan paginasi ke query
+        $penyakit = $query->paginate(5);
+
+        // Cek apakah permintaan AJAX
+        if ($request->ajax()) {
+            return view('partials.penyakitTable', ['penyakit' => $penyakit]);
+        }
+
+        return view('pages.PakarPages.tabelPenyakit', [
+            'title' => 'Penyakit',
+            'penyakit' => $penyakit,
+            'activePage' => 'pages.PakarPages.tabelPenyakit',
+        ]);
+    }
+
     /**
      * Menampilkan form untuk menambah penyakit
      */
@@ -80,6 +106,28 @@ class PenyakitController extends Controller
 
         // Kirimkan kode penyakit berikutnya dan nomor urut ke view
         return view('pages.AdminPages.CRUD.crud_Penyakit.formAdd', compact('nextKode', 'nextNo'));
+    }
+
+        public function createByPakar()
+    {
+        // Ambil nomor urut terakhir untuk kolom No
+        $lastNo = penyakit::max('No'); // Ambil ID terbesar sebagai nomor urut terakhir
+        $nextNo = $lastNo ? $lastNo + 1 : 1; // Jika ada data, tambahkan 1, jika tidak mulai dari 1
+        // Ambil kode penyakit terakhir di database
+        $lastPenyakit = penyakit::orderByRaw('CAST(SUBSTRING(kode_penyakit, 2) AS UNSIGNED) DESC')->first();
+
+        // Tentukan kode penyakit berikutnya
+        if ($lastPenyakit) {
+            // Mengambil angka terakhir setelah huruf P dan menambahkannya
+            $lastKode = (int) substr($lastPenyakit->kode_penyakit, 1); // Mengambil angka setelah huruf P
+            $nextKode = 'P' .str_pad($lastKode + 1, 2, '0', STR_PAD_LEFT); // Menambah angka terakhir dan membuat kode baru
+        } else {
+            // Jika belum ada data, mulai dengan P1
+            $nextKode = 'P01';
+        }
+
+        // Kirimkan kode penyakit berikutnya dan nomor urut ke view
+        return view('pages.PakarPages.CRUD.crud_Penyakit.formAdd', compact('nextKode', 'nextNo'));
     }
 
 
@@ -108,6 +156,30 @@ class PenyakitController extends Controller
 
         // Mengarahkan kembali ke halaman daftar penyakit dengan pesan sukses
         return redirect()->route('penyakit.create')->with('success', 'Penyakit berhasil ditambahkan!');
+    }
+
+    public function storeByPakar(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'kode_penyakit' => 'required|unique:penyakit,kode_penyakit',
+            'nama_penyakit' => 'required',
+            'No' => 'required|integer',  // Validasi nomor urut (No)
+        ]);
+
+        // Menyimpan data penyakit dengan No yang dihitung di controller
+        penyakit::create([
+            'No' => $request->No,  // Menyimpan nomor urut yang telah dihitung
+            'kode_penyakit' => $request->kode_penyakit,
+            'nama_penyakit' => $request->nama_penyakit,
+        ]);
+        // Simpan URL halaman sebelumnya ke dalam session
+    if (url()->previous() !== url()->current()) {
+        session(['previous_url' => url()->previous()]);
+    }
+
+        // Mengarahkan kembali ke halaman daftar penyakit dengan pesan sukses
+        return redirect()->route('penyakitPakar.create')->with('success', 'Penyakit berhasil ditambahkan!');
     }
 
 
@@ -162,20 +234,68 @@ class PenyakitController extends Controller
 
     return redirect()->route('Admin.penyakit')->with('error', 'Penyakit tidak ditemukan.');
 }
+    public function editByPakar($kode_penyakit)
+    {
+        $penyakit = penyakit::where('kode_penyakit', $kode_penyakit)->firstOrFail();
+
+        return view('pages.PakarPages.CRUD.crud_Penyakit.formEdit', [
+            'penyakit' => $penyakit,
+            'title' => 'Edit Penyakit',
+        ]);
+    }
+
+    /**
+     * Memperbarui data penyakit berdasarkan kode_penyakit.
+     */
+    public function updateByPakar(Request $request, $kode_penyakit)
+    {
+        // Validasi input
+        $request->validate([
+            'nama_penyakit' => 'required|string|max:255',
+        ]);
+
+        // Cari penyakit berdasarkan kode_penyakit
+        $penyakit = penyakit::where('kode_penyakit', $kode_penyakit)->firstOrFail();
+
+        // Update data penyakit
+        $penyakit->update([
+            'nama_penyakit' => $request->input('nama_penyakit'),
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('penyakitPakar.edit', ['kode_penyakit' => $kode_penyakit])
+            ->with('success', 'Penyakit berhasil diperbarui!');
+    }
 
 
     /**
-     * Menghapus beberapa penyakit yang dipilih
+     * Menghapus penyakit berdasarkan ID
      */
-    public function deleteSelected(Request $request)
-    {
-        $selectedIds = $request->input('penyakit_ids');
+    public function destroyByPakar($kode_penyakit)
+{
+    $penyakit = penyakit::where('kode_penyakit', $kode_penyakit)->first();
 
-        if ($selectedIds) {
-            penyakit::whereIn('id', $selectedIds)->delete();
-            return redirect()->route('Admin.penyakit')->with('success', 'Penyakit berhasil dihapus.');
-        }
-
-        return redirect()->route('Admin.penyakit')->with('error', 'Tidak ada penyakit yang dipilih untuk dihapus.');
+    if ($penyakit) {
+        $penyakit->delete();
+        return redirect()->route('Pakar.penyakit')->with('success', 'Penyakit berhasil dihapus.');
     }
+
+    return redirect()->route('Pakar.penyakit')->with('error', 'Penyakit tidak ditemukan.');
+}
+
+
+    // /**
+    //  * Menghapus beberapa penyakit yang dipilih
+    //  */
+    // public function deleteSelected(Request $request)
+    // {
+    //     $selectedIds = $request->input('penyakit_ids');
+
+    //     if ($selectedIds) {
+    //         penyakit::whereIn('id', $selectedIds)->delete();
+    //         return redirect()->route('Admin.penyakit')->with('success', 'Penyakit berhasil dihapus.');
+    //     }
+
+    //     return redirect()->route('Admin.penyakit')->with('error', 'Tidak ada penyakit yang dipilih untuk dihapus.');
+    // }
 }

@@ -9,6 +9,7 @@
     <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
     <!-- Flowbite CSS -->
+    <link rel="icon" href="/images/logo.png">
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />

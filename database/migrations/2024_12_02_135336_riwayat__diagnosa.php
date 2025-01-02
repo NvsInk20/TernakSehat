@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kode_riwayat')->primary(); 
             $table->string('kode_user')->nullable();
             $table->string('nama');
-            $table->string('kode_sapi')->unique();
+            $table->string('kode_sapi')->nullable();
             $table->string('penyakit_utama')->nullable();
             $table->text('gejala')->nullable();
             $table->text('solusi')->nullable();

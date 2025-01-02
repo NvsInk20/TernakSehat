@@ -128,7 +128,7 @@
             $dashboardRoute = match (auth()->user()->role) {
                 'admin' => 'Admin.aturanPenyakit',
                 'user' => 'user.dashboard',
-                'ahli pakar' => 'expert.dashboard',
+                'ahli pakar' => 'Pakar.aturanPenyakit',
                 default => 'login', // Default redirect jika peran tidak dikenali
             };
         @endphp
