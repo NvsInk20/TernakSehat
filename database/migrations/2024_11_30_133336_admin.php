@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('akun_Pengguna', function (Blueprint $table) {
+        Schema::create('akun_pengguna', function (Blueprint $table) {
             $table->unsignedBigInteger('No')->nullable(); 
             $table->string('kode_auth')->primary(); 
             $table->string('nama');
