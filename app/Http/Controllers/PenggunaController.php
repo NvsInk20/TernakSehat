@@ -153,7 +153,7 @@ class PenggunaController extends Controller
             'nama' => $validatedData['nama'],
             'username' => $validatedData['username'],
             'nomor_telp' => $validatedData['nomor_telp'],
-            'spesialis' => $validatedData['spesialis'],
+            'spesialis' => $validatedData['spesialis']?? null,
             'password' => $hashedPassword, // Gunakan password yang sama di tabel user_ahli
         ]);
     }
