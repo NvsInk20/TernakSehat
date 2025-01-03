@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('No'); 
             $table->string('kode_ahliPakar');
             $table->string('nama');
-            $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->string('password');
             $table->string('dokumen_pendukung')->nullable(); // Menyimpan path file dokumen PDF
             $table->string('nomor_telp', 12)->nullable();

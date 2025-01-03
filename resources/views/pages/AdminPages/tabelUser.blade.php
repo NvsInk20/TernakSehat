@@ -113,7 +113,7 @@
                         <th class="border border-gray-300 px-4 py-2 w-16 text-center">No</th>
                         <th class="border border-gray-300 px-4 py-2">Kode User</th>
                         <th class="border border-gray-300 px-4 py-2">Nama</th>
-                        <th class="border border-gray-300 px-4 py-2">Email</th>
+                        <th class="border border-gray-300 px-4 py-2">Username</th>
                         <th class="border border-gray-300 px-4 py-2">No Telp</th>
                         <th class="border border-gray-300 px-4 py-2">Aksi</th>
                     </tr>
@@ -124,7 +124,7 @@
                             <td class="border border-gray-300 px-4 py-2 w-16 text-center">{{ $index + 1 }}</td>
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->kode_user }}</td>
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->nama }}</td>
-                            <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->email }}</td>
+                            <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->username }}</td>
                             <td class="border border-gray-300 px-4 py-2 text-center">{{ $user->nomor_telp }}</td>
                             <td class="border border-gray-300 px-4 py-2 flex justify-center ">
                                 <a href="{{ route('admin.editUser', ['role' => $user->role, 'kode' => $user->kode_user]) }}"

@@ -221,7 +221,7 @@ class RiwayatDiagnosaController extends Controller
     }
 
     // Mulai query dari model Pengguna
-    $query = Pengguna::query();
+    $query = pengguna::query();
 
     // Menambahkan logika pencarian
     if ($request->has('search') && !empty($request->search)) {

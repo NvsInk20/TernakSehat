@@ -23,7 +23,7 @@ class AkunPengguna extends Authenticatable
         'kode_admin',
         'kode_ahliPakar',
         'kode_user',
-        'email',
+        'username',
         'password',
         'role',
         'spesialis',

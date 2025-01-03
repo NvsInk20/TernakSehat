@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AturanPenyakit;
 use App\Models\penyakit;
-use App\Models\Gejala;
-use App\Models\Solusi;
+use App\Models\gejala;
+use App\Models\solusi;
 use Illuminate\Http\Request;
 
 class AturanPenyakitController extends Controller
@@ -86,7 +86,7 @@ class AturanPenyakitController extends Controller
     public function indexUser(Request $request)
 {
     // Ambil penyakit berdasarkan aturanPenyakit dengan eager load relasi gejala dan solusi
-    $query = Penyakit::whereHas('aturanPenyakit', function ($query) {
+    $query = penyakit::whereHas('aturanPenyakit', function ($query) {
         // Memastikan hanya aturanPenyakit yang terkait dengan penyakit yang dipilih
     })
     ->with([
@@ -197,9 +197,9 @@ class AturanPenyakitController extends Controller
 
         return view('pages.AdminPages.CRUD.crud_aturan.formEdit', [
             'aturanPenyakit' => $aturanPenyakit,
-            'penyakit' => Penyakit::all(),
-            'gejala' => Gejala::all(),
-            'solusi' => Solusi::all(),
+            'penyakit' => penyakit::all(),
+            'gejala' => gejala::all(),
+            'solusi' => solusi::all(),
             'kode_relasi' => $kode_relasi,
         ]);
     }
@@ -323,9 +323,9 @@ class AturanPenyakitController extends Controller
 
         return view('pages.PakarPages.CRUD.crud_aturan.formEdit', [
             'aturanPenyakit' => $aturanPenyakit,
-            'penyakit' => Penyakit::all(),
-            'gejala' => Gejala::all(),
-            'solusi' => Solusi::all(),
+            'penyakit' => penyakit::all(),
+            'gejala' => gejala::all(),
+            'solusi' => solusi::all(),
             'kode_relasi' => $kode_relasi,
         ]);
     }

@@ -14,7 +14,7 @@ class admin extends Authenticatable
     protected $primaryKey = 'kode_admin'; // Primary key adalah kode_penyakit
     public $incrementing = false; // Non-incrementing primary key
     protected $keyType = 'string'; // Tipe primary key adalah string
-    protected $fillable = ['No', 'nama', 'kode_admin', 'email', 'password', 'nomor_telp', 'role'];
+    protected $fillable = ['No', 'nama', 'kode_admin', 'username', 'password', 'nomor_telp', 'role'];
 
     protected static function boot()
     {

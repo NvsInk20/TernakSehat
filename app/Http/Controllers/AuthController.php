@@ -61,7 +61,7 @@ class AuthController extends Controller
         // Validasi input
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:akun_pengguna,email',
+            'username' => 'required|username|unique:akun_pengguna,username',
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:ahli pakar,user',
             'spesialis' => 'nullable|string|max:255',
@@ -86,7 +86,7 @@ class AuthController extends Controller
                 'kode_ahliPakar' => 'AP-' . strtoupper(uniqid()),
                 'nama' => $validatedData['nama'],
                 'nomor_telp' => $validatedData['nomor_telp'],
-                'email' => $validatedData['email'],
+                'username' => $validatedData['username'],
                 'password' => Hash::make($validatedData['password']),
                 'spesialis' => $validatedData['spesialis'],
                 'dokumen_pendukung' => $validatedData['dokumen_pendukung'] ?? null,
@@ -105,7 +105,7 @@ class AuthController extends Controller
                 'kode_user' => 'USR-' . strtoupper(uniqid()),
                 'nama' => $validatedData['nama'],
                 'nomor_telp' => $validatedData['nomor_telp'],
-                'email' => $validatedData['email'],
+                'username' => $validatedData['username'],
                 'password' => Hash::make($validatedData['password']),
             ]);
 
@@ -148,7 +148,7 @@ class AuthController extends Controller
             break;
 
         case 'admin':
-            $userDetails = Admin::where('kode_admin', $akunPengguna->kode_admin)->first();
+            $userDetails = admin::where('kode_admin', $akunPengguna->kode_admin)->first();
             break;
 
         default:
@@ -206,11 +206,18 @@ class AuthController extends Controller
     // Validasi input
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:akun_pengguna,email,' . $user->kode_auth . ',kode_auth',
+        'username' => [
+            'required',
+            'regex:/^\S*$/u', // Tidak mengizinkan spasi
+            'max:255',
+            'unique:akun_pengguna,username,' . $user->kode_auth . ',kode_auth',
+        ],
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
         'spesialis' => 'nullable|string|max:255', // Relevan untuk ahli pakar
         'dokumen_pendukung' => 'nullable|file|mimes:pdf,jpg,png|max:2048', // Validasi untuk dokumen pendukung (khusus ahli pakar)
+         ], [
+        'username.regex' => 'Username tidak boleh mengandung spasi.',
     ]);
 
     // Hash password jika diisi
@@ -222,7 +229,7 @@ class AuthController extends Controller
     // Update data di tabel `akun_pengguna`
     AkunPengguna::where('kode_auth', $user->kode_auth)->update([
         'nama' => $validatedData['nama'],
-        'email' => $validatedData['email'],
+        'username' => $validatedData['username'],
         'password' => $hashedPassword,
     ]);
 
@@ -253,7 +260,7 @@ class AuthController extends Controller
                 // Update data ahli pakar
                 $ahliPakar->update([
                     'nama' => $validatedData['nama'],
-                    'email' => $validatedData['email'],
+                    'username' => $validatedData['username'],
                     'nomor_telp' => $validatedData['nomor_telp'],
                     'spesialis' => $spesialis,
                     'password' => $hashedPassword,
@@ -267,7 +274,7 @@ class AuthController extends Controller
             if ($pengguna) {
                 $pengguna->update([
                     'nama' => $validatedData['nama'],
-                    'email' => $validatedData['email'],
+                    'username' => $validatedData['username'],
                     'nomor_telp' => $validatedData['nomor_telp'],
                     'password' => $hashedPassword,
                 ]);
@@ -275,11 +282,11 @@ class AuthController extends Controller
             break;
 
         case 'admin':
-            $admin = Admin::where('kode_admin', $user->kode_admin)->first();
+            $admin = admin::where('kode_admin', $user->kode_admin)->first();
             if ($admin) {
                 $admin->update([
                     'nama' => $validatedData['nama'],
-                    'email' => $validatedData['email'],
+                    'username' => $validatedData['username'],
                     'nomor_telp' => $validatedData['nomor_telp'],
                     'password' => $hashedPassword,
                 ]);
@@ -300,15 +307,17 @@ class AuthController extends Controller
    public function authenticate(Request $request)
 {
     $credentials = $request->validate([
-        'email' => 'required|email',
+        'username' => ['required', 'regex:/^\S*$/u'], // Tidak mengizinkan spasi
         'password' => 'required',
+        ], [
+        'username.regex' => 'Username tidak boleh mengandung spasi.',
     ]);
 
-    // Cari user di tabel akun_pengguna berdasarkan email
-    $user = AkunPengguna::where('email', $credentials['email'])->first();
+    // Cari user di tabel akun_pengguna berdasarkan username
+    $user = AkunPengguna::where('username', $credentials['username'])->first();
 
     if (!$user) {
-        return back()->withErrors(['login' => 'Email tidak ditemukan.'])->onlyInput('email');
+        return back()->withErrors(['login' => 'username tidak ditemukan.'])->onlyInput('username');
     }
 
     // Jika role adalah "ahli pakar", cek status di tabel user_pakar
@@ -317,12 +326,12 @@ class AuthController extends Controller
         $ahliPakar = DB::table('user_pakar')->where('kode_ahliPakar', $user->kode_ahliPakar)->first();
 
         if (!$ahliPakar || $ahliPakar->status !== 'active') {
-            return back()->withErrors(['login' => 'Akun Anda belum disetujui oleh admin.'])->onlyInput('email');
+            return back()->withErrors(['login' => 'Akun Anda belum disetujui oleh admin.'])->onlyInput('username');
         }
     }
 
     // Proses login biasa
-    if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+    if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
         $request->session()->regenerate();
         // Simpan pesan sukses ke dalam session flash
         session()->flash('success', 'Login berhasil! Selamat datang, ' . $user->nama);
@@ -340,8 +349,8 @@ class AuthController extends Controller
         }
     }
 
-    return back()->withErrors(['login' => 'Email atau password salah.']);
-    // ->onlyInput('email') opsional
+    return back()->withErrors(['login' => 'username atau password salah.']);
+    // ->onlyInput('username') opsional
 }
 
     public function logout(Request $request)

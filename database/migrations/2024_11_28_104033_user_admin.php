@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('No');
             $table->string('kode_admin'); 
             $table->string('nama'); // kolom untuk deskripsi gejala
-            $table->string('email')->unique(); // kolom untuk deskripsi gejala
+            $table->string('username')->unique(); // kolom untuk deskripsi gejala
             $table->string('password'); // kolom untuk deskripsi gejala
             $table->string('nomor_telp', 12)->nullable(); // kolom untuk deskripsi gejala
             $table->enum('role', ['admin', 'ahli pakar', 'user'])->default('admin');

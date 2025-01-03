@@ -20,7 +20,7 @@ class Pengguna extends Authenticatable
         'No',
         'nama',
         'kode_user',
-        'email',
+        'username',
         'password',
         'nomor_telp',
         'role',

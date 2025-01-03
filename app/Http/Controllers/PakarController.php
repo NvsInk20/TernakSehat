@@ -80,7 +80,7 @@ class PakarController extends Controller
     // Validasi data
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',email,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'username' => 'required|username|max:255|unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
         'spesialis' => 'nullable|string|max:255', // Khusus untuk ahli pakar
@@ -108,7 +108,7 @@ class PakarController extends Controller
     // Update data di tabel `akun_pengguna` dengan hash password yang sama
     AkunPengguna::where('kode_user', $userDetails->kode_user ?? $userDetails->kode_ahliPakar)->update([
         'nama' => $validatedData['nama'],
-        'email' => $validatedData['email'],
+        'username' => $validatedData['username'],
         'password' => $hashedPassword, // Pastikan hash password yang sama
     ]);
 
@@ -117,7 +117,7 @@ class PakarController extends Controller
         // Update data di tabel `user_pengguna`
         $userDetails->update([
             'nama' => $validatedData['nama'],
-            'email' => $validatedData['email'],
+            'username' => $validatedData['username'],
             'nomor_telp' => $validatedData['nomor_telp'],
             'password' => $hashedPassword, // Gunakan password yang sama di tabel user_pengguna
         ]);
@@ -125,7 +125,7 @@ class PakarController extends Controller
         // Update data di tabel `user_ahli`
         $userDetails->update([
             'nama' => $validatedData['nama'],
-            'email' => $validatedData['email'],
+            'username' => $validatedData['username'],
             'nomor_telp' => $validatedData['nomor_telp'],
             'spesialis' => $validatedData['spesialis'],
             'password' => $hashedPassword, // Gunakan password yang sama di tabel user_ahli

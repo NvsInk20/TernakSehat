@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('kode_ahliPakar')->nullable();
             $table->string('kode_admin')->nullable();
             $table->string('kode_user')->nullable();
-            $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->string('password');
             $table->string('spesialis')->nullable(); // Menambahkan nullable agar bisa kosong
             $table->enum('role', ['admin', 'ahli pakar', 'user']);

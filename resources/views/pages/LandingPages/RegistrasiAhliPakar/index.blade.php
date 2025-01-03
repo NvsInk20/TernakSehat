@@ -46,13 +46,13 @@
                 @enderror
             </div>
 
-            <!-- Email Field -->
+            <!-- username Field -->
             <div class="relative mb-6">
-                <label for="email" class="text-gray-600 text-sm">Email</label>
-                <input type="email" id="email" name="email" required
+                <label for="username" class="text-gray-600 text-sm">Username</label>
+                <input type="text" id="username" name="username" required
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    placeholder="Masukkan email" value="{{ old('email') }}">
-                @error('email')
+                    placeholder="Masukkan username" value="{{ old('username') }}">
+                @error('username')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AturanPenyakit;
 use App\Models\RiwayatDiagnosa;
-use App\Models\Penyakit;
-use App\Models\Gejala;
-use App\Models\Solusi;
+use App\Models\penyakit;
+use App\Models\gejala;
+use App\Models\solusi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -44,7 +44,7 @@ public function answerQuestion(Request $request)
     session(['answered_gejala' => $answeredGejala]);
 
     // Ambil semua penyakit dan aturan
-    $penyakit = Penyakit::all();
+    $penyakit = penyakit::all();
     $aturan = AturanPenyakit::all();
 
     foreach ($penyakit as $p) {
@@ -123,7 +123,7 @@ public function showResult()
     }
 
     // Ambil data penyakit dan aturan
-    $penyakit = Penyakit::all();
+    $penyakit = penyakit::all();
     $aturan = AturanPenyakit::all();
 
     $diagnosaUtama = null;
@@ -265,7 +265,7 @@ public function showResult()
             'kemungkinan' => [],
         ]);
     }
-    $penyakit = Penyakit::all();
+    $penyakit = penyakit::all();
     $aturan = AturanPenyakit::all();
 
     $diagnosaUtama = null;

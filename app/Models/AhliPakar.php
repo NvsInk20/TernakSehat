@@ -20,7 +20,7 @@ class AhliPakar extends Authenticatable
         'No',
         'nama',
         'kode_ahliPakar',
-        'email',
+        'username',
         'password',
         'dokumen_pendukung',
         'nomor_telp',

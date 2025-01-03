@@ -59,14 +59,14 @@
                                 <div
                                     class="relative py-8 text-base leading-6 space-y-4 text-gray-700 -ml-32 sm:text-lg sm:leading-7">
                                     <div class="relative -mr-32">
-                                        <label for="email"
-                                            class="absolute left-0 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-4 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">E-Mail
+                                        <label for="username"
+                                            class="absolute left-0 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-4 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Username
                                         </label>
-                                        <input autocomplete="off" id="email" name="email" type="email"
-                                            class="form-control @error('email') border-red-600 @enderror mt-6 peer placeholder-transparent h-10 w-full my-3 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
-                                            placeholder="email" required value="{{ old('email') }}"
+                                        <input autocomplete="off" id="username" name="username" type="text"
+                                            class="form-control @error('username') border-red-600 @enderror mt-6 peer placeholder-transparent h-10 w-full my-3 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
+                                            placeholder="username" required value="{{ old('username') }}"
                                             style="border-color: orange !important;" />
-                                        @error('email')
+                                        @error('username')
                                             <div class="text-red-600 text-sm -mt-2">
                                                 {{ $message }}
                                             </div>
