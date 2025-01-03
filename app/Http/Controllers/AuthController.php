@@ -61,12 +61,19 @@ class AuthController extends Controller
         // Validasi input
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
-            'username' => 'required|username|unique:akun_pengguna,username',
+            'username' => [
+            'required',
+            'regex:/^\S*$/u', // Tidak mengizinkan spasi
+            'max:255',
+            'unique:akun_pengguna,username,' . $user->kode_auth . ',kode_auth',
+        ],
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:ahli pakar,user',
             'spesialis' => 'nullable|string|max:255',
             'nomor_telp' => 'nullable|string|max:15',
             'dokumen_pendukung' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // Maksimal 2MB
+            ], [
+        'username.regex' => 'Username tidak boleh mengandung spasi.',
         ]);
 
         // Upload dokumen pendukung jika ada
