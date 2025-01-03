@@ -81,7 +81,7 @@
         </section>
         <img src="/images/dokter.png" alt="Tentang Aplikasi">
     </div>
-    {{-- Perubahan Final --}}
+    {{-- Perubahan --}}
     </div>
     {{-- Footer --}}
     <footer class="p-5 bg-orange-500 text-center text-white mt-12">
