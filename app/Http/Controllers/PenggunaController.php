@@ -98,10 +98,18 @@ class PenggunaController extends Controller
     // Validasi data
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'username' => 'required|username|max:255|unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'username' => [
+        'required',
+        'regex:/^\S*$/u', // Tidak mengizinkan spasi
+        'max:255',
+        'unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+    ],
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
         'spesialis' => 'nullable|string|max:255', // Khusus untuk ahli pakar
+        ], [
+    'username.regex' => 'Username tidak boleh mengandung spasi.',
+    'username.unique' => 'Username sudah digunakan.',
     ]);
 
     // Cari data berdasarkan role
