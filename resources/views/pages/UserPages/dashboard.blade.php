@@ -67,8 +67,9 @@
                                 mendeteksi
                                 penyakit secara cepat dan tepat.</p>
                             <button
-                                class="mt-6 bg-orange-400 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">Cek
-                                Detail</button>
+                                class="mt-6 bg-orange-400 text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500"><a
+                                    href="/diagnosa/options">Mulai
+                                    Diagnosa</a></button>
                         </div>
                         <div class="md:w-1/2 flex justify-center p-8 relative">
                             <!-- Background Orange placed behind the image -->

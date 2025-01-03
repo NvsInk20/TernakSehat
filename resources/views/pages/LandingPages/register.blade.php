@@ -11,7 +11,6 @@
     <!-- Flowbite CSS -->
     <link rel="icon" href="/images/logo.png">
     @vite('resources/css/app.css')
-    <link rel="icon" href="images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -47,13 +46,13 @@
             <div class="menu-items">
                 <div class="menu-item">
                     <a href="/RegistrasiAhliPakar">
-                        <img src="{{ asset('images/ahlipakar.png') }}" alt="Ternak Sehat">
+                        <img src="{{ asset('/images/ahlipakar.png') }}" alt="Ternak Sehat">
                         <p>Ahli Pakar</p>
                     </a>
                 </div>
                 <div class="menu-item">
                     <a href="/RegistrasiUser">
-                        <img src="{{ asset('images/peternak.png') }}" alt="Ternak Sehat">
+                        <img src="{{ asset('/images/peternak.png') }}" alt="Ternak Sehat">
                         <p>User (Peternak)</p>
                     </a>
                 </div>

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Panduan Penggunaan - Ternak Sehat</title>
     @vite('resources/css/app.css')
-    <link rel="icon" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" href="{{ asset('/images/logo.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
@@ -42,7 +42,7 @@
         <div class="container mx-auto flex-col">
             <h2 class="text-center text-2xl mx-auto font-bold text-orange-500 mb-5">Diagnosa Penyakit</h2>
             <div class="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/diagnosa.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/diagnosa.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 mb-4">
@@ -68,7 +68,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-1.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-1.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5">
                     <p class="text-gray-600 text-2xl mb-4">
@@ -84,7 +84,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-2.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-2.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">
@@ -98,7 +98,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">
@@ -113,7 +113,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">
@@ -128,7 +128,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-4.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-4.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">
@@ -142,7 +142,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-6.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-6.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">
@@ -157,7 +157,7 @@
     <section id="diagnosa" class="py-10 -mt-60">
         <div class="container mx-auto flex-col">
             <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('images/Diagnosa/rule-5.png') }}" alt="Diagnosa Penyakit"
+                <img src="{{ asset('/images/Diagnosa/rule-5.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 justify-start text-2xl mb-4">

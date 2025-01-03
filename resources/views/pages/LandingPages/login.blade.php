@@ -31,7 +31,7 @@
     <div class="container">
         <div class="left">
             <div class="image-container">
-                <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat">
+                <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat">
             </div>
         </div>
         <div class="right">

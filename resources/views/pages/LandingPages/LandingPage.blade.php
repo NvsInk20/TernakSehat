@@ -10,7 +10,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <!-- Flowbite CSS -->
     @vite('resources/css/app.css')
-    <link rel="icon" href="images/logo.png">
+    <link rel="icon" href="/images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,7 +24,7 @@
     <div class="container">
         <div class="left-section">
             <div class="image-container">
-                <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat">
+                <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat">
             </div>
             <h1>Sistem Pakar Diagnosa Kesehatan Hewan Ternak Sapi</h1>
             <p>Menjaga kesehatan sapi merupakan langkah krusial untuk memaksimalkan produktivitas dan kesejahteraan
@@ -37,7 +37,7 @@
                 <a href="#bawah">Tentang</a>
             </nav>
             <div id="sapi">
-                <img src="{{ asset('images/sapi.png') }}" alt="Ternak Sehat">
+                <img src="{{ asset('/images/sapi.png') }}" alt="Ternak Sehat">
             </div>
         </div>
     </div>
@@ -49,18 +49,22 @@
             <div class="menu-items">
                 <a href="/GuidePage-Diagnosa">
                     <div class="menu-item">
-                        <img src="{{ asset('images/diagnosa.png') }}" alt="Ternak Sehat">
+                        <img src="{{ asset('/images/diagnosa.png') }}" alt="Ternak Sehat">
                         <p>Diagnosa Penyakit</p>
                     </div>
                 </a>
-                <div class="menu-item">
-                    <img src="{{ asset('images/info.png') }}" alt="Ternak Sehat">
-                    <p>Informasi Penyakit</p>
-                </div>
-                <div class="menu-item">
-                    <img src="{{ asset('images/riwayat.png') }}" alt="Ternak Sehat">
-                    <p>Riwayat Penyakit</p>
-                </div>
+                <a href="/GuidePage-knowledge">
+                    <div class="menu-item">
+                        <img src="{{ asset('/images/info.png') }}" alt="Ternak Sehat">
+                        <p>Informasi Penyakit</p>
+                    </div>
+                </a>
+                <a href="/GuidePage-Riwayat">
+                    <div class="menu-item">
+                        <img src="{{ asset('/images/riwayat.png') }}" alt="Ternak Sehat">
+                        <p>Riwayat Penyakit</p>
+                    </div>
+                </a>
             </div>
         </section>
     </div>
@@ -75,6 +79,7 @@
                 diagnosa kesehatan sapi dengan metode forward chaining berbasis web dengan menganalisis gejala penyakit
                 dan memberikan rekomendasi diagnosa, serta tindakan yang harus diambil.</p>
         </section>
+        <img src="/images/dokter.png" alt="Tentang Aplikasi">
     </div>
     </div>
     {{-- Footer --}}

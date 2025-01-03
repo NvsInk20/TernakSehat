@@ -38,7 +38,7 @@
 
     <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-lg mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
-            <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
+            <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
         <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Tambah Penyakit</h1>
 

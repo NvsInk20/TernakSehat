@@ -29,7 +29,7 @@
     @endif
     <div class="bg-white shadow-lg rounded-lg w-full max-w-md mt-10 mb-10 mx-auto p-6 sm:p-10 lg:max-w-lg">
         <div class="flex justify-center mb-6">
-            <img src="{{ asset('images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
+            <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
         <h1 class="text-2xl font-semibold text-center mb-6">Registrasi Pengguna</h1>
         <form action="/Register" method="POST">

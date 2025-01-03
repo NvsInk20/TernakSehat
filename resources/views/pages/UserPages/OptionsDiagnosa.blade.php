@@ -26,7 +26,7 @@
     @include('components.dropSettings')
 
     <!-- Main Content -->
-    <main class="flex flex-col items-center justify-center">
+    <main class="flex flex-col items-center justify-center min-h-[360px]">
         <h1 class="text-3xl font-bold text-gray-800 text-center mb-11">Halaman Diagnosa</h1>
         <div class="relative bg-white rounded-lg shadow-xl p-12 text-center max-w-lg w-full">
             <!-- Background Design -->
