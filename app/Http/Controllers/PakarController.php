@@ -64,13 +64,14 @@ class PakarController extends Controller
 
     // Mengembalikan view dengan data pengguna
     return view('pages.AdminPages.CRUD.crud_pakar.editPakar', [
-        'ahli pakar' => $userDetails,
+        'user' => $userDetails,
         'role' => $role,
+        'spesialis' => $userDetails->spesialis ?? null, // Menambahkan spesialis
         'nomorTelepon' => $userDetails->nomor_telp ?? null,
     ]);
 }
 
-    public function update(Request $request, $role, $kode)
+    public function updatePakar(Request $request, $role, $kode)
 {
     // Memastikan pengguna adalah admin
     if (Auth::user()->role !== 'admin') {
@@ -80,18 +81,26 @@ class PakarController extends Controller
     // Validasi data
     $validatedData = $request->validate([
         'nama' => 'required|string|max:255',
-        'username' => 'required|username|max:255|unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'username' => [
+        'required',
+        'regex:/^\S*$/u', // Tidak mengizinkan spasi
+        'max:255',
+        'unique:' . ($role === 'ahli pakar' ? 'user_pakar' : 'user_pengguna') . ',username,' . $kode . ',' . ($role === 'ahli pakar' ? 'kode_ahliPakar' : 'kode_user'),
+    ],
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
         'spesialis' => 'nullable|string|max:255', // Khusus untuk ahli pakar
+        ], [
+    'username.regex' => 'Username tidak boleh mengandung spasi.',
+    'username.unique' => 'Username sudah digunakan.',
     ]);
 
     // Cari data berdasarkan role
     $userDetails = null;
-    if ($role === 'user') {
-        $userDetails = Pengguna::where('kode_user', $kode)->first();
-    } elseif ($role === 'ahli pakar') {
+    if ($role === 'ahli pakar') {
         $userDetails = AhliPakar::where('kode_ahliPakar', $kode)->first();
+    } elseif ($role === 'user') {
+        $userDetails = Pengguna::where('kode_user', $kode)->first();
     }
 
     // Jika data tidak ditemukan
@@ -106,29 +115,29 @@ class PakarController extends Controller
     }
 
     // Update data di tabel `akun_pengguna` dengan hash password yang sama
-    AkunPengguna::where('kode_user', $userDetails->kode_user ?? $userDetails->kode_ahliPakar)->update([
+    AkunPengguna::where('kode_ahliPakar', $userDetails->kode_ahliPakar ?? $userDetails->kode_user)->update([
         'nama' => $validatedData['nama'],
         'username' => $validatedData['username'],
         'password' => $hashedPassword, // Pastikan hash password yang sama
     ]);
 
     // Update tabel sesuai role dengan hash password yang sama
-    if ($role === 'user') {
+    if ($role === 'ahli pakar') {
         // Update data di tabel `user_pengguna`
         $userDetails->update([
             'nama' => $validatedData['nama'],
             'username' => $validatedData['username'],
             'nomor_telp' => $validatedData['nomor_telp'],
-            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_pengguna
+            'spesialis' => $validatedData['spesialis']?? null,
+            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_ahli
         ]);
-    } elseif ($role === 'ahli pakar') {
+    } elseif ($role === 'user') {
         // Update data di tabel `user_ahli`
         $userDetails->update([
-            'nama' => $validatedData['nama'],
+             'nama' => $validatedData['nama'],
             'username' => $validatedData['username'],
             'nomor_telp' => $validatedData['nomor_telp'],
-            'spesialis' => $validatedData['spesialis'],
-            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_ahli
+            'password' => $hashedPassword, // Gunakan password yang sama di tabel user_pengguna
         ]);
     }
 

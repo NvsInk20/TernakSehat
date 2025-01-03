@@ -43,7 +43,7 @@
 
         <!-- Update Profile Form -->
         <form
-            action="{{ route('admin.updatePakar', ['role' => $role, 'kode' => $user->kode_user ?? $user->kode_ahliPakar]) }}"
+            action="{{ route('admin.updatePakar', ['role' => $role, 'kode' => $user->kode_ahliPakar ?? $user->kode_user]) }}"
             method="POST">
             @csrf
             @method('PUT') <!-- This will make the form use PUT method -->
@@ -78,6 +78,16 @@
                     placeholder="Masukkan nomor telepon (opsional)" value="{{ old('nomor_telp', $nomorTelepon) }}">
                 @error('nomor_telp')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
+                @enderror
+            </div>
+            <!-- Spesialis Field -->
+            <div class="mb-6">
+                <label for="spesialis" class="block text-gray-700 text-sm font-medium">Spesialis</label>
+                <input type="text" id="spesialis" name="spesialis"
+                    class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                    value="{{ old('spesialis', $spesialis) }}">
+                @error('spesialis')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
 
