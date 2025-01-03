@@ -102,7 +102,7 @@ class PenggunaController extends Controller
         'required',
         'regex:/^\S*$/u', // Tidak mengizinkan spasi
         'max:255',
-        'unique:' . ($role === 'user' ? 'user_pengguna' : 'user_ahli') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
+        'unique:' . ($role === 'user' ? 'user_pengguna' : 'user_pakar') . ',username,' . $kode . ',' . ($role === 'user' ? 'kode_user' : 'kode_ahliPakar'),
     ],
         'password' => 'nullable|min:8|confirmed',
         'nomor_telp' => 'nullable|string|max:15',
