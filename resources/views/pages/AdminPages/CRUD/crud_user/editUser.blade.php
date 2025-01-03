@@ -59,13 +59,13 @@
                 @enderror
             </div>
 
-            <!-- Email Field -->
+            <!-- username Field -->
             <div class="mb-6">
-                <label for="email" class="block text-gray-700 text-sm font-medium">Email</label>
-                <input type="email" id="email" name="email" required
+                <label for="username" class="block text-gray-700 text-sm font-medium">Username</label>
+                <input type="text" id="username" name="username" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    value="{{ old('email', $user->email) }}">
-                @error('email')
+                    value="{{ old('username', $user->username) }}">
+                @error('username')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
