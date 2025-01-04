@@ -139,7 +139,7 @@ class AturanPenyakitController extends Controller
     $solusi = solusi::all();
 
     // Kirim data ke view
-    return view('pages.AdminPages.CRUD.crud_aturan.formAdd', [
+    return view('pages.AdminPages.CRUD.crud_Aturan.formAdd', [
         'penyakit' => $penyakit,
         'gejala' => $gejala,
         'solusi' => $solusi,
