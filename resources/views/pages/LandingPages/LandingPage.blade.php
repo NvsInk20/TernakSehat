@@ -125,7 +125,7 @@
 </body>
 
 </html>
-
+{{-- Landing Page --}}
 <script>
     document.querySelectorAll('a[href^="#ContainerTengah"], a[href^="#ContainerBawah"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
