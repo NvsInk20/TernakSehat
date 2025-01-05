@@ -17,13 +17,13 @@
 
 <body class="font-poppins overflow-x-hidden flex flex-col min-h-screen">
     <!-- Bagian Atas -->
-    <div class="flex flex-col lg:flex-row h-auto lg:h-screen">
+    <div class="flex flex-col lg:flex-row h-auto lg:max-h-screen">
         <!-- Bagian Kiri -->
         <div class="flex-1 bg-white p-10">
             <div class="flex justify-center lg:justify-start">
                 <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-28 h-auto rounded-lg">
             </div>
-            <h1 class="mt-12 lg:text-3xl font-bold leading-snug text-center lg:text-left w-full lg:w-4/5">
+            <h1 class="mt-12 lg:text-3xl font-bold leading-snug text-center lg:text-left lg:w-4/5">
                 Sistem Pakar Diagnosa Kesehatan Hewan Ternak Sapi
             </h1>
             <p class="mt-6 text-base text-gray-600 w-full lg:w-3/4 text-center lg:text-left">
