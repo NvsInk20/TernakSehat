@@ -8,14 +8,27 @@
     <title>Halaman Login</title>
     <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
-    <!-- Flowbite CSS -->
     <link rel="icon" href="/images/logo.png">
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+        /* Tambahan untuk gambar background */
+        body {
+            background: url('/images/bg-login.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Transparansi form */
+        .form-card {
+            background: rgba(255, 255, 255, 0.85);
+            /* Warna putih dengan sedikit transparansi */
+            backdrop-filter: blur(10px);
+            /* Blur di background */
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-50 font-sans">
     @if (session('success'))
         <div class="bg-green-500 text-white p-3 mb-4 transition-opacity duration-300" x-data="{ show: true }"
             x-show="show" x-init="setTimeout(() => show = false, 5000)">
@@ -28,83 +41,75 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="container">
-        <div class="left">
-            <div class="image-container">
-                <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat">
-            </div>
-        </div>
-        <div class="right">
-            <nav>
-                <a href="{{ route('landingpage') }}">Kembali</a>
-            </nav>
-        </div>
-    </div>
-    <!-- component -->
-    <div class="kartu">
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <!-- component -->
-            <div class="bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-                <div class="relative py-4 sm:max-w-xl sm:mx-auto">
-                    <div
-                        class="absolute inset-0 mt-4 bg-gradient-to-r from-orange-300 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
-                    </div>
-                    <div class="relative px-4 py-4 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-                        <div class="max-w-screen mx-36">
-                            <div>
-                                <h1 class="text-2xl mt-2 font-semibold text-center">Silahkan Login</h1>
-                            </div>
-                            <div class="divide-y divide-gray-200">
-                                <div
-                                    class="relative py-8 text-base leading-6 space-y-4 text-gray-700 -ml-32 sm:text-lg sm:leading-7">
-                                    <div class="relative -mr-32">
-                                        <label for="username"
-                                            class="absolute left-0 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-4 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Username
-                                        </label>
-                                        <input autocomplete="off" id="username" name="username" type="text"
-                                            class="form-control @error('username') border-red-600 @enderror mt-6 peer placeholder-transparent h-10 w-full my-3 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
-                                            placeholder="username" required value="{{ old('username') }}"
-                                            style="border-color: orange !important;" />
-                                        @error('username')
-                                            <div class="text-red-600 text-sm -mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="relative -mr-32">
-                                        <label for="password"
-                                            class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-4 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Password
 
-                                        </label>
-                                        <input autocomplete="off" id="password" name="password" type="password"
-                                            class="form-control @error('password') border-red-600 @enderror peer placeholder-transparent my-3 h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600"
-                                            placeholder="password" required style="border-color: orange !important;" />
-                                        @error('password')
-                                            <div class="text-red-600 text-sm -mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    @if ($errors->has('login'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('login') }}
-                                        </div>
-                                    @endif
-                                    <div class="relative">
-                                        <button
-                                            class="bg-orange-500 hover:bg-orange-400 hover:text-black text-white rounded-md px-6 py-2 ml-48 mt-3">Login</button>
-                                    </div>
-                                </div>
-                                <h2 class="-ml-4 mb-4">Belum punya akun? <a class="cursor-pointer"
-                                        href="/Register"><span class="text-orange-700 hover:text-orange-400">Daftar
-                                            Sekarang!</span></a></h2>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Container utama -->
+    <div class="min-h-screen flex flex-col items-center justify-center relative">
+        <!-- Tombol Kembali -->
+        <a href="{{ route('landingpage') }}"
+            class="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-orange-400 transition duration-300 flex items-center group">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transform transition-transform duration-300 group-hover:-translate-x-1 mr-2"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Kembali</span>
+        </a>
+
+        <!-- Card login -->
+        <div class="form-card shadow-lg rounded-lg p-8 w-full max-w-lg relative">
+            <!-- Dekorasi latar belakang -->
+            <div class="absolute -top-6 -left-6 w-20 h-20 bg-orange-300 rounded-full z-0"></div>
+            <div class="absolute -bottom-6 -right-6 w-20 h-20 bg-orange-500 rounded-full z-0"></div>
+            <!-- Konten utama -->
+            <div class="relative z-10">
+                <div class="flex justify-center mb-6">
+                    <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-20 h-20">
                 </div>
+                <h1 class="text-center text-2xl font-semibold text-gray-800 mb-4">Silahkan Login</h1>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <!-- Input Username -->
+                    <div class="mb-4">
+                        <label for="username" class="block text-sm font-medium text-gray-600">Username</label>
+                        <input id="username" name="username" type="text" placeholder="Masukkan username"
+                            class="w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('username') border-red-500 @enderror"
+                            value="{{ old('username') }}" required>
+                        @error('username')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Input Password -->
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                        <input id="password" name="password" type="password" placeholder="Masukkan password"
+                            class="w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('password') border-red-500 @enderror"
+                            required>
+                        @error('password')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    @if ($errors->has('login'))
+                        <div class="text-red-500 text-sm mb-4">
+                            {{ $errors->first('login') }}
+                        </div>
+                    @endif
+
+                    <!-- Tombol Login -->
+                    <button type="submit"
+                        class="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-400 transition duration-300">
+                        Login
+                    </button>
+                </form>
+
+                <!-- Daftar akun -->
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    Belum punya akun? <a href="/Register"
+                        class="text-orange-600 hover:text-orange-400 font-medium">Daftar Sekarang!</a>
+                </p>
             </div>
-        </form>
+        </div>
     </div>
 </body>
 

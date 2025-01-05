@@ -61,7 +61,7 @@
             </button>
         </div>
     @endif
-    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelSolusi">
+    <div class="lg:w-8/12 mx-auto mb-[18%]" id="tabelSolusi">
         <div class="relative flex items-center justify-between">
             <!-- Dropdown Menu -->
             <div>
@@ -126,7 +126,7 @@
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('solusi.edit', $item->kode_solusi) }}">
                                         <button type="button"
-                                            class="border border-green-400 font-bold text-green-400 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-green-400">
+                                            class="border border-green-400 font-bold lg:px-2 text-green-400 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-green-400">
                                             Edit
                                         </button>
                                     </a>
@@ -140,7 +140,7 @@
                                     </form>
 
                                     <button onclick="confirmDelete('{{ $item->kode_solusi }}')"
-                                        class="border border-red-500 font-bold text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
+                                        class="border border-red-500 font-bold lg:px-2 text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
                                         Hapus
                                     </button>
                                 </div>

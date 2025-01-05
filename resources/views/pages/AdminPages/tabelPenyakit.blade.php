@@ -19,7 +19,6 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
 <body class="bg-gray-100 min-h-full flex">
@@ -66,7 +65,7 @@
     @endif
 
 
-    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelPenyakit">
+    <div class="lg:w-8/12 md:w-7/12 mx-auto mb-[18%]" id="tabelPenyakit">
         <div class="relative flex items-center justify-between">
             <!-- Dropdown Menu -->
             <div>
@@ -131,7 +130,7 @@
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('penyakit.edit', $item->kode_penyakit) }}">
                                         <button type="button"
-                                            class="border border-green-400 font-bold text-green-400 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-green-400">
+                                            class="border lg:w-max border-green-400 font-bold md:x-2 text-green-400 rounded-md lg:px-2 px-4 py-2 m-2 hover:text-white hover:bg-green-400">
                                             Edit
                                         </button>
                                     </a>
@@ -142,7 +141,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="border border-red-500 font-bold text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
+                                            class="border border-red-500 font-bold md:x-2 text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
                                             Hapus
                                         </button>
                                     </form> --}}
@@ -155,7 +154,7 @@
                                     </form>
 
                                     <button onclick="confirmDelete('{{ $item->kode_penyakit }}')"
-                                        class="border border-red-500 font-bold text-red-500 rounded-md px-4 py-2 m-2 hover:text-white hover:bg-red-500">
+                                        class="border lg:w-max border-red-500 font-bold md:x-2 text-red-500 rounded-md lg:px-2 px-4 py-2 m-2 hover:text-white hover:bg-red-500">
                                         Hapus
                                     </button>
                                 </div>

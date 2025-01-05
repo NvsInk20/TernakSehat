@@ -139,7 +139,7 @@ class AturanPenyakitController extends Controller
     $solusi = solusi::all();
 
     // Kirim data ke view
-    return view('pages.AdminPages.CRUD.crud_aturan.formAdd', [
+    return view('pages.AdminPages.CRUD.crud_Aturan.formAdd', [
         'penyakit' => $penyakit,
         'gejala' => $gejala,
         'solusi' => $solusi,
@@ -195,7 +195,7 @@ class AturanPenyakitController extends Controller
             abort(404, 'Aturan Penyakit tidak ditemukan.');
         }
 
-        return view('pages.AdminPages.CRUD.crud_aturan.formEdit', [
+        return view('pages.AdminPages.CRUD.crud_Aturan.formEdit', [
             'aturanPenyakit' => $aturanPenyakit,
             'penyakit' => penyakit::all(),
             'gejala' => gejala::all(),
@@ -269,7 +269,7 @@ class AturanPenyakitController extends Controller
     $solusi = solusi::all();
 
     // Kirim data ke view
-    return view('pages.PakarPages.CRUD.crud_aturan.formAdd', [
+    return view('pages.PakarPages.CRUD.crud_Aturan.formAdd', [
         'penyakit' => $penyakit,
         'gejala' => $gejala,
         'solusi' => $solusi,
@@ -321,7 +321,7 @@ class AturanPenyakitController extends Controller
             abort(404, 'Aturan Penyakit tidak ditemukan.');
         }
 
-        return view('pages.PakarPages.CRUD.crud_aturan.formEdit', [
+        return view('pages.PakarPages.CRUD.crud_Aturan.formEdit', [
             'aturanPenyakit' => $aturanPenyakit,
             'penyakit' => penyakit::all(),
             'gejala' => gejala::all(),

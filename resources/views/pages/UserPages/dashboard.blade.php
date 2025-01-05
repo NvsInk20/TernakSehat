@@ -73,11 +73,11 @@
                         </div>
                         <div class="md:w-1/2 flex justify-center p-8 relative">
                             <!-- Background Orange placed behind the image -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-orange-300 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl z-0 ml-40 mt-8"
-                                id="bg">
+                            <div
+                                class="absolute lg:max-w-80 lg:ml-20 lg:h-80 inset-0 bg-gradient-to-r from-orange-300 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl z-0 mt-8">
                             </div>
-                            <img src="/images/sapii.png" alt="Cow Image" id="sapii"
-                                class="relative rounded-lg shadow-lg z-10 -ml-10">
+                            <img src="/images/sapii.png" alt="Cow Image"
+                                class="relative rounded-lg lg:ml-3 lg:w-80 shadow-lg z-10 -ml-10">
                         </div>
                     </div>
                 </div>

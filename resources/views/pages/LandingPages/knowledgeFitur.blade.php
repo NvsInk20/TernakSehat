@@ -11,14 +11,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
-<body class="bg-gray-50 font-poppins">
+<body class="bg-gray-50 font-poppins overflow-x-hidden flex flex-col min-h-screen">
     <!-- Header -->
     <header class="text-white p-5 bg-orange-500 shadow-md max-w-full max-h-20">
         <div class="container mx-auto flex justify-between">
             <div class="flex space-x-3">
-                <h1 class="text-lg font-bold mt-2">Panduan Penggunaan Sistem</h1>
+                <h1 class="text-lg font-bold sm:text-sm mt-2">Panduan Penggunaan Sistem</h1>
             </div>
-            <nav class="space-x-5 mt-2">
+            <nav class="space-x-5 mt-2 sm:text-sm">
                 <a href="/GuidePage-Diagnosa" class="nav-link text-white hover:text-slate-800">Diagnosa</a>
                 <a href="" class="nav-link text-white hover:text-slate-800">Pengetahuan Penyakit</a>
                 <a href="/GuidePage-Riwayat" class="nav-link text-white hover:text-slate-800">Riwayat Penyakit</a>
@@ -41,7 +41,7 @@
     <section id="diagnosa" class="py-10">
         <div class="container mx-auto flex-col">
             <h2 class="text-center text-2xl mx-auto font-bold text-orange-500 mb-5">Pengetahuan Penyakit</h2>
-            <div class="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-5">
+            <div class="flex flex-col md:flex-col items-center bg-white shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/info.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
@@ -61,13 +61,14 @@
         </div>
     </section>
     {{-- Section 1 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 lg:-mt-14 md:mt-1 sm:mt-2">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/knowledge/role-1.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl mb-4">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Masuk Ke halaman <strong>Dashboard</strong>
                     </p>
                 </div>
@@ -77,13 +78,14 @@
 
 
     {{-- Section 2 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-64 sm:-mt-48">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/knowledge/role-2.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
+                <div class="mt-5">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Silahkan geser ke bawah sampai menemukan menu <strong>Daftar Penyakit</strong>
                     </p>
                 </div>
@@ -91,13 +93,14 @@
         </div>
     </section>
     {{-- Section 3 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-56 sm:-mt-44">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/knowledge/role-3.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
+                <div class="mt-5">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Silahkan klik tombol <strong>Cek Penyakit</strong>
                     </p>
                 </div>
@@ -105,7 +108,7 @@
         </div>
     </section>
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white">
+    <footer class="p-5 bg-orange-500 text-center md:mt-10 text-white lg:mt-auto">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 

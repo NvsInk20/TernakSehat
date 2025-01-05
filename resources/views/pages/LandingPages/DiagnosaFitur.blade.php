@@ -11,14 +11,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
-<body class="bg-gray-50 font-poppins">
+<body class="bg-gray-50 font-poppins overflow-x-hidden flex flex-col min-h-screen">
     <!-- Header -->
     <header class="text-white p-5 bg-orange-500 shadow-md max-w-full max-h-20">
         <div class="container mx-auto flex justify-between">
             <div class="flex space-x-3">
-                <h1 class="text-lg font-bold mt-2">Panduan Penggunaan Sistem</h1>
+                <h1 class="text-lg font-bold sm:text-sm mt-2">Panduan Penggunaan Sistem</h1>
             </div>
-            <nav class="space-x-5 mt-2">
+            <nav class="space-x-5 mt-2 sm:text-sm">
                 <a href="" class="nav-link text-white hover:text-slate-800">Diagnosa</a>
                 <a href="/GuidePage-knowledge" class="nav-link text-white hover:text-slate-800">Pengetahuan Penyakit</a>
                 <a href="/GuidePage-Riwayat" class="nav-link text-white hover:text-slate-800">Riwayat Penyakit</a>
@@ -41,7 +41,7 @@
     <section id="diagnosa" class="py-10">
         <div class="container mx-auto flex-col">
             <h2 class="text-center text-2xl mx-auto font-bold text-orange-500 mb-5">Diagnosa Penyakit</h2>
-            <div class="flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg p-5">
+            <div class="flex flex-col md:flex-col items-center bg-white shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/diagnosa.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
@@ -65,13 +65,14 @@
         </div>
     </section>
     {{-- Section 1 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 md:mt-14 sm:mt-52">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/Diagnosa/rule-1.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl mb-4">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Masuk Ke halaman diagnosa dengan klik tombol <strong>Diagnosa</strong>
                     </p>
                 </div>
@@ -81,13 +82,14 @@
 
 
     {{-- Section 2 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-64 sm:-mt-48">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/Diagnosa/rule-2.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
+                <div class="mt-5">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Pilih diagnosa dengan data baru atau data lama
                     </p>
                 </div>
@@ -95,13 +97,14 @@
         </div>
     </section>
     {{-- Section 3 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-64 sm:-mt-56">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
+                <div class="mt-5">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Perhatikan dengan baik gejala yang ditampilkan agar sesuai dengan hasil yang diharapkan
                     </p>
                 </div>
@@ -110,96 +113,103 @@
     </section>
 
     {{-- Section 4 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
+    <<section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-72 sm:-mt-56">
         <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+            <div
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/Diagnosa/rule-3.png') }}" alt="Diagnosa Penyakit"
                     class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
+                <div class="mt-5">
+                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Silahkan klik <strong>Mulai Lakukan DIagnosa</strong>
                     </p>
                 </div>
             </div>
         </div>
-    </section>
+        </section>
 
-    {{-- Section 5 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
-        <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('/images/Diagnosa/rule-4.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
-                        Silahkan jawab pertanyaan dengan memperhatikan beberapa gejala yang muncul dengan baik
-                    </p>
+        {{-- Section 5 --}}
+        <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-64 sm:-mt-56">
+            <div class="container mx-auto flex-col">
+                <div
+                    class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                    <img src="{{ asset('/images/Diagnosa/rule-4.png') }}" alt="Diagnosa Penyakit"
+                        class="w-full md:w-1/2 h-64 object-contain">
+                    <div class="mt-5">
+                        <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                            Silahkan jawab pertanyaan dengan memperhatikan beberapa gejala yang muncul dengan baik
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    {{-- Section 6 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
-        <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('/images/Diagnosa/rule-6.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
-                        Setelah berhasil maka akan menampilkan hasil diagnosa berdasarkan dengan gejala yang dipilih dan
-                        juga memberikan sebuah rekomendasi pengobaan yang bisa dilakukan
-                    </p>
+        </section>
+        {{-- Section 6 --}}
+        <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-64 sm:-mt-44">
+            <div class="container mx-auto flex-col">
+                <div
+                    class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                    <img src="{{ asset('/images/Diagnosa/rule-6.png') }}" alt="Diagnosa Penyakit"
+                        class="w-full md:w-1/2 h-64 object-contain">
+                    <div class="mt-5">
+                        <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                            Setelah berhasil maka akan menampilkan hasil diagnosa berdasarkan dengan gejala yang
+                            dipilih
+                            dan
+                            juga memberikan sebuah rekomendasi pengobaan yang bisa dilakukan
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    {{-- Section 7 --}}
-    <section id="diagnosa" class="py-10 -mt-60">
-        <div class="container mx-auto flex-col">
-            <div class="flex flex-col md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
-                <img src="{{ asset('/images/Diagnosa/rule-5.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
-                <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 justify-start text-2xl mb-4">
-                        Kamu juga bisa menyimpan hasil diagnosa untuk kebutuhan seperti manajemen peternakan agar
-                        kondisi kesehatan hewan ternak bisa terjaga dan terpantau dengan baik
-                    </p>
+        </section>
+        {{-- Section 7 --}}
+        <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-56 sm:-mt-32">
+            <div class="container mx-auto flex-col">
+                <div
+                    class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                    <img src="{{ asset('/images/Diagnosa/rule-5.png') }}" alt="Diagnosa Penyakit"
+                        class="w-full md:w-1/2 h-64 object-contain">
+                    <div class="mt-5">
+                        <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                            Kamu juga bisa menyimpan hasil diagnosa untuk kebutuhan seperti manajemen peternakan
+                            agar
+                            kondisi kesehatan hewan ternak bisa terjaga dan terpantau dengan baik
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white">
-        <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
-    </footer>
+        <!-- Footer -->
+        <footer class="p-5 bg-orange-500 text-center md:mt-10 text-white lg:mt-auto">
+            <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
+        </footer>
 
-    <script>
-        // Menambahkan class "active" berdasarkan hash URL
-        const navLinks = document.querySelectorAll('.nav-link');
-        const currentHash = window.location.hash;
-
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentHash) {
-                link.classList.add('font-bold');
-            } else {
-                link.classList.remove('font-bold');
-            }
-        });
-
-        // Tambahkan event listener untuk memperbarui class saat pengguna berpindah bagian
-        window.addEventListener('hashchange', () => {
-            const newHash = window.location.hash;
+        <script>
+            // Menambahkan class "active" berdasarkan hash URL
+            const navLinks = document.querySelectorAll('.nav-link');
+            const currentHash = window.location.hash;
 
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === newHash) {
+                if (link.getAttribute('href') === currentHash) {
                     link.classList.add('font-bold');
                 } else {
                     link.classList.remove('font-bold');
                 }
             });
-        });
-    </script>
+
+            // Tambahkan event listener untuk memperbarui class saat pengguna berpindah bagian
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash;
+
+                navLinks.forEach(link => {
+                    if (link.getAttribute('href') === newHash) {
+                        link.classList.add('font-bold');
+                    } else {
+                        link.classList.remove('font-bold');
+                    }
+                });
+            });
+        </script>
 </body>
 
 </html>
