@@ -194,7 +194,7 @@
     {{-- Section 7 --}}
     <section id="diagnosa"
         class="py-10 mt-64 md:mt-14 2xl:mt-72 2xl:mb-[29rem] 2xl:h-[15rem] 2xl:max-w-[90%] 2xl:mx-auto xl:h-[30rem] sm:mt-52">
-        <div class="container mx-auto flex-col max-h-[1rem] 2xl:max-w-full xl:h-[3rem] 2xl:h-[37rem]">
+        <div class="container mx-auto max-h-max flex-col 2xl:max-w-full xl:h-[3rem] 2xl:h-[37rem]">
             <div
                 class="flex flex-col xl:w-full md:w-11/12 2xl:h-full md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/Diagnosa/rule-5.png') }}" alt="Diagnosa Penyakit"
@@ -212,7 +212,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 mt-[80%] text-center 2xl:p-10 2xl:text-2xl md:mt-10 text-white lg:mt-auto">
+    <footer class="p-5 bg-orange-500  text-center 2xl:p-10 2xl:text-2xl md:mt-10 text-white lg:mt-auto">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 
