@@ -13,43 +13,58 @@
 
 <body class="bg-gray-50 font-poppins">
     <!-- Header -->
-    <header class="text-white p-5 bg-orange-500 shadow-md max-w-full max-h-20">
-        <div class="container mx-auto flex justify-between">
-            <div class="flex space-x-3">
-                <h1 class="text-lg font-bold sm:text-sm mt-2">Panduan Penggunaan Sistem</h1>
-            </div>
-            <nav class="space-x-5 mt-2 sm:text-sm">
-                <a href="/GuidePage-Diagnosa" class="nav-link text-white hover:text-slate-800">Diagnosa</a>
-                <a href="/GuidePage-knowledge" class="nav-link text-white hover:text-slate-800">Pengetahuan Penyakit</a>
-                <a href="" class="nav-link text-white hover:text-slate-800">Riwayat Penyakit</a>
+    <header class="text-white p-5 bg-orange-500 shadow-md 2xl:max-h-36 max-h-20 max-w-full">
+        <div class="container mx-auto flex justify-between 2xl:max-w-full 2xl:mt-10">
+            <!-- H1 Section -->
+            <h1 class="text-lg font-bold 2xl:text-3xl xl:text-xl sm:text-lg">
+                Panduan Penggunaan Sistem
+            </h1>
+            <!-- Hamburger Button -->
+            <button id="hamburger" class="lg:hidden absolute ml-[80%] text-white focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <!-- Navigation Section -->
+            <nav id="nav-menu"
+                class="hidden lg:flex flex-col lg:flex-row space-y-4 lg:space-y-0 2xl:text-3xl lg:space-x-8 text-2xl font-medium bg-orange-500 lg:bg-transparent lg:static absolute right-0 top-16 w-full lg:w-auto">
+                <a href="/GuidePage-Diagnosa" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Diagnosa</a>
+                <a href="/GuidePage-knowledge" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Pengetahuan
+                    Penyakit</a>
+                <a href="/GuidePage-Riwayat"
+                    class="block px-4 py-2 lg:inline-block text-black hover:text-slate-800">Riwayat
+                    Diagnosa</a>
             </nav>
         </div>
     </header>
-    <div class="flex justify-start mt-5 ml-10">
+    <div class="flex justify-start mt-5 2xl:mt-11 sm:ml-10 lg:ml-10 xl:ml-10 2xl:ml-10 ml-2">
         <a href="{{ session('previous_url', route('landingpage')) }}"
-            class="flex items-center px-4 py-2 rounded-lg border border-blue-500 text-blue-500 
+            class="flex items-center px-2 py-1 xl:px-5 xl:py-2 2xl:px-9 2xl:py-6 2xl:rounded-2xl rounded-lg border border-blue-500 text-blue-500 
         hover:bg-blue-500 hover:text-white transition duration-300 group shadow-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-5 h-5 mr-2 group-hover:-translate-x-2 transition-transform duration-300">
+                stroke="currentColor"
+                class="w-6 h-6 mr-3 group-hover:-translate-x-2 transition-transform duration-300 2xl:w-10 2xl:h-10">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
-            <span class="text-sm font-medium">Kembali</span>
+            <span class="text-base xl:text-xl 2xl:text-4xl font-medium">Kembali</span>
         </a>
     </div>
 
     <!-- Panduan Diagnosa Penyakit -->
-    <section id="diagnosa" class="py-10">
-        <div class="container mx-auto flex-col">
-            <h2 class="text-center text-2xl mx-auto font-bold text-orange-500 mb-5">Riwayat Penyakit</h2>
-            <div class="flex flex-col md:flex-col items-center bg-white shadow-lg rounded-lg p-5">
+    <section id="diagnosa" class="py-10 2xl:max-w-[90%] 2xl:mx-auto">
+        <div class="container mx-auto -mb-[100%] flex-col 2xl:max-w-max xl:-mb-[12%]">
+            <h2 class="text-center text-2xl xl:text-2xl 2xl:text-6xl mx-auto font-bold text-orange-500 mb-5">Riwayat
+                Diagnosa</h2>
+            <div class="flex flex-col  md:flex-col items-center 2xl:max-h-[70%] bg-white shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/riwayat.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
+                    class="w-full h-64 2xl:max-w-full xl:h-64 md:w-1/2 2xl:h-1/2 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
-                    <p class="text-gray-600 mb-4">
+                    <p class="text-gray-600 2xl:text-3xl mb-4">
                         Fitur ini membantu Anda untuk mendapatkan data riwayat dari hasil diagnosa
                         yang telah dilakukan beserta dapat melakukan pencetakan dokumen hasil diagnosa dan menghapusnya
                     </p>
-                    <ul class="list-disc list-inside text-gray-600">
+                    <ul class="list-disc list-inside text-gray-600 2xl:text-3xl">
                         <li>Masuk Ke halaman riwayat dengan klik tombol <strong>Riwayat</strong></li>
                         <li>Pilih riwayat diagnosa yang ingin dicetak ataupun yang dihapus</li>
                         <li>Jika ingin melakukan pencarian data riwayat penyakit juga bisa</li>
@@ -59,14 +74,15 @@
         </div>
     </section>
     {{-- Section 1 --}}
-    <section id="diagnosa" class="py-10 lg:-mt-14 md:-mt-20 sm:-mt-8">
-        <div class="container mx-auto flex-col">
+    <section id="diagnosa"
+        class="py-10 mt-40 -mb-[37rem] md:mt-14 2xl:mt-2 md:-mb-[40%] xl:-mb-[31%] 2xl:-mb-[45%] sm:mt-52">
+        <div class="container mx-auto flex-col 2xl:max-w-full">
             <div
-                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12  2xl:h-[50%] sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/riwayat/role-1.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
+                    class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-3/5 h-auto max-h-[500px] object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                    <p class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Masuk Ke halaman riwayat dengan klik tombol <strong>Riwayat</strong>
                     </p>
                 </div>
@@ -76,14 +92,15 @@
 
 
     {{-- Section 2 --}}
-    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-60 sm:-mt-44">
-        <div class="container mx-auto flex-col">
+    <section id="diagnosa"
+        class="py-10 md:mt-14 -mb-[39rem] 2xl:mt-72 xl:-mt-[100%] xl:-mb-[31%] 2xl:-mb-[45%] sm:mt-52">
+        <div class="container mx-auto flex-col 2xl:max-w-full">
             <div
-                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12  2xl:h-[50%] sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/riwayat/role-2.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
+                    class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-3/5 h-auto max-h-[500px] object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                    <p class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Pilih riwayat diagnosa yang ingin dicetak
                     </p>
                 </div>
@@ -92,14 +109,14 @@
     </section>
 
     {{-- Section 3 --}}
-    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-60 sm:-mt-52">
-        <div class="container mx-auto flex-col">
+    <section id="diagnosa" class="py-10 md:mt-14 2xl:mt-72 -mb-72 xl:-mt-[100%] sm:mt-52">
+        <div class="container mx-auto flex-col xl:h-[190px]  h-[29rem] 2xl:max-w-full 2xl:h-[100%]">
             <div
-                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12  2xl:h-[50%] sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/riwayat/role-3.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
+                    class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-3/5 h-auto max-h-[500px] object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                    <p class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Pilih riwayat diagnosa yang ingin dihapus
                     </p>
                 </div>
@@ -107,14 +124,14 @@
         </div>
     </section>
     {{-- Section 4 --}}
-    <section id="diagnosa" class="py-10 lg:-mt-60 md:-mt-60 sm:-mt-52">
-        <div class="container mx-auto flex-col">
+    <section id="diagnosa" class="py-10 md:mt-14 sm:mt-52">
+        <div class="container mx-auto flex-col h-[17rem] 2xl:mt-56 2xl:max-w-full xl:h-[100%] 2xl:h-[100%]">
             <div
-                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
+                class="flex flex-col md:w-11/12 md:mx-auto sm:w-11/12  2xl:h-[50%] sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/riwayat/role-4.png') }}" alt="Diagnosa Penyakit"
-                    class="w-full md:w-1/2 h-64 object-contain">
+                    class="w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-3/5 h-auto max-h-[500px] object-contain">
                 <div class="mt-5">
-                    <p class="text-gray-600 text-2xl lg:text-lg md:-mt-5 md:ml-10 md:text-base lg:ml-10">
+                    <p class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
                         Melakukan pencarian data riwayat
                     </p>
                 </div>
@@ -123,11 +140,29 @@
     </section>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center md:mt-10 text-white lg:mt-auto">
+    <footer class="p-5 bg-orange-500 text-center 2xl:p-10 2xl:text-2xl md:mt-10 text-white lg:mt-auto">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('nav-menu');
+
+            // Toggle menu visibility
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent click from propagating to document
+                navMenu.classList.toggle('hidden');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navMenu.classList.contains('hidden') && !navMenu.contains(e.target) && e.target !==
+                    hamburger) {
+                    navMenu.classList.add('hidden');
+                }
+            });
+        });
         // Menambahkan class "active" berdasarkan hash URL
         const navLinks = document.querySelectorAll('.nav-link');
         const currentHash = window.location.hash;
@@ -154,5 +189,6 @@
         });
     </script>
 </body>
+
 
 </html>
