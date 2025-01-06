@@ -75,7 +75,7 @@
             </div>
         </div>
     </section>
-    {{-- Section 1 --}}
+    {{-- Section 10 --}}
     <section id="diagnosa"
         class="py-10 mt-48 -mb-[39rem] md:mt-14 2xl:mt-20 md:-mb-[40%] xl:-mb-[31%] 2xl:-mb-[45%] sm:mt-52">
         <div class="container mx-auto flex-col 2xl:max-w-full">
