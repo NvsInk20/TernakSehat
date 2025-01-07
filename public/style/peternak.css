@@ -10,7 +10,7 @@
 #sapii{
     width: 60%;
 }
-.section{
+#section{
     width: 100%;
     height: 100vh;
 }
@@ -29,10 +29,6 @@
     margin-left: 50%;
     width: 50%;
     margin-top: 10%;
-}
-.text h2{
-    font-size: 32px;
-    width: 80%;
 }
 .dokter{
     margin-left: 55%;

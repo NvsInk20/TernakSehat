@@ -16,19 +16,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-orange-100 min-h-full">
     @if (session('success'))
-        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
-            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+        <div class="bg-green-500 text-white p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
+            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="bg-red-500 text-white p-3 rounded mb-4">
+        <div class="bg-red-500 text-white p-3 2xl:text-xl rounded mb-4">
             {{ session('error') }}
         </div>
     @endif

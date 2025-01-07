@@ -17,19 +17,18 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
 <body class="bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 font-sans">
     @if (session('success'))
-        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
-            x-show="show" x-init="setTimeout(() => show = false, 5000)">
+        <div class="bg-green-500 text-white p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
+            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="bg-red-500 text-white p-3 rounded mb-4">
+        <div class="bg-red-500 text-white p-3 2xl:text-xl rounded mb-4">
             {{ session('error') }}
         </div>
     @endif
@@ -51,38 +50,43 @@
 
             @if ($diagnosaUtama || $penyakitTertinggi || $penyakitKedua)
                 <div class="mt-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Simpan Hasil Diagnosa</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 2xl:text-2xl mb-4">Simpan Hasil Diagnosa</h3>
                     <form method="POST" action="{{ route('diagnosa.simpanHasil') }}" class="space-y-4">
                         @csrf
                         <div>
-                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Pengguna</label>
+                            <label for="nama" class="block text-sm font-medium 2xl:text-xl text-gray-700">Nama
+                                Pengguna</label>
                             <input type="text" id="nama" name="nama"
                                 value="{{ auth()->user()->nama ?? 'Nama Tidak Diketahui' }}"
-                                class="mt-1 p-2 block w-full border bg-gray-300 border-gray-300 rounded-md" readonly>
+                                class="mt-1 p-2 block w-full border bg-gray-300 border-gray-300 2xl:text-xl rounded-md"
+                                readonly>
                         </div>
 
                         <div>
-                            <label for="kode_sapi" class="block text-sm font-medium text-gray-700">Kode Sapi</label>
+                            <label for="kode_sapi" class="block text-sm font-medium 2xl:text-xl text-gray-700">Kode
+                                Sapi</label>
                             <input type="text" id="kode_sapi" name="kode_sapi"
                                 value="{{ session('kode_sapi', 'SP-' . strtoupper(Str::random(5))) }}"
-                                class="mt-1 p-2 block w-full border border-gray-300 rounded-md">
+                                class="mt-1 p-2 block w-full border 2xl:text-xl border-gray-300 rounded-md">
                         </div>
 
                         <div>
-                            <label for="penyakit_utama" class="block text-sm font-medium text-gray-700">Penyakit
+                            <label for="penyakit_utama"
+                                class="block text-sm 2xl:text-xl font-medium text-gray-700">Penyakit
                                 Utama</label>
                             <input type="text" id="penyakit_utama" name="penyakit_utama"
                                 value="{{ $diagnosaUtama['penyakit'] ?? 'Tidak Ada Penyakit Utama' }}"
-                                class="mt-1 p-2 block w-full border bg-gray-300 border-gray-300 rounded-md" readonly>
+                                class="mt-1 p-2 block w-full border 2xl:text-xl bg-gray-300 border-gray-300 rounded-md"
+                                readonly>
                         </div>
 
                         <!-- Gabungan Gejala & Solusi -->
                         <!-- Gabungan Gejala & Solusi -->
                         <div>
-                            <label for="gejala" class="block text-sm font-medium text-gray-700">Gejala dan
+                            <label for="gejala" class="block text-sm 2xl:text-xl font-medium text-gray-700">Gejala dan
                                 Solusi</label>
                             <div id="gejala"
-                                class="mt-1 p-3 bg-gray-300 border border-gray-300 rounded-md text-justify">
+                                class="mt-1 p-3 bg-gray-300 border 2xl:text-xl border-gray-300 rounded-md text-justify">
                                 @php
                                     // Ambil gejala yang teridentifikasi dari diagnosa
                                     $gejalaTeridentifikasi = $diagnosaUtama['gejala'] ?? [];
@@ -91,22 +95,23 @@
                                 @endphp
 
                                 @if (!empty($semuaGejala))
-                                    <h4 class="font-semibold mb-2">Gejala:</h4>
-                                    <ol class="list-decimal pl-5">
+                                    <h4 class="font-semibold 2xl:text-xl mb-2">Gejala:</h4>
+                                    <ol class="list-decimal 2xl:text-xl pl-5">
                                         @foreach ($semuaGejala as $gejala)
                                             <li>
                                                 {{ $gejala }}
                                                 @if (!in_array($gejala, $gejalaTeridentifikasi))
-                                                    <span class="text-red-500 text-sm"> (gejala berpotensi terdapat di
+                                                    <span class="text-red-500 2xl:text-xl text-sm"> (gejala berpotensi
+                                                        terdapat di
                                                         penyakit alternatif)</span>
                                                 @endif
                                             </li>
                                         @endforeach
                                     </ol>
                                 @else
-                                    <p>Gejala Tidak Tersedia</p>
+                                    <p class="2xl:text-xl">Gejala Tidak Tersedia</p>
                                 @endif
-                                <h4 class="font-semibold mt-4 mb-2">Saran Rekomendasi:</h4>
+                                <h4 class="font-semibold mt-4 2xl:text-xl mb-2">Saran Rekomendasi:</h4>
                                 <p>{{ implode('. ', $diagnosaUtama['solusi'] ?? ['Tidak bisa memberikan rekomendasi yang aman']) }}.
                                 </p>
                             </div>
@@ -116,10 +121,11 @@
                         @if ($penyakitTertinggi)
                             <div>
                                 <label for="penyakit_alternatif_1"
-                                    class="block text-sm font-medium text-gray-700">Penyakit Alternatif 1</label>
+                                    class="block text-sm 2xl:text-xl font-medium text-gray-700">Penyakit Alternatif
+                                    1</label>
                                 <input type="text" id="penyakit_alternatif_1" name="penyakit_alternatif_1"
                                     value="{{ $penyakitTertinggi }}"
-                                    class="mt-1 p-2 block bg-gray-300 w-full border border-gray-300 rounded-md"
+                                    class="mt-1 p-2 block 2xl:text-xl bg-gray-300 w-full border border-gray-300 rounded-md"
                                     readonly>
                             </div>
                         @endif
@@ -127,23 +133,24 @@
                         @if ($penyakitKedua)
                             <div>
                                 <label for="penyakit_alternatif_2"
-                                    class="block text-sm font-medium text-gray-700">Penyakit Alternatif 2</label>
+                                    class="block text-sm font-medium 2xl:text-xl text-gray-700">Penyakit Alternatif
+                                    2</label>
                                 <input type="text" id="penyakit_alternatif_2" name="penyakit_alternatif_2"
                                     value="{{ $penyakitKedua }}"
-                                    class="mt-1 p-2 block bg-gray-300 w-full border border-gray-300 rounded-md"
+                                    class="mt-1 p-2 block bg-gray-300 w-full 2xl:text-xl border border-gray-300 rounded-md"
                                     readonly>
                             </div>
                         @endif
 
                         <button type="submit"
-                            class="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition-all duration-300">
+                            class="w-full bg-orange-500 text-white py-2 px-4 rounded-md 2xl:text-xl hover:bg-orange-600 transition-all duration-300">
                             Simpan Hasil Diagnosa
                         </button>
                     </form>
 
                 </div>
             @else
-                <div class="text-center text-red-600 font-medium mt-8">
+                <div class="text-center text-red-600 font-medium 2xl:text-xl mt-8">
                     Tidak ada hasil diagnosa yang ditemukan.
                 </div>
             @endif
@@ -159,11 +166,11 @@
 
             <div class="text-center mt-6">
                 <a href="{{ route($dashboardRoute) }}"
-                    class="flex items-center justify-center p-4 rounded-lg border border-orange-500 text-orange-500 
+                    class="flex items-center justify-center p-4 rounded-lg 2xl:text-xl border border-orange-500 text-orange-500 
                      hover:bg-orange-500 hover:text-white transition group"><span>Kembali</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-64">
+                        class="w-6 h-6 ml-2 transform transition-transform duration-300 2xl:text-xl group-hover:translate-x-64">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                     </svg>
