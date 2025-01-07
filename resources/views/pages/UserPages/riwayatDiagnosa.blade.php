@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-orange-100 min-h-full">
+<body class="bg-orange-100 min-h-screen flex flex-col">
     @if (session('success'))
         <div class="bg-green-500 text-white p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
@@ -32,9 +32,11 @@
         </div>
     @endif
 
-    @include('components.dropSettings')
+    <div class="flex-none">
+        @include('components.dropSettings')
+    </div>
 
-    <div class="flex items-center space-x-96 ml-24 my-16">
+    <div class="flex items-center 2xl:space-x-[40rem] xl:space-x-[20rem] ml-24 my-16">
         <a href="{{ session('previous_url', route('dashboard')) }}"
             class="flex items-center justify-center p-3 rounded-lg border border-blue-500 text-blue-500 
     hover:bg-blue-500 hover:text-white transition duration-300 group">
@@ -48,7 +50,7 @@
     </div>
 
     <div class="max-w-6xl mx-auto mb-12">
-        <div class="flex justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg shadow-md">
+        <div class="flex flex-grow justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg shadow-md">
             <div>
                 <h3 class="text-lg font-semibold">Riwayat Diagnosa</h3>
                 <p class="text-sm">Riwayat diagnosa kesehatan sapi</p>
@@ -67,7 +69,7 @@
 
         </div>
 
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden xl:w-[70rem] 2xl:w-[70rem]">
             <table class="w-full text-sm text-gray-600 border-collapse">
                 <thead class="bg-gray-200 border-b border-gray-300">
                     <tr>
@@ -160,8 +162,8 @@
                     @endphp
 
                     Menampilkan
-                    <b>{{ $riwayatPaginated->firstItem() ?? 0 }}-{{ $riwayatPaginated->firstItem() + $penyakitUnikSaatIni - 1 }}</b>
-                    dari {{ $totalPenyakitUnik }}
+                    <b>{{ $riwayatPaginated->firstItem() ?? 0 }}-{{ $riwayatPaginated->lastItem() ?? 0 }}</b> dari
+                    {{ $riwayatPaginated->total() }}
                 </div>
                 <div class="flex space-x-2 items-center">
                     <a href="{{ route('admin.cetak_riwayat', $kode_user) }}"
@@ -216,7 +218,7 @@
         </div>
     </div>
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white absolute w-full mt-32">
+    <footer class="p-5 bg-orange-500 text-center text-white w-full mt-auto">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 

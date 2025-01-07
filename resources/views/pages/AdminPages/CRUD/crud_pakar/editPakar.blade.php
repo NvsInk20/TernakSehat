@@ -20,7 +20,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-orange-100">
+<body class="bg-orange-100 min-h-screen flex items-center justify-center">
     @include('components.dropSettings')
     @if (session('success'))
         <div class="bg-green-500 text-white p-3 mb-4 transition-opacity duration-300" x-data="{ show: true }"
@@ -35,7 +35,7 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-lg mx-auto p-6 sm:p-10">
+    <div class="bg-white shadow-lg rounded-lg w-full xl:my-10 max-w-lg mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>

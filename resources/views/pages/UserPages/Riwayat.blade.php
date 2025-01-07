@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-orange-100 min-h-full">
+<body class="bg-orange-100 min-h-screen flex flex-col">
     @if (session('success'))
         <div class="bg-green-500 text-white p-3 2xl:text-2xl rounded mb-4 transition-opacity duration-300"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
@@ -32,15 +32,17 @@
         </div>
     @endif
 
-    @include('components.navbar')
-    @include('components.dropSettings')
+    <div class="flex-none">
+        @include('components.navbar')
+        @include('components.dropSettings')
+    </div>
 
-    <h1 class="text-3xl font-bold text-gray-800 ml-[40%] 2xl:ml-[46%] my-16">Halaman Riwayat</h1>
-    <div class="max-w-6xl mx-auto mb-12 2xl:min-h-screen">
+    <h1 class="text-3xl font-bold text-gray-800 ml-[40%] 2xl:ml-[42%] 2xl:text-4xl my-16">Halaman Riwayat</h1>
+    <div class="max-w-6xl mx-auto mb-12 2xl:ml-60 flex-grow">
         <div
-            class="flex justify-between items-center  2xl:w-[80rem] mb-4 bg-orange-500 text-white p-3 rounded-lg shadow-md">
+            class="flex justify-between items-center  2xl:w-[90rem] mb-4 bg-orange-500 text-white p-3 rounded-lg shadow-md">
             <div>
-                <h3 class="text-lg 2xl:text-xl font-semibold">Riwayat Diagnosa</h3>
+                <h3 class="text-lg 2xl:text-xl font-semibold">Ternak Sehat</h3>
                 <p class="text-sm 2xl:text-xl">Riwayat diagnosa kesehatan sapi</p>
             </div>
             <form method="GET" action="{{ route('riwayatDiagnosa.index') }}" class="mx-4">
@@ -57,7 +59,7 @@
 
         </div>
 
-        <div class="bg-white rounded-lg 2xl:w-[80rem] shadow-md overflow-hidden 2xl:text-xl">
+        <div class="bg-white rounded-lg 2xl:w-[90rem] shadow-md overflow-hidden 2xl:text-xl">
             <table class="w-full text-sm text-gray-600 border-collapse">
                 <thead class="bg-gray-200 border-b border-gray-300">
                     <tr>

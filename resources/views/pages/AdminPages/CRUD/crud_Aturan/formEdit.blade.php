@@ -13,7 +13,7 @@
     <link rel="icon" href="/images/logo.png">
 </head>
 
-<body class="bg-orange-100">
+<body class="bg-orange-100 min-h-screen flex items-center justify-center">
     @include('components.dropSettings')
 
     @if (session('success'))
@@ -29,7 +29,7 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-3xl mx-auto p-6 sm:p-10">
+    <div class="bg-white shadow-lg rounded-lg w-full xl:my-10 max-w-3xl mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>

@@ -61,7 +61,7 @@
         </div>
     @endif
 
-    <div class="absolute ml-[83%] mt-10">
+    <div class="absolute ml-[83%] mt-10 2xl:ml-[73%]">
         <a href='/ahli_pakar/aturanPenyakit/add'>
             <button type="button"
                 class="border border-blue-800 font-bold text-blue-500 rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline">

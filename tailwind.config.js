@@ -17,6 +17,10 @@ export default {
             colors: {
                 customOrange: "#FFB472",
             },
+            screens: {
+                xs: "360px", // Tambahkan breakpoint untuk smartphone kecil
+                "md-max": { max: "640px" }, // Custom untuk layar besar tetapi di bawah 2xl
+            },
         },
     },
     plugins: [],

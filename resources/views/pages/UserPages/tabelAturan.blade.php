@@ -22,7 +22,7 @@
     @include('components.dropSettings')
 
     <div class="flex -mb-14">
-        <div class="flex justify-start ml-10">
+        <div class="flex justify-start ml-10 2xl:ml-16 2xl:mt-12">
             <a href="{{ session('previous_url', route('user.dashboard')) }}"
                 class="flex items-center px-4 py-2 rounded-lg border border-blue-500 text-blue-500 
         hover:bg-blue-500 hover:text-white transition duration-300 group shadow-lg">
@@ -34,7 +34,7 @@
                 <span class="text-sm font-medium">Kembali</span>
             </a>
         </div>
-        <div class="ml-[25%]">
+        <div class="ml-[25%] 2xl:ml-[29%]">
             <h1 class="text-2xl font-extrabold text-gray-800 tracking-wide">Data Penyakit Hewan Ternak Sapi</h1>
         </div>
     </div>
@@ -43,12 +43,12 @@
     <div class="max-w-5xl mx-auto mb-12" id="tabelSolusi">
         <div class="flex justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg">
             <div>
-                <h3 class="text-lg font-semibold">Sistem Diagnosa Kesehatan Sapi</h3>
-                <p class="text-sm">Data Penyakit Kabupaten Boyolali</p>
+                <h3 class="text-lg  2xl:text-xl font-semibold">Sistem Diagnosa Kesehatan Sapi</h3>
+                <p class="text-sm  2xl:text-md">Data Penyakit Kabupaten Boyolali</p>
             </div>
             <form method="GET" action="{{ route('user.aturanPenyakit') }}" class="relative">
                 <input
-                    class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                    class="bg-white w-full pr-11  2xl:text-xl h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                     placeholder="Cari Penyakit..." name="search" value="{{ request('search') }}" />
                 <button
                     class="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 flex items-center justify-center bg-white rounded cursor-pointer"
@@ -66,16 +66,16 @@
             <table class="w-full text-sm text-gray-600 border-collapse">
                 <thead class="bg-gray-100 border-b border-gray-300">
                     <tr>
-                        <th class="px-4 py-2 border text-center">No</th>
-                        <th class="px-4 py-2 border text-center">Nama Penyakit</th>
-                        <th class="px-4 py-2 border text-center">Gejala</th>
-                        <th class="px-4 py-2 border text-center">Solusi</th>
+                        <th class="px-4 py-2  2xl:text-xl border text-center">No</th>
+                        <th class="px-4 py-2  2xl:text-xl border text-center">Nama Penyakit</th>
+                        <th class="px-4 py-2  2xl:text-xl border text-center">Gejala</th>
+                        <th class="px-4 py-2  2xl:text-xl border text-center">Solusi</th>
                     </tr>
                 </thead>
                 @forelse ($penyakitPaginated as $penyakit)
                     @php $aturan = $penyakit->aturanPenyakit; @endphp
                     @foreach ($aturan as $index => $item)
-                        <tr class="border hover:bg-gray-50 text-center">
+                        <tr class="border  2xl:text-xl hover:bg-gray-50 text-center">
                             {{-- Baris pertama dari penyakit --}}
                             @if ($index === 0)
                                 <td class="px-4 py-3 border border-gray-300" rowspan="{{ $aturan->count() }}">
@@ -108,7 +108,7 @@
                 </tbody>
             </table>
             <!-- Pagination -->
-            <div class="flex justify-between items-center px-6 py-4 bg-gray-50">
+            <div class="flex justify-between items-center 2xl:text-xl px-6 py-4 bg-gray-50">
                 <div class="text-sm text-gray-500">
                     Menampilkan
                     <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->lastItem() ?? 0 }}</b>

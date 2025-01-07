@@ -53,49 +53,41 @@
         </div>
     @endif
 
-    @include('components.dropSettings')
+    <div class="hidden xl:block">
+        @include('components.dropSettings')
+    </div>
     <main>
-        <div class="py-10 px-0">
+        <div class="xl:py-10 px-4 mt-0">
             <div id="halamanAtas" class="2xl:h-[88vh]">
-                <div class="ml-20">
-                    <!-- Section 1: Sistem Pakar Diagnosa Kesehatan Sapi -->
-                    <div class="mb-10 flex flex-col md:flex-row">
-                        <div class="md:w-1/2 p-8 mt-12  2xl:mt-36">
-                            <h2 class="text-5xl font-bold 2xl:text-7xl text-gray-800">Sistem Pakar Diagnosa
-                                Kesehatan
-                                Sapi</h2>
-                            <p class="text-gray-600 mt-4 2xl:text-2xl">Sistem pakar untuk diagnosa kesehatan
-                                sapi untuk
-                                membantu
-                                mendeteksi
-                                penyakit secara cepat dan tepat.</p>
+                <div class="ml-4 2xl:ml-20">
+                    <div class="mb-10 flex flex-col md:flex-row 2xl:mb-16">
+                        <div class="md:w-1/2 p-8 2xl:mt-36">
+                            <h2 class="xl:text-5xl text-lg font-bold 2xl:text-7xl text-gray-800">Sistem Pakar
+                                Diagnosa Kesehatan Sapi</h2>
+                            <p class="text-gray-600 mt-4 text-base sm:text-lg md:text-xl 2xl:text-2xl">Sistem pakar
+                                untuk diagnosa kesehatan sapi untuk membantu mendeteksi penyakit secara cepat dan tepat.
+                            </p>
                             <button
                                 class="mt-6 bg-orange-400 text-white 2xl:text-2xl font-semibold py-2 px-6 2xl:py-4 2xl:px-8 rounded-full hover:bg-orange-500"><a
-                                    href="/diagnosa/options">Mulai
-                                    Diagnosa</a></button>
+                                    href="/diagnosa/options">Mulai Diagnosa</a></button>
                         </div>
-                        <div class="md:w-1/2 flex justify-center p-8 relative">
-                            <!-- Background Orange placed behind the image -->
+                        <div class="md:w-1/2 flex justify-center ml-3 p-8 relative">
                             <div
-                                class="absolute lg:max-w-80 lg:ml-20 lg:h-80 xl:ml-40 2xl:ml-48 2xl:mt-20  2xl:max-w-[33rem] 2xl:h-5/6 inset-0 bg-gradient-to-r from-orange-300 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl z-0 mt-8">
+                                class="absolute lg:max-w-80 lg:ml-20 lg:h-80 xl:ml-40 2xl:ml-48 2xl:mt-20 ml-2 w-[83%] h-[76%] rounded-xl 2xl:max-w-[33rem] 2xl:h-5/6 inset-0 bg-gradient-to-r from-orange-300 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl z-0 mt-10">
                             </div>
                             <img src="/images/sapii.png" alt="Cow Image"
-                                class="relative rounded-lg lg:ml-3 2xl:w-3/5 2xl:mt-14 lg:w-80 shadow-lg z-10 -ml-10">
+                                class="relative rounded-lg lg:ml-3 2xl:w-3/5 2xl:mt-14 lg:w-80 shadow-lg z-10 -ml-10 max-w-full">
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <div id="section" class="2xl:h-screen">
-                <!-- Section 2: Daftar Penyakit Hewan Ternak -->
-                <div class=" bg-orange-100 rounded-lg shadow-lg p-10" id="latar">
-                    <div class="flexitems-center text-center">
+                <div class="bg-orange-100 rounded-lg shadow-lg p-10 " id="latar">
+                    <div class="text-center">
                         <div class="relative inline-block">
-                            <!-- Bayangan belakang -->
                             <div class="absolute -bottom-2 -right-2 2xl:h-16 bg-orange-500 rounded-lg w-full h-full">
                             </div>
-                            <!-- Kotak utama -->
                             <div
                                 class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-2xl font-semibold">
                                 Daftar Penyakit
@@ -104,38 +96,27 @@
                     </div>
                     <div class="flex mt-6">
                         <img src="/images/dokter.png" alt="Doctor Illustration"
-                            class="w-96 2xl:w-2/5 h-96 2xl:h-3/5 ml-20 mt-10 absolute">
+                            class="w-72 2xl:w-1/3 h-72 2xl:h-3/5 mt-10 xl:ml-16 xl:w-96 xl:h-96 -ml-8 absolute max-w-full">
                     </div>
-                    <div class="mt-[10%] ml-[45%] 2xl:mt-[15%] 2xl:ml-[52%]">
+                    <div class="mt-[22rem] xl:ml-[45%] xl:mt-40 2xl:mt-72 2xl:ml-[52%]">
                         <h2
                             class="text-gray-700 text-xl 2xl:text-5xl xl:text-4xl 2xl:w-[48rem] xl:w-[36rem] font-semibold">
-                            Daftar
-                            Penyakit Hewan
-                            Ternak Sapi
-                            Di Kabupaten
-                            Boyolali</h2>
+                            Daftar Penyakit Hewan Ternak Sapi Di Kabupaten Boyolali</h2>
                         <p class="text-gray-600 2xl:text-lg 2xl:w-[45rem] mt-2 xl:w-[36rem]">Mulai dari berbagai
-                            penyakit sapi
-                            beserta penyebab
-                            dan
-                            pencegahannya
-                            untuk
-                            meningkatkan kesehatan hewan.</p>
+                            penyakit sapi beserta penyebab dan pencegahannya untuk meningkatkan kesehatan hewan.</p>
                         <button
                             class="mt-6 bg-orange-400 2xl:text-lg text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">
                             <a href="/User/penyakit">Cek Penyakit</a></button>
                     </div>
                 </div>
             </div>
+
             <div class="section3">
-                <!-- Section 3: Manfaat Sistem -->
-                <div class="flex-row" id="latar3">
-                    <div class="flexitems-center text-center mt-16" id="footerUser">
+                <div class="flex-row min-h-screen" id="latar3">
+                    <div class="text-center mt-16" id="footerUser">
                         <div class="relative inline-block">
-                            <!-- Bayangan belakang -->
                             <div class="absolute -bottom-2 -right-2 2xl:h-16 bg-orange-500 rounded-lg w-full h-full">
                             </div>
-                            <!-- Kotak utama -->
                             <div
                                 class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-2xl font-semibold">
                                 Manfaat Sistem
@@ -147,7 +128,7 @@
                             <div class="absolute -bottom-2 2xl:mt-1 -right-2 bg-orange-500 rounded-lg w-full h-full">
                             </div>
                             <div
-                                class="relative bg-white 2xl:text-2xl 2xl:max-w-[45rem] border border-black px-4 py-2 rounded-lg text-black font-semibold">
+                                class="relative bg-white 2xl:text-2xl xl:ml-2 xl:w-[45rem] -ml-12 w-[18rem] 2xl:max-w-[45rem] border border-black px-4 py-2 rounded-lg text-black font-semibold">
                                 <p>
                                     sistem ini bisa membantu peternak mengambil langkah cepat dalam menangani penyakit,
                                     mencegah penyebaran penyakit lebih lanjut, serta mengurangi risiko kerugian ekonomi
@@ -158,16 +139,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ml-[60%] mt-20 2xl:mt-1">
+                    <div class="ml-[60%] hidden xl:block 2xl:block mt-20 2xl:mt-1">
                         <img src="/images/footerSapi.png" alt="Doctor Illustration"
-                            class="ml-20 2xl:-mt-80 2xl:w-[30rem] -mt-80 absolute">
+                            class="ml-20 2xl:-mt-80 2xl:w-[30rem] -mt-80">
+
                     </div>
                 </div>
             </div>
-        </div>
     </main>
-    {{-- Footer --}}
-    <footer class="p-5 bg-orange-500 text-center text-white mt-12">
+    <script>
+        // Tailwind Custom Script for Smooth Scroll
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="p-5 bg-orange-500 text-center text-white  xl:mt-0 2xl:mt-0 2xl:text-xl">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>

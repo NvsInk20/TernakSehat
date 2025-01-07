@@ -19,10 +19,12 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 font-sans">
+<body class="bg-gradient-to-br from-orange-100 min-h-screen via-orange-200 to-orange-300 font-sans flex flex-col">
     <!-- Navbar -->
-    @include('components.navbar')
-    @include('components.dropSettings')
+    <div class="flex-none">
+        @include('components.navbar')
+        @include('components.dropSettings')
+    </div>
     @if (session('success'))
         <div class="text-green-600 text-sm mb-2 mt-6 text-center">{{ session('success') }}</div>
     @endif
@@ -30,9 +32,8 @@
     @if (session('error'))
         <div class="text-red-600 text-sm mb-4 text-center">{{ session('error') }}</div>
     @endif
-
     <!-- Main Content -->
-    <main class="flex flex-col items-center 2xl:-mt-[10rem] justify-center min-h-screen px-4" id="diagnosaContent">
+    <main class="flex-grow flex flex-col overflow-y-auto items-center justify-center px-4" id="diagnosaContent">
         <!-- Judul Halaman -->
         <h1 class="text-4xl font-extrabold text-gray-800 mb-12 tracking-wide">Hasil Diagnosa</h1>
 
@@ -65,7 +66,8 @@
                     <!-- Gejala yang Tidak Masuk dalam Hasil Diagnosa -->
                     @if (!empty($gejalaTidakMasuk))
                         <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                            <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Gejala yang Dipilih Tetapi
+                            <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Gejala yang Dipilih
+                                Tetapi
                                 Tidak
                                 Terdaftar dalam Diagnosa</h3>
                             <ol class="list-decimal list-inside 2xl:text-xl text-gray-700">
@@ -152,7 +154,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white mt-12 2xl:text-xl 2xl:mt-auto">
+    <footer class="p-5 bg-orange-500 text-center text-white mt-12 2xl:text-xl">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>
