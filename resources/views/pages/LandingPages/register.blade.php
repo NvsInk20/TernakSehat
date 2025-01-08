@@ -50,7 +50,8 @@
 
     <!-- Registrasi Pengguna -->
     <div class="flex flex-col items-center justify-center min-h-screen">
-        <section class="bg-white shadow-lg rounded-lg p-8 w-full max-w-3xl relative bg-opacity-90 backdrop-blur-md">
+        <section
+            class="bg-white shadow-lg rounded-lg p-8 w-[21rem] lg:w-full max-w-3xl relative bg-opacity-90 backdrop-blur-md">
             <div class="text-center">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Registrasi</h2>
             </div>

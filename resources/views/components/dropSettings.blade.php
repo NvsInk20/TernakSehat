@@ -21,7 +21,7 @@
             <div class="py-3 2xl:py-4">
                 <!-- Form untuk Settings -->
                 <a href="{{ route('profile.settings', Auth::user()->kode_auth) }}"
-                    class="block px-5 py-3 2xl:text-2xl text-md text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
+                    class="block px-5 py-3 2xl:text-xl text-md text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
                     <img src="/images/settings.png" alt="settings" class="mr-3 w-6 2xl:w-10">
                     Settings
                 </a>
@@ -31,7 +31,7 @@
                 <form action="/logout" method="POST">
                     @csrf
                     <button type="submit"
-                        class="px-5 py-3 text-md 2xl:text-2xl text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
+                        class="px-5 py-3 text-md 2xl:text-xl text-gray-700 hover:bg-gray-100 rounded flex items-center w-full text-left">
                         <img src="/images/logout.png" alt="logout" class="mr-3 w-6 2xl:w-10">
                         Keluar
                     </button>

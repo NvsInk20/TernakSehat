@@ -20,38 +20,19 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen">
-    @include('components.navbar')
-    @if (session('success') || session('error'))
-        <div class="absolute top-10 left-1/2 ml-28 transform -translate-x-1/2 bg-white shadow-lg rounded-lg p-4 w-[90%] sm:w-[400px] flex items-center space-x-4 z-50 transition-opacity duration-300"
+    @if (session('success'))
+        <div class="bg-green-500 text-white lg:p-3 pl-16 p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
-            @if (session('success'))
-                <div class="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span class="text-green-600 text-sm font-medium">{{ session('success') }}</span>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <span class="text-red-600 text-sm font-medium">{{ session('error') }}</span>
-                </div>
-            @endif
-
-            <button @click="show = false" class="text-gray-500 hover:text-gray-700 ml-auto focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            {{ session('success') }}
         </div>
     @endif
+
+    @if (session('error'))
+        <div class="bg-red-500 text-white p-3 2xl:text-xl rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+    @include('components.navbar')
 
     <div class="hidden xl:block">
         @include('components.dropSettings')
@@ -108,7 +89,7 @@
                         <p class="text-gray-600 2xl:text-lg text-sm 2xl:w-[45rem] mt-2 xl:w-[36rem]">Mulai dari berbagai
                             penyakit sapi beserta penyebab dan pencegahannya untuk meningkatkan kesehatan hewan.</p>
                         <button
-                            class="mt-6 bg-orange-400 2xl:text-lg text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">
+                            class="mt-6 bg-orange-400 text-white 2xl:text-2xl font-semibold py-2 px-6 2xl:py-4 2xl:px-8  rounded-full hover:bg-orange-500">
                             <a href="/User/penyakit">Cek Penyakit</a></button>
                     </div>
                 </div>
@@ -143,8 +124,7 @@
                         </div>
                     </div>
                     <div class="ml-[60%] hidden xl:block 2xl:block mt-20 2xl:mt-1">
-                        <img src="/images/footerSapi.png" alt="Doctor Illustration"
-                            class="ml-20 2xl:w-[30rem] -mt-80">
+                        <img src="/images/footerSapi.png" alt="Doctor Illustration" class="ml-20 2xl:w-[30rem] -mt-80">
 
                     </div>
                 </div>

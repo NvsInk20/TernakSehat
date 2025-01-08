@@ -20,8 +20,10 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-orange-100">
-    @include('components.dropSettings')
+<body class="bg-orange-100 min-h-screen flex items-center justify-center">
+    <div class="hidden sm:block">
+        @include('components.dropSettings')
+    </div>
     @if (session('success'))
         <div class="bg-green-500 text-white p-3 mb-4 transition-opacity duration-300" x-data="{ show: true }"
             x-show="show" x-init="setTimeout(() => show = false, 5000)">
@@ -35,11 +37,11 @@
         </div>
     @endif
 
-    <div class="bg-white shadow-lg rounded-lg w-full my-10 max-w-lg mx-auto p-6 sm:p-10">
+    <div class="bg-white shadow-lg rounded-lg w-full my-10 mx-4 xl:my-10 max-w-lg xl:mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
-        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Perbarui Akun</h1>
+        <h1 class="xl:text-2xl text-xl font-semibold text-center mb-6 text-gray-800">Perbarui Akun</h1>
 
         <!-- Update Profile Form -->
         <form action="{{ route('profile.update', $user->kode_auth) }}" method="POST" enctype="multipart/form-data">

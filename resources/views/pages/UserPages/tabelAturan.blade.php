@@ -19,36 +19,41 @@
 
 <body class="bg-gray-100 min-h-full">
     @include('components.navbar')
-    @include('components.dropSettings')
+    <div class="hidden sm:block">
+        @include('components.dropSettings')
+    </div>
 
-    <div class="flex -mb-14">
-        <div class="flex justify-start ml-10 2xl:ml-16 2xl:mt-12">
+    <div class="flex flex-col sm:flex-row 2xl:-mb-40 mt-32 xl:-mb-16 xl:mt-0 2xl:mt-0">
+        <div
+            class="flex hidden sm:block justify-center sm:justify-start mb-4 sm:mb-0 ml-0 sm:ml-10 2xl:ml-16 2xl:mt-12">
             <a href="{{ session('previous_url', route('user.dashboard')) }}"
                 class="flex items-center px-4 py-2 rounded-lg border border-blue-500 text-blue-500 
         hover:bg-blue-500 hover:text-white transition duration-300 group shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-5 h-5 mr-2 group-hover:-translate-x-2 transition-transform duration-300">
+                    class="w-5 h-5 2xl:w-7 2xl:h-7 mr-2 group-hover:-translate-x-2 transition-transform duration-300">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                 </svg>
-                <span class="text-sm font-medium">Kembali</span>
+                <span class="text-sm 2xl:text-xl font-medium">Kembali</span>
             </a>
         </div>
-        <div class="ml-[25%] 2xl:ml-[29%]">
-            <h1 class="text-2xl font-extrabold text-gray-800 tracking-wide">Data Penyakit Hewan Ternak Sapi</h1>
+        <div class="text-center sm:ml-[23%]  2xl:ml-[29%]">
+            <h1 class="xl:text-2xl ml-5 2xl:text-2xl text-lg font-extrabold text-gray-800 tracking-wide">Data Penyakit
+                Hewan Ternak Sapi</h1>
         </div>
     </div>
 
-
-    <div class="max-w-5xl mx-auto mb-12" id="tabelSolusi">
-        <div class="flex justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg">
-            <div>
-                <h3 class="text-lg  2xl:text-xl font-semibold">Sistem Diagnosa Kesehatan Sapi</h3>
-                <p class="text-sm  2xl:text-md">Data Penyakit Kabupaten Boyolali</p>
+    <div class="max-w-full sm:max-w-5xl 2xl:ml-80 mx-auto mb-36 px-4 sm:px-0" id="tabelSolusi">
+        <div
+            class="flex flex-col sm:flex-row 2xl:w-[80rem] justify-between items-center mb-4 bg-orange-500 text-white p-3 rounded-lg">
+            <div class="text-center sm:text-left">
+                <h3 class="text-lg 2xl:text-xl font-semibold">Sistem Diagnosa Kesehatan Sapi</h3>
+                <p class="text-sm 2xl:text-md">Data Penyakit Kabupaten Boyolali</p>
             </div>
-            <form method="GET" action="{{ route('user.aturanPenyakit') }}" class="relative">
+            <form method="GET" action="{{ route('user.aturanPenyakit') }}"
+                class="relative mt-4 sm:mt-0 w-full sm:w-auto">
                 <input
-                    class="bg-white w-full pr-11  2xl:text-xl h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                    class="bg-white w-full pr-11 2xl:text-xl h-10 pl-3 py-2 placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
                     placeholder="Cari Penyakit..." name="search" value="{{ request('search') }}" />
                 <button
                     class="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 flex items-center justify-center bg-white rounded cursor-pointer"
@@ -62,36 +67,32 @@
             </form>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md overflow-x-auto sm:overflow-hidden 2xl:w-[80rem]">
             <table class="w-full text-sm text-gray-600 border-collapse">
                 <thead class="bg-gray-100 border-b border-gray-300">
                     <tr>
-                        <th class="px-4 py-2  2xl:text-xl border text-center">No</th>
-                        <th class="px-4 py-2  2xl:text-xl border text-center">Nama Penyakit</th>
-                        <th class="px-4 py-2  2xl:text-xl border text-center">Gejala</th>
-                        <th class="px-4 py-2  2xl:text-xl border text-center">Solusi</th>
+                        <th class="px-4 py-2 2xl:text-xl border text-center">No</th>
+                        <th class="px-4 py-2 2xl:text-xl border text-center">Nama Penyakit</th>
+                        <th class="px-4 py-2 2xl:text-xl border text-center">Gejala</th>
+                        <th class="px-4 py-2 2xl:text-xl border text-center">Solusi</th>
                     </tr>
                 </thead>
                 @forelse ($penyakitPaginated as $penyakit)
                     @php $aturan = $penyakit->aturanPenyakit; @endphp
                     @foreach ($aturan as $index => $item)
-                        <tr class="border  2xl:text-xl hover:bg-gray-50 text-center">
-                            {{-- Baris pertama dari penyakit --}}
+                        <tr class="border 2xl:text-xl hover:bg-gray-50 text-center">
                             @if ($index === 0)
                                 <td class="px-4 py-3 border border-gray-300" rowspan="{{ $aturan->count() }}">
-                                    {{-- Hitung nomor berdasarkan halaman --}}
                                     {{ $loop->parent->iteration + $penyakitPaginated->firstItem() - 1 }}
                                 </td>
                                 <td class="px-4 py-3 border border-gray-300" rowspan="{{ $aturan->count() }}">
                                     {{ $penyakit->nama_penyakit ?? '-' }}
                                 </td>
                             @endif
-                            {{-- Tampilkan gejala --}}
                             <td class="px-4 py-3 border border-gray-300">
                                 {{ $item->gejala->nama_gejala ?? '-' }}
                                 <span class="text-gray-500 font-bold">({{ $item->jenis_gejala ?? '-' }})</span>
                             </td>
-                            {{-- Baris pertama dari solusi --}}
                             @if ($index === 0)
                                 <td class="px-4 py-3 border border-gray-300 text-justify"
                                     rowspan="{{ $aturan->count() }}">
@@ -105,71 +106,55 @@
                         <td colspan="6" class="px-4 py-3 text-center text-gray-500">Data tidak ditemukan</td>
                     </tr>
                 @endforelse
-                </tbody>
             </table>
-            <!-- Pagination -->
-            <div class="flex justify-between items-center 2xl:text-xl px-6 py-4 bg-gray-50">
-                <div class="text-sm text-gray-500">
+            <div
+                class="flex flex-row sm:flex-row justify-between items-center text-sm 2xl:text-xl px-6 py-4 bg-gray-50">
+                <div class="text-center hidden sm:block sm:text-left text-gray-500">
                     Menampilkan
                     <b>{{ $penyakitPaginated->firstItem() ?? 0 }}-{{ $penyakitPaginated->lastItem() ?? 0 }}</b>
                     dari {{ $penyakitPaginated->total() }}
                 </div>
-                <div class="flex space-x-2 items-center">
-                    <p class="text-sm text-gray-500">
-                        Showing {{ $penyakitPaginated->firstItem() ?? 0 }} to
-                        {{ $penyakitPaginated->lastItem() ?? 0 }}
-                        of {{ $penyakitPaginated->total() }}
-                    </p>
-                    <div class="flex space-x-1">
-                        {{-- Tombol Halaman Sebelumnya --}}
-                        @if ($penyakitPaginated->onFirstPage())
-                            <button
-                                class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-gray-400 bg-white border border-gray-200 rounded cursor-not-allowed">
-                                Prev
+                <div class="flex justify-center sm:justify-end space-x-1 items-center">
+                    @if ($penyakitPaginated->onFirstPage())
+                        <button
+                            class="px-3 py-1 text-gray-400 bg-white border border-gray-200 rounded cursor-not-allowed">
+                            Prev
+                        </button>
+                    @else
+                        <a href="{{ $penyakitPaginated->previousPageUrl() }}"
+                            class="px-3 py-1 text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50">
+                            Prev
+                        </a>
+                    @endif
+
+                    @foreach ($penyakitPaginated->getUrlRange(1, $penyakitPaginated->lastPage()) as $page => $url)
+                        @if ($page == $penyakitPaginated->currentPage())
+                            <button class="px-3 py-1 text-white bg-slate-800 border border-slate-800 rounded">
+                                {{ $page }}
                             </button>
                         @else
-                            <a href="{{ $penyakitPaginated->previousPageUrl() }}"
-                                class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                                Prev
+                            <a href="{{ $url }}"
+                                class="px-3 py-1 text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50">
+                                {{ $page }}
                             </a>
                         @endif
+                    @endforeach
 
-                        {{-- Nomor Halaman --}}
-                        @foreach ($penyakitPaginated->getUrlRange(1, $penyakitPaginated->lastPage()) as $page => $url)
-                            @if ($page == $penyakitPaginated->currentPage())
-                                <button
-                                    class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-                                    {{ $page }}
-                                </button>
-                            @else
-                                <a href="{{ $url }}"
-                                    class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                                    {{ $page }}
-                                </a>
-                            @endif
-                        @endforeach
-
-                        {{-- Tombol Halaman Selanjutnya --}}
-                        @if ($penyakitPaginated->hasMorePages())
-                            <a href="{{ $penyakitPaginated->nextPageUrl() }}"
-                                class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                                Next
-                            </a>
-                        @else
-                            <button
-                                class="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-gray-400 bg-white border border-gray-200 rounded cursor-not-allowed">
-                                Next
-                            </button>
-                        @endif
-                    </div>
+                    @if ($penyakitPaginated->hasMorePages())
+                        <a href="{{ $penyakitPaginated->nextPageUrl() }}"
+                            class="px-3 py-1 text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50">
+                            Next
+                        </a>
+                    @else
+                        <button
+                            class="px-3 py-1 text-gray-400 bg-white border border-gray-200 rounded cursor-not-allowed">
+                            Next
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Tambahkan script tambahan jika diperlukan
-    </script>
 </body>
 
 </html>

@@ -27,7 +27,8 @@
             {{ session('error') }}
         </div>
     @endif
-    <div class="bg-white shadow-lg rounded-lg mt-10 mb-10 w-full max-w-md mx-auto p-6 sm:p-10 lg:max-w-lg">
+    <div
+        class="bg-white shadow-lg rounded-lg mt-10 mb-10 w-full my-10 mx-4 xl:my-10 max-w-md xl:mx-auto p-6 sm:p-10 lg:max-w-lg">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
