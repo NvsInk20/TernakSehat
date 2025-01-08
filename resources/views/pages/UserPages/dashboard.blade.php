@@ -19,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 min-h-screen">
     @include('components.navbar')
     @if (session('success') || session('error'))
         <div class="absolute top-10 left-1/2 ml-28 transform -translate-x-1/2 bg-white shadow-lg rounded-lg p-4 w-[90%] sm:w-[400px] flex items-center space-x-4 z-50 transition-opacity duration-300"
@@ -56,13 +56,16 @@
     <div class="hidden xl:block">
         @include('components.dropSettings')
     </div>
+    <div class="sm:hidden block mt-28 w-1/2 mx-auto">
+        <img src="/images/logo.png" class="w-40" alt="Logo">
+    </div>
     <main>
         <div class="xl:py-10 px-4 mt-0">
             <div id="halamanAtas" class="2xl:h-[88vh]">
                 <div class="ml-4 2xl:ml-20">
                     <div class="mb-10 flex flex-col md:flex-row 2xl:mb-16">
-                        <div class="md:w-1/2 p-8 2xl:mt-36">
-                            <h2 class="xl:text-5xl text-lg font-bold 2xl:text-7xl text-gray-800">Sistem Pakar
+                        <div class="md:w-1/2 p-8 2xl:mt-36 xl:mt-14 mt-5">
+                            <h2 class="xl:text-5xl text-[23px] font-bold 2xl:text-7xl text-gray-800">Sistem Pakar
                                 Diagnosa Kesehatan Sapi</h2>
                             <p class="text-gray-600 mt-4 text-base sm:text-lg md:text-xl 2xl:text-2xl">Sistem pakar
                                 untuk diagnosa kesehatan sapi untuk membantu mendeteksi penyakit secara cepat dan tepat.
@@ -82,14 +85,14 @@
                 </div>
             </div>
 
-            <div id="section" class="2xl:h-screen">
+            <div id="section" class="2xl:h-screen h-screen">
                 <div class="bg-orange-100 rounded-lg shadow-lg p-10 " id="latar">
                     <div class="text-center">
                         <div class="relative inline-block">
                             <div class="absolute -bottom-2 -right-2 2xl:h-16 bg-orange-500 rounded-lg w-full h-full">
                             </div>
                             <div
-                                class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-2xl font-semibold">
+                                class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black xl:text-2xl text-lg font-semibold">
                                 Daftar Penyakit
                             </div>
                         </div>
@@ -100,9 +103,9 @@
                     </div>
                     <div class="mt-[22rem] xl:ml-[45%] xl:mt-40 2xl:mt-72 2xl:ml-[52%]">
                         <h2
-                            class="text-gray-700 text-xl 2xl:text-5xl xl:text-4xl 2xl:w-[48rem] xl:w-[36rem] font-semibold">
+                            class="text-gray-700 text-lg 2xl:text-5xl xl:text-4xl 2xl:w-[48rem] xl:w-[36rem] font-semibold">
                             Daftar Penyakit Hewan Ternak Sapi Di Kabupaten Boyolali</h2>
-                        <p class="text-gray-600 2xl:text-lg 2xl:w-[45rem] mt-2 xl:w-[36rem]">Mulai dari berbagai
+                        <p class="text-gray-600 2xl:text-lg text-sm 2xl:w-[45rem] mt-2 xl:w-[36rem]">Mulai dari berbagai
                             penyakit sapi beserta penyebab dan pencegahannya untuk meningkatkan kesehatan hewan.</p>
                         <button
                             class="mt-6 bg-orange-400 2xl:text-lg text-white font-semibold py-2 px-6 rounded-full hover:bg-orange-500">
@@ -112,23 +115,23 @@
             </div>
 
             <div class="section3">
-                <div class="flex-row min-h-screen" id="latar3">
+                <div class="flex-row 2xl:min-h-60" id="latar3">
                     <div class="text-center mt-16" id="footerUser">
                         <div class="relative inline-block">
                             <div class="absolute -bottom-2 -right-2 2xl:h-16 bg-orange-500 rounded-lg w-full h-full">
                             </div>
                             <div
-                                class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-2xl font-semibold">
+                                class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-lg xl:text-2xl font-semibold">
                                 Manfaat Sistem
                             </div>
                         </div>
                     </div>
                     <div class="flexitems-center mt-16" id="footerContent">
-                        <div class="relative inline-block  2xl:ml-[11rem]">
+                        <div class="relative inline-block 2xl:ml-[11rem]">
                             <div class="absolute -bottom-2 2xl:mt-1 -right-2 bg-orange-500 rounded-lg w-full h-full">
                             </div>
                             <div
-                                class="relative bg-white 2xl:text-2xl xl:ml-2 xl:w-[45rem] -ml-12 w-[18rem] 2xl:max-w-[45rem] border border-black px-4 py-2 rounded-lg text-black font-semibold">
+                                class="relative bg-white text-md 2xl:text-2xl xl:text-xl xl:ml-2 xl:w-[38rem] -ml-12 w-[18rem] 2xl:w-[47rem] border border-black px-4 py-2 rounded-lg text-black font-semibold">
                                 <p>
                                     sistem ini bisa membantu peternak mengambil langkah cepat dalam menangani penyakit,
                                     mencegah penyebaran penyakit lebih lanjut, serta mengurangi risiko kerugian ekonomi
@@ -141,7 +144,7 @@
                     </div>
                     <div class="ml-[60%] hidden xl:block 2xl:block mt-20 2xl:mt-1">
                         <img src="/images/footerSapi.png" alt="Doctor Illustration"
-                            class="ml-20 2xl:-mt-80 2xl:w-[30rem] -mt-80">
+                            class="ml-20 2xl:w-[30rem] -mt-80">
 
                     </div>
                 </div>
@@ -161,7 +164,7 @@
         });
     </script>
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white  xl:mt-0 2xl:mt-0 2xl:text-xl">
+    <footer class="p-5 bg-orange-500 text-center text-white mt-8 xl:mt-0 2xl:mt-0 2xl:text-xl">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>
