@@ -20,14 +20,14 @@
 
 <body class="bg-orange-100 min-h-screen flex flex-col">
     @if (session('success'))
-        <div class="bg-green-500 text-white p-3 2xl:text-2xl rounded mb-4 transition-opacity duration-300"
+        <div class="bg-green-500 text-white lg:p-3 pl-16 p-3 2xl:text-2xl rounded mb-4 transition-opacity duration-300"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="bg-red-500 text-white p-3 2xl:text-2xl rounded mb-4">
+        <div class="bg-red-500 text-white lg:p-3 pl-16 p-3 2xl:text-2xl rounded mb-4">
             {{ session('error') }}
         </div>
     @endif

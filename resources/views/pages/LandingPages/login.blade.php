@@ -45,17 +45,15 @@
     <!-- Container utama -->
     <div class="min-h-screen flex flex-col items-center justify-center relative">
         <!-- Tombol Kembali -->
-        <div class="hidden sm:block">
-            <a href="{{ route('landingpage') }}"
-                class="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-orange-400 transition duration-300 flex items-center group">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 transform transition-transform duration-300 group-hover:-translate-x-1 mr-2"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                <span>Kembali</span>
-            </a>
-        </div>
+        <a href="{{ route('landingpage') }}"
+            class="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-orange-400 transition duration-300 flex items-center group">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transform transition-transform duration-300 group-hover:-translate-x-1 mr-2"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Kembali</span>
+        </a>
 
         <!-- Card login -->
         <div class="form-card shadow-lg rounded-lg p-8 lg:w-full w-[21rem] max-w-lg relative">

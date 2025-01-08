@@ -21,14 +21,14 @@
 
 <body class="bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 font-sans">
     @if (session('success'))
-        <div class="bg-green-500 text-white p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
+        <div class="bg-green-500 text-white lg:p-3 pl-16 p-3 2xl:text-xl rounded mb-4 transition-opacity duration-300"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
             {{ session('success') }}
         </div>
     @endif
 
     @if (session('error'))
-        <div class="bg-red-500 text-white p-3 2xl:text-xl rounded mb-4">
+        <div class="bg-red-500 text-white lg:p-3 pl-16 p-3 2xl:text-xl rounded mb-4">
             {{ session('error') }}
         </div>
     @endif
