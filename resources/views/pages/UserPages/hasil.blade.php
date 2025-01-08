@@ -23,7 +23,9 @@
     <!-- Navbar -->
     <div class="flex-none">
         @include('components.navbar')
-        @include('components.dropSettings')
+        <div class="hidden sm:block">
+            @include('components.dropSettings')
+        </div>
     </div>
     @if (session('success'))
         <div class="text-green-600 text-sm mb-2 mt-6 text-center">{{ session('success') }}</div>
@@ -33,7 +35,9 @@
         <div class="text-red-600 text-sm mb-4 text-center">{{ session('error') }}</div>
     @endif
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col overflow-y-auto items-center justify-center px-4" id="diagnosaContent">
+    <main
+        class="flex-grow flex mt-24 mb-14 xl:mb-0 2xl:mb-0 xl:mt-0 2xl:mt-0 flex-col overflow-y-auto items-center justify-center px-4"
+        id="diagnosaContent">
         <!-- Judul Halaman -->
         <h1 class="text-4xl font-extrabold text-gray-800 mb-12 tracking-wide">Hasil Diagnosa</h1>
 
@@ -97,7 +101,7 @@
             @endif
 
             <!-- Penyakit Tertinggi dan Kedua -->
-            @if ($penyakitTertinggi)
+            @if (!empty($penyakitTertinggi))
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan Kemungkinan
                         Alternatif
@@ -115,7 +119,7 @@
                 </div>
             @endif
 
-            @if ($penyakitKedua)
+            @if (!empty($penyakitKedua))
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan Kemungkinan
                         Altenatif Kedua

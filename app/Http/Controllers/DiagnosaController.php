@@ -115,7 +115,7 @@ public function showResult()
         return view('pages.UserPages.hasil', [
             'diagnosaUtama' => [
                 'penyakit' => 'Tidak ada penyakit',
-                'gejala' => [],
+                'gejala' => ['Tidak ada gejala yang dipilih'],
                 'solusi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
             ],
             'kemungkinan' => [],

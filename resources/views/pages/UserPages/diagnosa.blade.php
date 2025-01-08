@@ -22,17 +22,29 @@
 <body class="bg-orange-100 font-sans">
     <!-- Navbar -->
     @include('components.navbar')
-    @include('components.dropSettings')
+    <div class="hidden sm:block">
+        @include('components.dropSettings')
+    </div>
 
     <!-- Main Content -->
-    <main class="flex flex-col items-center justify-center">
+    <main
+        class="flex flex-col items-center min-h-[43rem] xl:min-h-full 2xl:h-[42rem] justify-center xl:h-[30rem] 2xl:min-h-full 2xl:mb-[12rem]">
         <h1 class="text-3xl font-bold text-gray-800 2xl:text-4xl 2xl:mt-10 2xl:mb-24 mb-9">Halaman Diagnosa</h1>
-        <div class="relative bg-white rounded-lg 2xl:max-w-2xl 2xl:h-auto shadow-xl p-12 text-center max-w-lg w-full">
+        <div
+            class="relative bg-white 2xl:max-w-2xl 2xl:mt-14 rounded-lg shadow-xl p-12 max-w-[20rem] text-center xl:max-w-lg w-full">
+            <!-- Background Design -->
             <div
-                class="absolute bg-orange-300 rounded-lg transform -rotate-6 -z-10 top-6 left-6 w-full h-full scale-110">
+                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-3 xl:left-4 2xl:left-4 w-[93%] xl:w-full 2xl:w-full h-full scale-105">
             </div>
             <div
-                class="absolute bg-orange-400 rounded-lg transform -rotate-3 -z-20 top-10 left-10 w-full h-full scale-110">
+                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 hidden sm:block left-6 w-full h-full scale-105">
+            </div>
+
+            <div
+                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-4 w-full hidden sm:block h-full scale-105">
+            </div>
+            <div
+                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 left-6 w-full hidden sm:block h-full scale-105">
             </div>
 
             <!-- Pertanyaan -->
@@ -61,7 +73,7 @@
                     Tolong diperhatikan dengan baik gejala yang akan muncul.
                 </p>
                 <a href="{{ route('diagnosa.index') }}"
-                    class="mt-8 inline-block bg-orange-400 2xl:text-2xl text-white font-semibold 2xl:px-9 2xl:py-8 py-3 px-8 rounded-full hover:bg-orange-500">
+                    class="mt-8 inline-block bg-orange-400 2xl:text-2xl text-white font-semibold 2xl:px-9 2xl:py-5 xl:py-3 xl:px-8 px-5 py-3 rounded-full hover:bg-orange-500">
                     Mulai Lakukan Diagnosa
                 </a>
             @endif
@@ -69,7 +81,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center 2xl:text-xl text-white absolute w-full bottom-0">
+    <footer class="p-5 bg-orange-500 text-center text-white 2xl:text-xl relative w-full mt-[93px] 2xl:mt-auto bottom-0">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>

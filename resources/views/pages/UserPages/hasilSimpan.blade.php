@@ -34,10 +34,13 @@
     @endif
     <!-- Navbar -->
     @include('components.navbar')
-    @include('components.dropSettings')
+    <div class="hidden sm:block">
+        @include('components.dropSettings')
+    </div>
 
     <!-- Main Content -->
-    <main class="flex flex-col items-center justify-center min-h-screen px-4" id="diagnosaContent">
+    <main class="flex flex-col mt-32 mb-20 xl:my-0 2xl:my-0 items-center justify-center min-h-screen px-4"
+        id="diagnosaContent">
         <!-- Judul Halaman -->
         <h1 class="text-4xl font-extrabold text-gray-800 mb-12 tracking-wide">Hasil Diagnosa</h1>
 

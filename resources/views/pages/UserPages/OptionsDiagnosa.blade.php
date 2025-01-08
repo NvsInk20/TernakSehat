@@ -22,26 +22,28 @@
 <body class="bg-orange-100 font-sans">
     <!-- Navbar -->
     @include('components.navbar')
-    @include('components.dropSettings')
-
+    <div class="hidden sm:block">
+        @include('components.dropSettings')
+    </div>
     <!-- Main Content -->
     <main
-        class="flex flex-col items-center  h-max 2xl:h-[42rem] justify-center min-h-[10rem] 2xl:min-h-full 2xl:mb-[12rem]">
+        class="flex flex-col items-center min-h-[43rem] xl:min-h-full 2xl:h-[42rem] justify-center xl:h-[30rem] 2xl:min-h-full 2xl:mb-[12rem]">
         <h1 class="text-3xl font-bold text-gray-800 text-center mb-11 2xl:text-4xl">Halaman Diagnosa</h1>
-        <div class="relative bg-white 2xl:max-w-2xl 2xl:mt-14 rounded-lg shadow-xl p-12 text-center max-w-lg w-full">
+        <div
+            class="relative bg-white 2xl:max-w-2xl 2xl:mt-14 rounded-lg shadow-xl p-12 max-w-[20rem] text-center xl:max-w-lg w-full">
             <!-- Background Design -->
             <div
-                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-4 w-full h-full scale-105">
+                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-3 xl:left-4 2xl:left-4 w-[93%] xl:w-full 2xl:w-full h-full scale-105">
             </div>
             <div
-                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 left-6 w-full h-full scale-105">
+                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 hidden sm:block left-6 w-full h-full scale-105">
             </div>
 
             <div
-                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-4 w-full h-full scale-105">
+                class="absolute -z-10 bg-orange-400 rounded-lg transform -rotate-6 top-4 left-4 w-full hidden sm:block h-full scale-105">
             </div>
             <div
-                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 left-6 w-full h-full scale-105">
+                class="absolute -z-20 bg-orange-300 rounded-lg transform -rotate-3 top-6 left-6 w-full hidden sm:block h-full scale-105">
             </div>
 
             <!-- Header -->
