@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('kode_sapi')->nullable();
             $table->string('penyakit_utama')->nullable();
             $table->text('gejala')->nullable();
-            $table->text('solusi')->nullable();
+            $table->text('rekomendasi')->nullable();
             $table->string('penyakit_alternatif_1')->nullable();
             $table->string('penyakit_alternatif_2')->nullable();
             $table->timestamps();

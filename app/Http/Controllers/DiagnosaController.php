@@ -7,7 +7,7 @@ use App\Models\AturanPenyakit;
 use App\Models\RiwayatDiagnosa;
 use App\Models\penyakit;
 use App\Models\gejala;
-use App\Models\solusi;
+use App\Models\rekomendasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -45,7 +45,7 @@ public function answerQuestion(Request $request)
 
     // Ambil semua penyakit dan aturan
     $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
-    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'rekomendasi'])->get();
 
     // Cek apakah ada gejala yang belum dijawab
     $remainingQuestions = AturanPenyakit::whereNotIn('kode_gejala', array_keys($answeredGejala))
@@ -119,7 +119,7 @@ public function showResult()
             'diagnosaUtama' => [
                 'penyakit' => 'Tidak ada penyakit',
                 'gejala' => ['Tidak ada gejala yang dipilih'],
-                'solusi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
+                'rekomendasi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
             ],
             'kemungkinan' => [],
         ]);
@@ -127,7 +127,7 @@ public function showResult()
 
     // Ambil data penyakit dan aturan
     $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
-    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'rekomendasi'])->get();
 
 
     $diagnosaUtama = null;
@@ -159,7 +159,7 @@ public function showResult()
             $diagnosaUtama = [
                 'penyakit' => $p->nama_penyakit,
                 'gejala' => $gejalaTerpenuhi, // Gejala yang dijawab "Iya"
-                'solusi' => $aturanPenyakit->pluck('solusi.solusi')->unique()->toArray(),
+                'rekomendasi' => $aturanPenyakit->pluck('rekomendasi.rekomendasi')->unique()->toArray(),
             ];
             break; // Hentikan pencarian setelah diagnosa utama ditemukan
         }
@@ -195,19 +195,19 @@ public function showResult()
     }
 
     // Ambil solusi untuk penyakit dengan kemungkinan tertinggi
-    $solusiTertinggi = '';
+    $rekomendasiTertinggi = '';
     if ($penyakitTertinggi) {
         $penyakitTertinggiObj = $penyakit->firstWhere('nama_penyakit', $penyakitTertinggi);
         $aturanPenyakitTertinggi = $aturan->where('kode_penyakit', $penyakitTertinggiObj->kode_penyakit);
-        $solusiTertinggi = $aturanPenyakitTertinggi->pluck('solusi.solusi')->unique()->toArray();
+        $rekomendasiTertinggi = $aturanPenyakitTertinggi->pluck('rekomendasi.rekomendasi')->unique()->toArray();
     }
 
     // Solusi untuk penyakit kedua
-    $solusiKedua = [];
+    $rekomendasiKedua = [];
     if ($penyakitKedua) {
         $penyakitKeduaObj = $penyakit->firstWhere('nama_penyakit', $penyakitKedua);
         $aturanPenyakitKedua = $aturan->where('kode_penyakit', $penyakitKeduaObj->kode_penyakit);
-        $solusiKedua = $aturanPenyakitKedua->pluck('solusi.solusi')->unique()->toArray();
+        $rekomendasiKedua = $aturanPenyakitKedua->pluck('rekomendasi.rekomendasi')->unique()->toArray();
     }
 
         // Gejala yang dipilih user tetapi tidak termasuk dalam hasil diagnosa
@@ -241,10 +241,10 @@ public function showResult()
         'kemungkinan' => $kemungkinan,
         'penyakitTertinggi' => $penyakitTertinggi,
         'persentaseTertinggi' => $persentaseTertinggi,
-        'solusiTertinggi' => $solusiTertinggi,
+        'rekomendasiTertinggi' => $rekomendasiTertinggi,
         'penyakitKedua' => $penyakitKedua,
         'persentaseKedua' => $persentaseKedua,
-        'solusiKedua' => $solusiKedua,
+        'rekomendasiKedua' => $rekomendasiKedua,
         'gejalaTidakMasuk' => $gejalaTidakMasuk, // Tambahkan ini
     ]);
 }
@@ -267,13 +267,13 @@ public function showResult()
             'diagnosaUtama' => [
                 'penyakit' => 'Tidak ada penyakit',
                 'gejala' => [],
-                'solusi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
+                'rekomendasi' => ['Sapi dalam kondisi sehat. Pastikan tetap memberikan pakan berkualitas dan lingkungan yang bersih.'],
             ],
             'kemungkinan' => [],
         ]);
     }
     $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
-    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'rekomendasi'])->get();
 
 
     $diagnosaUtama = null;
@@ -300,7 +300,7 @@ public function showResult()
             $diagnosaUtama = [
                 'penyakit' => $p->nama_penyakit,
                 'gejala' => $gejalaTerpenuhi,
-                'solusi' => $aturanPenyakit->pluck('solusi.solusi')->unique()->toArray(),
+                'rekomendasi' => $aturanPenyakit->pluck('rekomendasi.rekomendasi')->unique()->toArray(),
             ];
             break;
         }
@@ -336,7 +336,7 @@ public function showResult()
         'kemungkinan' => $kemungkinan,
         'penyakitTertinggi' => key($kemungkinan),
         'persentaseTertinggi' => current($kemungkinan),
-        'solusiTertinggi' => $diagnosaUtama['solusi'] ?? [],
+        'solusiTertinggi' => $diagnosaUtama['rekomendasi'] ?? [],
         'penyakitKedua' => count($kemungkinan) > 1 ? array_keys($kemungkinan)[1] : null,
         'persentaseKedua' => count($kemungkinan) > 1 ? array_values($kemungkinan)[1] : null,
         'gejalaDipilih' => $gejalaDipilih,
@@ -373,7 +373,7 @@ public function showResult()
     $kemungkinan = $diagnosaHasil['kemungkinan'] ?? [];
     $gejalaDipilih = $diagnosaHasil['gejalaDipilih'] ?? [];
     $penyakitUtama = $diagnosaHasil['diagnosaUtama']['penyakit'] ?? null;
-    $solusi = $diagnosaHasil['diagnosaUtama']['solusi'] ?? ['Tidak bisa memberikan rekomendasi yang aman.'];
+    $rekomendasi = $diagnosaHasil['diagnosaUtama']['rekomendasi'] ?? ['Tidak bisa memberikan rekomendasi yang aman.'];
 
     // Tentukan penyakit alternatif
     $penyakitAlternatif = array_keys($kemungkinan);
@@ -430,7 +430,7 @@ public function showResult()
         'kode_sapi' => $kode_sapi,
         'penyakit_utama' => $penyakitUtama,
         'gejala' => json_encode($gejalaDisimpan), // Simpan gejala sebagai JSON
-        'solusi' => implode('. ', $solusi),
+        'rekomendasi' => implode('. ', $rekomendasi),
         'penyakit_alternatif_1' => $penyakitAlternatif1,
         'penyakit_alternatif_2' => $penyakitAlternatif2,
         'kode_riwayat' => 'RDG-' . strtoupper(Str::random(5)),

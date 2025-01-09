@@ -24,7 +24,7 @@ class RiwayatDiagnosa extends Model
         'kode_sapi', 
         'penyakit_utama',
         'gejala', 
-        'solusi', 
+        'rekomendasi', 
         'penyakit_alternatif_1', 
         'penyakit_alternatif_2'];
 

@@ -119,12 +119,13 @@
 
             <!-- Pilih Solusi -->
             <div class="mb-6">
-                <label for="kode_solusi" class="block text-gray-700 text-sm font-medium">Pilih Solusi</label>
-                <select id="kode_solusi" name="kode_solusi" required
+                <label for="kode_rekomendasi" class="block text-gray-700 text-sm font-medium">Pilih Rekomendasi</label>
+                <select id="kode_rekomendasi" name="kode_rekomendasi" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
-                    <option value="" disabled>Pilih Solusi</option>
-                    @foreach ($solusi as $s)
-                        <option value="{{ $s->kode_solusi }}">{{ $s->kode_solusi }} - {{ $s->solusi }}</option>
+                    <option value="" disabled>Pilih Rekomendasi</option>
+                    @foreach ($rekomendasi as $s)
+                        <option value="{{ $s->kode_rekomendasi }}">{{ $s->kode_rekomendasi }} - {{ $s->rekomendasi }}
+                        </option>
                     @endforeach
                 </select>
             </div>

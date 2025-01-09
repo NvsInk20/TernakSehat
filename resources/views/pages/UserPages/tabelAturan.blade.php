@@ -74,7 +74,7 @@
                         <th class="px-4 py-2 2xl:text-xl border text-center">No</th>
                         <th class="px-4 py-2 2xl:text-xl border text-center">Nama Penyakit</th>
                         <th class="px-4 py-2 2xl:text-xl border text-center">Gejala</th>
-                        <th class="px-4 py-2 2xl:text-xl border text-center">Solusi</th>
+                        <th class="px-4 py-2 2xl:text-xl border text-center">Rekomendasi</th>
                     </tr>
                 </thead>
                 @forelse ($penyakitPaginated as $penyakit)
@@ -96,7 +96,7 @@
                             @if ($index === 0)
                                 <td class="px-4 py-3 border border-gray-300 text-justify"
                                     rowspan="{{ $aturan->count() }}">
-                                    {{ $item->solusi->solusi ?? '-' }}
+                                    {{ $item->rekomendasi->rekomendasi ?? '-' }}
                                 </td>
                             @endif
                         </tr>

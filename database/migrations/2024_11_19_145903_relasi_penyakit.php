@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kode_relasi'); // kolom untuk nama gejala
             $table->string('kode_penyakit'); // kolom untuk deskripsi gejala
             $table->string('kode_gejala'); // kolom untuk deskripsi gejala
-            $table->string('kode_solusi'); // kolom untuk deskripsi gejala
+            $table->string('kode_rekomendasi'); // kolom untuk deskripsi gejala
             $table->enum('jenis_gejala',['wajib', 'opsional']); // kolom untuk deskripsi gejala
             $table->timestamps(); // kolom created_at dan updated_at
             
@@ -30,8 +30,8 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
 
-            $table->foreign('kode_solusi')
-            ->references('kode_solusi')->on('solusi')
+            $table->foreign('kode_rekomendasi')
+            ->references('kode_rekomendasi')->on('rekomendasi')
             ->onUpdate('cascade')
             ->onDelete('cascade');
         });

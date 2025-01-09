@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PakarController;
 use App\Http\Controllers\GejalaController;
-use App\Http\Controllers\SolusiController;
+use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\DiagnosaController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PenyakitController;
@@ -152,13 +152,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/gejala/{kode_gejala}', [GejalaController::class, 'destroy'])->name('gejala.destroy');
     
     // Solusi Pages By : Admin
-    Route::get('/Admin/solusi', [SolusiController::class, 'index'])->name('Admin.solusi');
-    Route::get('/dashboard', [SolusiController::class, 'dashboard'])->name('dashboard');
-    Route::get('/solusi/add', [SolusiController::class, 'create'])->name('solusi.create');
-    Route::post('/solusi/add', [SolusiController::class, 'store'])->name('solusi.addItems');
-    Route::get('/solusi/{kode_solusi}/edit', [SolusiController::class, 'edit'])->name('solusi.edit');
-    Route::put('/solusi/{kode_solusi}', [SolusiController::class, 'update'])->name('solusi.update');
-    Route::delete('/solusi/{kode_solusi}', [SolusiController::class, 'destroy'])->name('solusi.destroy');
+    Route::get('/Admin/solusi', [RekomendasiController::class, 'index'])->name('Admin.solusi');
+    Route::get('/dashboard', [RekomendasiController::class, 'dashboard'])->name('dashboard');
+    Route::get('/solusi/add', [RekomendasiController::class, 'create'])->name('solusi.create');
+    Route::post('/solusi/add', [RekomendasiController::class, 'store'])->name('solusi.addItems');
+    Route::get('/solusi/{kode_rekomendasi}/edit', [RekomendasiController::class, 'edit'])->name('solusi.edit');
+    Route::put('/solusi/{kode_rekomendasi}', [RekomendasiController::class, 'update'])->name('solusi.update');
+    Route::delete('/solusi/{kode_rekomendasi}', [RekomendasiController::class, 'destroy'])->name('solusi.destroy');
     
     // AturanPenyakit Pages By : Admin
     Route::get('/Admin/aturanPenyakit', [AturanPenyakitController::class, 'index'])->name('Admin.aturanPenyakit');
@@ -198,13 +198,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/ahli_pakar/gejala/{kode_gejala}', [GejalaController::class, 'destroyByPakar'])->name('gejalaPakar.destroy');
     
     // Solusi Pages By : Pakar
-    Route::get('/ahli_pakar/solusi', [SolusiController::class, 'indexByPakar'])->name('Pakar.solusi');
-    Route::get('/dashboard', [SolusiController::class, 'dashboard'])->name('dashboard');
-    Route::get('/ahli_pakar/solusi/add', [SolusiController::class, 'createByPakar'])->name('solusiPakar.create');
-    Route::post('/ahli_pakar/solusi/add', [SolusiController::class, 'storeByPakar'])->name('solusiPakar.addItems');
-    Route::get('/ahli_pakar/solusi/{kode_solusi}/edit', [SolusiController::class, 'editByPakar'])->name('solusiPakar.edit');
-    Route::put('/ahli_pakar/solusi/{kode_solusi}', [SolusiController::class, 'updateByPakar'])->name('solusiPakar.update');
-    Route::delete('/ahli_pakar/solusi/{kode_solusi}', [SolusiController::class, 'destroyByPakar'])->name('solusiPakar.destroy');
+    Route::get('/ahli_pakar/solusi', [RekomendasiController::class, 'indexByPakar'])->name('Pakar.solusi');
+    Route::get('/dashboard', [RekomendasiController::class, 'dashboard'])->name('dashboard');
+    Route::get('/ahli_pakar/solusi/add', [RekomendasiController::class, 'createByPakar'])->name('solusiPakar.create');
+    Route::post('/ahli_pakar/solusi/add', [RekomendasiController::class, 'storeByPakar'])->name('solusiPakar.addItems');
+    Route::get('/ahli_pakar/solusi/{kode_rekomendasi}/edit', [RekomendasiController::class, 'editByPakar'])->name('solusiPakar.edit');
+    Route::put('/ahli_pakar/solusi/{kode_rekomendasi}', [RekomendasiController::class, 'updateByPakar'])->name('solusiPakar.update');
+    Route::delete('/ahli_pakar/solusi/{kode_rekomendasi}', [RekomendasiController::class, 'destroyByPakar'])->name('solusiPakar.destroy');
     
     // AturanPenyakit Pages By : Pakar
     Route::get('/ahli_pakar/aturanPenyakit', [AturanPenyakitController::class, 'indexByPakar'])->name('Pakar.aturanPenyakit');

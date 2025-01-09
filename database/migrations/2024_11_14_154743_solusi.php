@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('solusi', function (Blueprint $table) {
+        Schema::create('rekomendasi', function (Blueprint $table) {
             $table->unsignedBigInteger('No'); // kolom ID auto-increment
-            $table->string('kode_solusi'); // kolom untuk nama gejala
-            $table->text('solusi'); // kolom untuk deskripsi gejala
+            $table->string('kode_rekomendasi'); // kolom untuk nama gejala
+            $table->text('rekomendasi'); // kolom untuk deskripsi gejala
             $table->timestamps(); // kolom created_at dan updated_at
-            $table->primary('kode_solusi');
+            $table->primary('kode_rekomendasi');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('solusi');
+        Schema::dropIfExists('rekomendasi');
     }
 };

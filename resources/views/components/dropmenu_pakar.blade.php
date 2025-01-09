@@ -7,7 +7,7 @@
         <div>
             <button @click.prevent="openDropdown = !openDropdown" type="button" class="dropdown-btn">
                 <span
-                    x-text="selectedPage ? (selectedPage === 'penyakit' ? 'Data Penyakit' : selectedPage === 'gejala' ? 'Data Gejala' : 'Data Solusi') : 'Pilih Data'"></span>
+                    x-text="selectedPage ? (selectedPage === 'penyakit' ? 'Data Penyakit' : selectedPage === 'gejala' ? 'Data Gejala' : 'Data Rekomendasi') : 'Pilih Data'"></span>
                 <svg class="w-5 h-5 ml-2 transition-transform transform" fill="currentColor" viewBox="0 0 20 20"
                     :class="{ 'rotate-180': openDropdown }">
                     <path fill-rule="evenodd"
@@ -21,8 +21,8 @@
                 Penyakit</a>
             <a href="/ahli_pakar/gejala" class="{{ request()->segment(2) === 'gejala' ? 'active' : '' }}">Data
                 Gejala</a>
-            <a href="/ahli_pakar/solusi" class="{{ request()->segment(2) === 'solusi' ? 'active' : '' }}">Data
-                Solusi</a>
+            <a href="/ahli_pakar/solusi" class="{{ request()->segment(2) === 'rekomendasi' ? 'active' : '' }}">Data
+                Rekomendasi</a>
         </div>
 
     </form>

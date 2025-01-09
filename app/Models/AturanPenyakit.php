@@ -10,7 +10,7 @@ class AturanPenyakit extends Model
     use HasFactory;
     protected $table = 'aturan_penyakit'; // Nama tabel
     protected $primaryKey = 'id'; // Primary key adalah kode_penyakit
-    protected $fillable = ['kode_relasi','kode_penyakit','kode_gejala','kode_solusi','jenis_gejala'];
+    protected $fillable = ['kode_relasi','kode_penyakit','kode_gejala','kode_rekomendasi','jenis_gejala'];
 
     public function penyakit()
 {
@@ -22,9 +22,9 @@ public function gejala()
     return $this->belongsTo(gejala::class, 'kode_gejala', 'kode_gejala');
 }
 
-public function solusi()
+public function rekomendasi()
 {
-    return $this->belongsTo(solusi::class, 'kode_solusi', 'kode_solusi');
+    return $this->belongsTo(rekomendasi::class, 'kode_rekomendasi', 'kode_rekomendasi');
 }
 
 }

@@ -159,7 +159,7 @@
             </tr>
             <tr>
                 <th>Saran yang bisa dilakukan</th>
-                <td>{{ $riwayat->solusi ?? 'Tidak bisa memberikan rekomendasi yang aman' }}</td>
+                <td>{{ $riwayat->rekomendasi ?? 'Tidak bisa memberikan rekomendasi yang aman' }}</td>
             </tr>
         </table>
 

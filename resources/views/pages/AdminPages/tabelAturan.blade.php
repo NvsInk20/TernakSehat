@@ -103,7 +103,7 @@
                         <th class="px-4 py-2 border border-gray-300 w-1/12">No</th>
                         <th class="px-4 py-2 border border-gray-300 w-2/12">Nama Penyakit</th>
                         <th class="px-4 py-2 border border-gray-300 w-2/12">Gejala</th>
-                        <th class="px-4 py-2 border border-gray-300 w-4/12">Solusi</th>
+                        <th class="px-4 py-2 border border-gray-300 w-4/12">Rekomendasi</th>
                         <th class="px-4 py-2 border border-gray-300 w-2/12">Aksi</th>
                     </tr>
                 </thead>
@@ -131,7 +131,7 @@
                                 @if ($index === 0)
                                     <td class="px-4 py-2 border border-gray-300 text-justify"
                                         rowspan="{{ $aturan->count() }}">
-                                        {{ $item->solusi->solusi ?? '-' }}
+                                        {{ $item->rekomendasi->rekomendasi ?? '-' }}
                                     </td>
                                     <td class="px-4 py-2 border border-gray-300" rowspan="{{ $aturan->count() }}">
                                         <div class="flex justify-center">

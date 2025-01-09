@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit Solusi</title>
+    <title>Edit Rekomendasi</title>
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Tailwind CSS dan Flowbite -->
@@ -65,28 +65,29 @@
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
-        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Edit Solusi</h1>
+        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Edit Rekomendasi</h1>
 
         <!-- Form untuk Mengedit Gejala -->
-        <form action="{{ route('solusiPakar.update', ['kode_solusi' => $solusi->kode_solusi]) }}" method="POST">
+        <form action="{{ route('solusiPakar.update', ['kode_rekomendasi' => $rekomendasi->kode_rekomendasi]) }}"
+            method="POST">
             @csrf
             @method('PUT')
 
             <!-- Kode Penyakit Field (readonly) -->
             <div class="mb-6">
-                <label for="kode_solusi" class="block text-gray-700 text-sm font-medium">Kode Solusi</label>
-                <input type="text" name="kode_solusi" required
+                <label for="kode_rekomendasi" class="block text-gray-700 text-sm font-medium">Kode Rekomendasi</label>
+                <input type="text" name="kode_rekomendasi" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    value="{{ $solusi->kode_solusi }}" readonly>
+                    value="{{ $rekomendasi->kode_rekomendasi }}" readonly>
             </div>
 
             <!-- Nama Penyakit Field -->
             <div class="mb-6">
-                <label for="solusi" class="block text-gray-700 text-sm font-medium">Deskripsi Solusi</label>
-                <input type="text" id="solusi" name="solusi" required
+                <label for="rekomendasi" class="block text-gray-700 text-sm font-medium">Deskripsi Rekomendasi</label>
+                <input type="text" id="rekomendasi" name="rekomendasi" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    value="{{ old('solusi', $solusi->solusi) }}">
-                @error('solusi')
+                    value="{{ old('rekomendasi', $rekomendasi->rekomendasi) }}">
+                @error('rekomendasi')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>

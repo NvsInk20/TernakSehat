@@ -65,8 +65,8 @@
                     </ol>
                     </p>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
-                        <strong class="text-orange-500 2xl:text-xl">Solusi (Rekomendasi):</strong>
-                        {{ implode(', ', $diagnosaUtama['solusi']) }}
+                        <strong class="text-orange-500 2xl:text-xl">Rekomendasi:</strong>
+                        {{ implode(', ', $diagnosaUtama['rekomendasi']) }}
                     </p>
                     <!-- Gejala yang Tidak Masuk dalam Hasil Diagnosa -->
                     @if (!empty($gejalaTidakMasuk))
@@ -115,8 +115,8 @@
                         <strong class="text-orange-500 2xl:text-xl">Persentase:</strong> {{ $persentaseTertinggi }}%
                     </p>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
-                        <strong class="text-orange-500 2xl:text-xl">Solusi (Rekomendasi):</strong>
-                        {{ implode(', ', $solusiTertinggi) }}
+                        <strong class="text-orange-500 2xl:text-xl">Rekomendasi:</strong>
+                        {{ implode(', ', $rekomendasiTertinggi) }}
                     </p>
                 </div>
             @endif
@@ -133,8 +133,8 @@
                         <strong class="text-orange-500 2xl:text-xl">Persentase:</strong> {{ $persentaseKedua }}%
                     </p>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
-                        <strong class="text-orange-500 2xl:text-xl">Solusi (Rekomendasi):</strong>
-                        {{ implode(', ', $solusiKedua) }}
+                        <strong class="text-orange-500 2xl:text-xl">Rekomendasi:</strong>
+                        {{ implode(', ', $rekomendasiKedua) }}
                     </p>
                 </div>
             @endif

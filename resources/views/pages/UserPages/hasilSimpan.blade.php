@@ -87,7 +87,7 @@
                         <!-- Gabungan Gejala & Solusi -->
                         <div>
                             <label for="gejala" class="block text-sm 2xl:text-xl font-medium text-gray-700">Gejala dan
-                                Solusi</label>
+                                Rekomendasi</label>
                             <div id="gejala"
                                 class="mt-1 p-3 bg-gray-300 border 2xl:text-xl border-gray-300 rounded-md text-justify">
                                 @php
@@ -115,7 +115,7 @@
                                     <p class="2xl:text-xl">Gejala Tidak Tersedia</p>
                                 @endif
                                 <h4 class="font-semibold mt-4 2xl:text-xl mb-2">Saran Rekomendasi:</h4>
-                                <p>{{ implode('. ', $diagnosaUtama['solusi'] ?? ['Tidak bisa memberikan rekomendasi yang aman']) }}.
+                                <p>{{ implode('. ', $diagnosaUtama['rekomendasi'] ?? ['Tidak bisa memberikan rekomendasi yang aman']) }}.
                                 </p>
                             </div>
                         </div>

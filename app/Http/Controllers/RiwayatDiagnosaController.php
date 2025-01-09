@@ -8,7 +8,7 @@ use App\Models\penyakit;
 use App\Models\Pengguna;
 // use Barryvdh\DomPDF\Facade as PDF;
 use setasign\Fpdi\Fpdi;
-use App\Models\solusi;
+use App\Models\rekomendasi;
 use Illuminate\Support\Facades\Auth;
 use App\Models\gejala;
 use PDF;
@@ -90,13 +90,13 @@ class RiwayatDiagnosaController extends Controller
     // Siapkan data gejala dan solusi langsung dari kolom tabel
     // Decode gejala dari JSON menjadi array
     $gejala = json_decode($riwayat->gejala, true); // Pastikan gejala disimpan dalam format JSON
-    $solusi = $riwayat->solusi; // Asumsikan solusi masih dalam bentuk string dengan pemisah '|'
+    $rekomendasi = $riwayat->rekomendasi; // Asumsikan solusi masih dalam bentuk string dengan pemisah '|'
 
     // Data untuk dikirim ke view PDF
     $data = [
         'riwayat' => $riwayat,
         'gejala' => $gejala, // Gejala sudah menjadi array setelah decode
-        'solusi' => $solusi ? explode('|', $solusi) : [], // Pisahkan solusi dengan pemisah '|'
+        'rekomendasi' => $rekomendasi ? explode('|', $rekomendasi) : [], // Pisahkan solusi dengan pemisah '|'
     ];
 
     // Generate PDF
@@ -128,13 +128,13 @@ class RiwayatDiagnosaController extends Controller
         }
 
         // Pisahkan solusi jika ada, dengan pemisah '|'
-        $solusi = $item->solusi ? explode('|', $item->solusi) : [];
+        $rekomendasi = $item->rekomendasi ? explode('|', $item->rekomendasi) : [];
 
         // Generate PDF individu menggunakan view
         $individualPdf = PDF::loadView('pdf.riwayat_diagnosa', [
             'riwayat' => $item,
             'gejala' => $gejala, // Gejala langsung sebagai array
-            'solusi' => $solusi, // Solusi sebagai array
+            'rekomendasi' => $rekomendasi, // Solusi sebagai array
         ])->output();
 
         // Simpan PDF sementara
@@ -181,13 +181,13 @@ class RiwayatDiagnosaController extends Controller
         }
 
         // Pisahkan solusi jika ada, dengan pemisah '|'
-        $solusi = $item->solusi ? explode('|', $item->solusi) : [];
+        $rekomendasi = $item->rekomendasi ? explode('|', $item->rekomendasi) : [];
 
         // Generate PDF untuk setiap riwayat menggunakan view
         $individualPdf = PDF::loadView('pdf.riwayat_diagnosa', [
             'riwayat' => $item,
             'gejala' => $gejala, // Kirim gejala sebagai array
-            'solusi' => $solusi, // Kirim solusi sebagai array
+            'rekomendasi' => $rekomendasi, // Kirim solusi sebagai array
         ])->output();
 
         // Simpan PDF ke file sementara

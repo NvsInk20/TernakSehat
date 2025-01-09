@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AturanPenyakit;
 use App\Models\penyakit;
 use App\Models\gejala;
-use App\Models\solusi;
+use App\Models\rekomendasi;
 use Illuminate\Http\Request;
 
 class AturanPenyakitController extends Controller
@@ -21,7 +21,7 @@ class AturanPenyakitController extends Controller
     })
     ->with([
         'aturanPenyakit.gejala',
-        'aturanPenyakit.solusi'
+        'aturanPenyakit.rekomendasi'
     ]);
 
     // Pencarian berdasarkan nama penyakit atau gejala
@@ -56,7 +56,7 @@ class AturanPenyakitController extends Controller
     })
     ->with([
         'aturanPenyakit.gejala',
-        'aturanPenyakit.solusi'
+        'aturanPenyakit.rekomendasi'
     ]);
 
     // Pencarian berdasarkan nama penyakit atau gejala
@@ -91,7 +91,7 @@ class AturanPenyakitController extends Controller
     })
     ->with([
         'aturanPenyakit.gejala',
-        'aturanPenyakit.solusi'
+        'aturanPenyakit.rekomendasi'
     ]);
 
     // Pencarian berdasarkan nama penyakit atau gejala
@@ -136,13 +136,13 @@ class AturanPenyakitController extends Controller
     // Ambil data penyakit, gejala, dan solusi untuk form
     $penyakit = penyakit::all();
     $gejala = gejala::all();
-    $solusi = solusi::all();
+    $rekomendasi = rekomendasi::all();
 
     // Kirim data ke view
     return view('pages.AdminPages.CRUD.crud_Aturan.formAdd', [
         'penyakit' => $penyakit,
         'gejala' => $gejala,
-        'solusi' => $solusi,
+        'rekomendasi' => $rekomendasi,
         'kode_relasi' => $kode_relasi
     ]);
 }
@@ -160,7 +160,7 @@ class AturanPenyakitController extends Controller
         'kode_gejala.*' => 'required|string|max:10',
         'jenis_gejala' => 'required|array',
         'jenis_gejala.*' => 'required|in:wajib,opsional',
-        'kode_solusi' => 'required|string|max:10',
+        'kode_rekomendasi' => 'required|string|max:10',
     ]);
     // Cek apakah penyakit sudah ada di aturan
     $existingAturan = AturanPenyakit::where('kode_penyakit', $request->kode_penyakit)->exists();
@@ -176,7 +176,7 @@ class AturanPenyakitController extends Controller
             'kode_penyakit' => $request->kode_penyakit,
             'kode_gejala' => $kodeGejala,
             'jenis_gejala' => $request->jenis_gejala[$index],
-            'kode_solusi' => $request->kode_solusi,
+            'kode_rekomendasi' => $request->kode_rekomendasi,
         ]);
     }
 
@@ -199,7 +199,7 @@ class AturanPenyakitController extends Controller
             'aturanPenyakit' => $aturanPenyakit,
             'penyakit' => penyakit::all(),
             'gejala' => gejala::all(),
-            'solusi' => solusi::all(),
+            'rekomendasi' => rekomendasi::all(),
             'kode_relasi' => $kode_relasi,
         ]);
     }
@@ -215,7 +215,7 @@ class AturanPenyakitController extends Controller
             'kode_gejala.*' => 'required|exists:gejala,kode_gejala',
             'jenis_gejala' => 'required|array',
             'jenis_gejala.*' => 'required|in:wajib,opsional',
-            'kode_solusi' => 'required|exists:solusi,kode_solusi',
+            'kode_rekomendasi' => 'required|exists:rekomendasi,kode_rekomendasi',
         ]);
 
         AturanPenyakit::where('kode_relasi', $kode_relasi)->delete();
@@ -226,7 +226,7 @@ class AturanPenyakitController extends Controller
                 'kode_penyakit' => $request->kode_penyakit,
                 'kode_gejala' => $kodeGejala,
                 'jenis_gejala' => $request->jenis_gejala[$index],
-                'kode_solusi' => $request->kode_solusi,
+                'kode_rekomendasi' => $request->kode_rekomendasi,
             ]);
         }
 
@@ -266,13 +266,13 @@ class AturanPenyakitController extends Controller
     // Ambil data penyakit, gejala, dan solusi untuk form
     $penyakit = penyakit::all();
     $gejala = gejala::all();
-    $solusi = solusi::all();
+    $rekomendasi = rekomendasi::all();
 
     // Kirim data ke view
     return view('pages.PakarPages.CRUD.crud_Aturan.formAdd', [
         'penyakit' => $penyakit,
         'gejala' => $gejala,
-        'solusi' => $solusi,
+        'rekomendasi' => $rekomendasi,
         'kode_relasi' => $kode_relasi
     ]);
 }
@@ -288,7 +288,7 @@ class AturanPenyakitController extends Controller
         'kode_gejala.*' => 'required|string|max:10',
         'jenis_gejala' => 'required|array',
         'jenis_gejala.*' => 'required|in:wajib,opsional',
-        'kode_solusi' => 'required|string|max:10',
+        'kode_rekomendasi' => 'required|string|max:10',
     ]);
     // Cek apakah penyakit sudah ada di aturan
     $existingAturan = AturanPenyakit::where('kode_penyakit', $request->kode_penyakit)->exists();
@@ -304,7 +304,7 @@ class AturanPenyakitController extends Controller
             'kode_penyakit' => $request->kode_penyakit,
             'kode_gejala' => $kodeGejala,
             'jenis_gejala' => $request->jenis_gejala[$index],
-            'kode_solusi' => $request->kode_solusi,
+            'kode_rekomendasi' => $request->kode_rekomendasi,
         ]);
     }
 
@@ -325,7 +325,7 @@ class AturanPenyakitController extends Controller
             'aturanPenyakit' => $aturanPenyakit,
             'penyakit' => penyakit::all(),
             'gejala' => gejala::all(),
-            'solusi' => solusi::all(),
+            'rekomendasi' => rekomendasi::all(),
             'kode_relasi' => $kode_relasi,
         ]);
     }
@@ -341,7 +341,7 @@ class AturanPenyakitController extends Controller
             'kode_gejala.*' => 'required|exists:gejala,kode_gejala',
             'jenis_gejala' => 'required|array',
             'jenis_gejala.*' => 'required|in:wajib,opsional',
-            'kode_solusi' => 'required|exists:solusi,kode_solusi',
+            'kode_rekomendasi' => 'required|exists:rekomendasi,kode_rekomendasi',
         ]);
 
         AturanPenyakit::where('kode_relasi', $kode_relasi)->delete();
@@ -352,7 +352,7 @@ class AturanPenyakitController extends Controller
                 'kode_penyakit' => $request->kode_penyakit,
                 'kode_gejala' => $kodeGejala,
                 'jenis_gejala' => $request->jenis_gejala[$index],
-                'kode_solusi' => $request->kode_solusi,
+                'kode_rekomendasi' => $request->kode_rekomendasi,
             ]);
         }
 

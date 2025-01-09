@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tambah Solusi</title>
+    <title>Tambah Rekomendasi</title>
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <!-- Tailwind CSS dan Flowbite -->
@@ -65,7 +65,7 @@
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
-        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Tambah Solusi</h1>
+        <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Tambah Rekomendasi</h1>
 
         <!-- Form untuk Menambah Penyakit -->
         <form action="{{ route('solusiPakar.addItems') }}" method="POST">
@@ -74,11 +74,11 @@
             <input type="hidden" name="No" value="{{ $nextNo }}">
             <!-- Kode Penyakit Field -->
             <div class="mb-6">
-                <label for="kode_solusi" class="block text-gray-700 text-sm font-medium">Kode Solusi</label>
-                <input type="text" id="kode_solusi" name="kode_solusi" required
+                <label for="kode_rekomendasi" class="block text-gray-700 text-sm font-medium">Kode Rekomendasi</label>
+                <input type="text" id="kode_rekomendasi" name="kode_rekomendasi" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
                     value="{{ $nextKode }}" readonly>
-                @error('kode_solusi')
+                @error('kode_rekomendasi')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
@@ -86,10 +86,10 @@
 
             <!-- Nama solusi Field -->
             <div class="mb-6">
-                <label for="solusi" class="block text-gray-700 text-sm font-medium">Deskripsi solusi</label>
-                <input type="text" id="solusi" name="solusi" required
+                <label for="rekomendasi" class="block text-gray-700 text-sm font-medium">Deskripsi Rekomendasi</label>
+                <input type="text" id="rekomendasi" name="rekomendasi" required
                     class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
-                @error('solusi')
+                @error('rekomendasi')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
@@ -98,7 +98,7 @@
             <div class="flex justify-center">
                 <button type="submit"
                     class="bg-orange-500 text-white text-sm px-6 py-3 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200">
-                    Tambah solusi
+                    Tambah Rekomendasi
                 </button>
             </div>
         </form>
