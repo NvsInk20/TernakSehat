@@ -47,7 +47,17 @@ public function answerQuestion(Request $request)
     $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
     $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
 
+    // Cek apakah ada gejala yang belum dijawab
+    $remainingQuestions = AturanPenyakit::whereNotIn('kode_gejala', array_keys($answeredGejala))
+        ->orderByRaw("FIELD(jenis_gejala, 'wajib', 'opsional')")
+        ->get();
 
+    // Jika masih ada gejala yang belum dijawab, tampilkan gejala tersebut
+    if ($remainingQuestions->isNotEmpty()) {
+        return redirect()->route('diagnosa.index');
+    }
+
+    // Jika sudah tidak ada gejala yang tersisa dan semua jawaban telah diberikan
     foreach ($penyakit as $p) {
         $aturanPenyakit = $aturan->where('kode_penyakit', $p->kode_penyakit);
 
@@ -86,18 +96,10 @@ public function answerQuestion(Request $request)
         }
     }
 
-    // Jika gejala wajib dijawab "Tidak", ganti ke gejala wajib penyakit lain
-    $remainingQuestions = AturanPenyakit::whereNotIn('kode_gejala', array_keys($answeredGejala))
-        ->orderByRaw("FIELD(jenis_gejala, 'wajib', 'opsional')")
-        ->get();
-
-    if ($remainingQuestions->isEmpty()) {
-        return redirect()->route('diagnosa.result');
-    }
-
-    // Jika tidak memenuhi logika, lanjutkan ke pertanyaan berikutnya
-    return redirect()->route('diagnosa.index');
+    // Setelah semua gejala dijawab, diagnosa akan ditampilkan
+    return redirect()->route('diagnosa.result');
 }
+
 
     // Menampilkan hasil diagnosa
 public function showResult()
