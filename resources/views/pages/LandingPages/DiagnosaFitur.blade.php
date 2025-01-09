@@ -76,7 +76,8 @@
                         <li>Silahkan jawab pertanyaan dengan memperhatikan beberapa gejala yang muncul dengan baik</li>
                         <li>Setelah berhasil maka akan menampilkan hasil diagnosa berdasarkan dengan gejala yang dipilih
                             dan juga memberikan sebuah rekomendasi pengobaan yang bisa dilakukan</li>
-                        <li>Kamu juga bisa menyimpan hasil diagnosa untuk kebutuhan seperti manajemen peternakan agar
+                        <li>Pengguna juga bisa menyimpan hasil diagnosa untuk kebutuhan seperti manajemen peternakan
+                            agar
                             kondisi kesehatan hewan ternak bisa terjaga dan terpantau dengan baik</li>
                     </ul>
                 </div>
