@@ -16,21 +16,47 @@
 <body class="bg-orange-100 min-h-screen flex items-center justify-center">
     @include('components.dropSettings')
 
-    @if (session('success'))
-        <div class="bg-green-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
-            x-show="show" x-init="setTimeout(() => show = false, 5000)">
-            {{ session('success') }}
+    @if (session('success') || session('error'))
+        <div class="absolute top-0 left-0 w-full shadow-lg z-50 transition-opacity duration-300" x-data="{ show: true }"
+            x-show="show" x-init="setTimeout(() => show = false, 5000)"
+            :class="{
+                'bg-green-500': '{{ session('success') }}',
+                'bg-red-500': '{{ session('error') }}'
+            }">
+            <div class="flex items-start justify-between px-4 py-3">
+                <!-- Bagian Kiri (Ikon dan Pesan) -->
+                <div class="flex flex-none items-center space-x-2">
+                    @if (session('success'))
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="text-white text-sm font-medium">{{ session('success') }}</span>
+                    @endif
+
+                    @if (session('error'))
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span class="text-white text-sm font-medium">{{ session('error') }}</span>
+                    @endif
+                </div>
+
+                <!-- Bagian Kanan (Tombol Close) -->
+                <button @click="show = false" class="flex-none text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
     @endif
 
-    @if (session('error'))
-        <div class="bg-red-500 text-white p-3 rounded mb-4 transition-opacity duration-300" x-data="{ show: true }"
-            x-show="show" x-init="setTimeout(() => show = false, 5000)">
-            {{ session('error') }}
-        </div>
-    @endif
 
-    <div class="bg-white shadow-lg rounded-lg w-full xl:my-10 max-w-3xl mx-auto p-6 sm:p-10">
+
+    <div class="bg-white shadow-lg rounded-lg w-full xl:my-24 max-w-3xl mx-auto p-6 sm:p-10">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('/images/logo.png') }}" alt="Ternak Sehat" class="w-24 h-24">
         </div>
@@ -130,7 +156,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-56">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
             </a>
         </div>

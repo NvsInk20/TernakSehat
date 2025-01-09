@@ -61,7 +61,7 @@
         </div>
     @endif
 
-    <div class="absolute ml-[83%] 2xl:ml-[73%] mt-10">
+    <div class="absolute ml-[81%] 2xl:ml-[82%] 2xl:top-10 mt-10">
         <a href='/aturanPenyakit/add'>
             <button type="button"
                 class="border border-blue-800 font-bold text-blue-500 rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline">
@@ -69,7 +69,7 @@
             </button>
         </a>
     </div>
-    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelSolusi">
+    <div class="lg:w-8/12 md:w-7/12 mx-auto mb-[18%]" id="tabelSolusi">
         <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3 bg-customOrange">
             <div>
                 <h3 class="text-lg font-medium text-black">Sistem Diagnosa Kesehatan Sapi</h3>

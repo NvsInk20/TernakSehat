@@ -29,8 +29,9 @@
             <!-- Navigation Section -->
             <nav id="nav-menu"
                 class="hidden lg:flex flex-col lg:flex-row 2xl:text-3xl space-y-4 lg:space-y-0 lg:space-x-8 text-2xl font-medium bg-orange-500 lg:bg-transparent lg:static absolute right-0 top-16 w-full lg:w-auto">
-                <a href="/GuidePage-Diagnosa" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Diagnosa</a>
-                <a href="/GuidePage-knowledge" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Pengetahuan
+                <a href="/GuidePage-Diagnosa" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Diagnosa
+                    Penyakit</a>
+                <a href="/GuidePage-knowledge" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Informasi
                     Penyakit</a>
                 <a href="/GuidePage-Riwayat"
                     class="block px-4 py-2 lg:inline-block text-black hover:text-slate-800">Riwayat
@@ -64,13 +65,13 @@
                     class="w-full h-64 2xl:max-w-[30rem] xl:h-64 md:w-1/2 2xl:h-1/2 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 2xl:text-3xl mb-4">
-                        Fitur ini membantu Anda untuk mendapatkan data riwayat dari hasil diagnosa
-                        yang telah dilakukan beserta dapat melakukan pencetakan dokumen hasil diagnosa dan menghapusnya
+                        Fitur ini membantu pengguna untuk mendapatkan data riwayat dari hasil diagnosa
+                        yang telah dilakukan beserta dapat melakukan pencetakan dokumen hasil diagnosa
                     </p>
                     <ul class="list-disc list-inside text-gray-600 2xl:text-3xl">
                         <li>Masuk Ke halaman riwayat dengan klik tombol <strong>Riwayat</strong></li>
                         <li>Pilih riwayat diagnosa yang ingin dicetak ataupun yang dihapus</li>
-                        <li>Jika ingin melakukan pencarian data riwayat penyakit juga bisa</li>
+                        <li>Pengguna dapat melakukan pencarian data riwayat hasil diagnosa penyakit</li>
                     </ul>
                 </div>
             </div>
@@ -141,7 +142,7 @@
                 <div class="mt-5">
                     <p
                         class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-2xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
-                        Melakukan pencarian data riwayat
+                        Pengguna dapat melakukan pencarian data riwayat hasil diagnosa penyakit
                     </p>
                 </div>
             </div>

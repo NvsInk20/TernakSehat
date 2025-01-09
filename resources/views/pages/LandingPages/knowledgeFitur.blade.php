@@ -29,9 +29,10 @@
             <!-- Navigation Section -->
             <nav id="nav-menu"
                 class="hidden lg:flex flex-col lg:flex-row 2xl:text-3xl space-y-4 lg:space-y-0 lg:space-x-8 text-2xl font-medium bg-orange-500 lg:bg-transparent lg:static absolute right-0 top-16 w-full lg:w-auto">
-                <a href="/GuidePage-Diagnosa" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Diagnosa</a>
+                <a href="/GuidePage-Diagnosa" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Diagnosa
+                    Penyakit</a>
                 <a href="/GuidePage-knowledge"
-                    class="block px-4 py-2 lg:inline-block hover:text-slate-800 text-black">Pengetahuan
+                    class="block px-4 py-2 lg:inline-block hover:text-slate-800 text-black">Informasi
                     Penyakit</a>
                 <a href="/GuidePage-Riwayat" class="block px-4 py-2 lg:inline-block hover:text-slate-800">Riwayat
                     Diagnosa</a>
@@ -57,22 +58,24 @@
     <!-- Panduan Pengetahuab Penyakit -->
     <section id="diagnosa" class="py-10 2xl:max-w-[90%] 2xl:mb-[52rem] 2xl:h-[10rem] 2xl:mx-auto">
         <div class="container mx-auto h-[10rem] mb-[17rem] xl:h-[8rem] flex-col 2xl:h-max 2xl:max-w-max">
-            <h2 class="text-center text-2xl xl:text-2xl 2xl:text-6xl mx-auto font-bold text-orange-500 mb-5">Pengetahuan
+            <h2 class="text-center text-2xl xl:text-2xl 2xl:text-6xl mx-auto font-bold text-orange-500 mb-5">Informasi
                 Penyakit</h2>
             <div class="flex flex-col  md:flex-col items-center bg-white shadow-lg rounded-lg p-5">
                 <img src="{{ asset('/images/info.png') }}" alt="Diagnosa Penyakit"
                     class="w-full h-64 2xl:max-w-full xl:h-64 md:w-1/2 2xl:h-1/2 object-contain">
                 <div class="mt-5 md:mt-0 md:ml-5">
                     <p class="text-gray-600 2xl:text-3xl mb-4">
-                        Fitur ini membantu Anda untuk mendapatkan informasi terkait beberapa penyakit yang secara umum
-                        menyerang pada hewan ternak sapi dan
-                        dan memberikan pengetahuan untuk mengenali gejala serta solusi atau rekomendasi yang dapat
+                        Fitur ini membantu pengguna untuk mendapatkan informasi terkait beberapa penyakit yang secara
+                        umum
+                        menyerang pada hewan ternak sapi dengan studi kasus di daerah Kabupaten Boyolali dan memberikan
+                        pemahaman untuk mengenali gejala serta rekomendasi yang dapat
                         dilakukan dalam pencegahan maupun pengobatan pada hewan ternak sapi
                     </p>
                     <ul class="list-disc list-inside text-gray-600 2xl:text-3xl">
                         <li>Masuk Ke halaman <strong>Dashboard</strong></li>
                         <li>Silahkan geser ke bawah sampai menemukan menu <strong>Daftar Penyakit</strong></li>
-                        <li>Silahkan klik tombol <strong>Cek Penyakit</strong></li>
+                        <li>Silahkan masukkan nama penyakit yang ingin dicari melalui mesin pencarian seperti pada
+                            gambar berikut</li>
                     </ul>
                 </div>
             </div>
@@ -125,7 +128,8 @@
                 <div class="mt-5">
                     <p
                         class="text-gray-600 lg:text-lg 2xl:text-4xl xl:text-2xl md:-mt-5 md:ml-10 md:text-base lg:ml-10">
-                        Silahkan melakukan pencarian penyakit melaui mesin pencarian <strong>Cek Penyakit</strong>
+                        Silahkan masukkan nama penyakit yang ingin dicari melalui mesin pencarian seperti pada gambar
+                        berikut
                     </p>
                 </div>
             </div>

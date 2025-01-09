@@ -91,7 +91,7 @@
                         <img src="{{ asset('/images/riwayat.png') }}" alt="Riwayat Penyakit"
                             class="w-24 sm:w-36 2xl:w-48 h-24 sm:h-36 xl:h-32 2xl:h-48 mx-auto rounded-lg">
                         <p class="mt-6 sm:mt-8 text-base sm:text-lg 2xl:text-2xl xl:text-xl font-semibold">Riwayat
-                            Penyakit</p>
+                            Diagnosa</p>
                     </div>
                 </a>
             </div>

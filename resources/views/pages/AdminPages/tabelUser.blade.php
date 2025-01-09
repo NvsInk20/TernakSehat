@@ -62,7 +62,7 @@
         </div>
     @endif
 
-    <div class="max-w-[60rem] mx-auto mb-[18%]" id="tabelGejala">
+    <div class="lg:w-8/12 md:w-7/12 mx-auto mb-[18%]" id="tabelGejala">
         <div class="relative flex items-center justify-between">
             <!-- Dropdown Menu -->
             <div>
