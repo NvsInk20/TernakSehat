@@ -53,7 +53,8 @@
                 <div class="border-b-2 border-orange-400 pb-6 mb-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Hasil Diagnosa Utama</h2>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
-                        <strong class="text-orange-500">Penyakit:</strong> {{ $diagnosaUtama['penyakit'] }}
+                        <strong class="text-orange-500">Penyakit:</strong>
+                        <strong>{{ $diagnosaUtama['penyakit'] }}</strong>
                     </p>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
                         <strong class="text-orange-500">Gejala:</strong>
@@ -70,10 +71,10 @@
                     <!-- Gejala yang Tidak Masuk dalam Hasil Diagnosa -->
                     @if (!empty($gejalaTidakMasuk))
                         <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                            <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Gejala yang Dipilih
-                                Tetapi
-                                Tidak
-                                Terdaftar dalam Diagnosa</h3>
+                            <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Gejala yang dipilih
+                                tetapi
+                                tidak
+                                terdaftar dalam <strong>Diagnosa Utama</strong></h3>
                             <ol class="list-decimal list-inside 2xl:text-xl text-gray-700">
                                 @foreach ($gejalaTidakMasuk as $item)
                                     <li>{{ $item['gejala'] }}</li>
@@ -88,7 +89,7 @@
             <!-- Kemungkinan Penyakit Lain -->
             @if (!empty($kemungkinan))
                 <div>
-                    <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Kemungkinan Penyakit Lain</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 2xl:text-xl mb-4">Kemungkinan penyakit lainnya</h3>
                     <ul class="list-disc list-inside text-gray-700 2xl:text-xl">
                         @foreach ($kemungkinan as $penyakit => $persentase)
                             <li>
@@ -103,9 +104,10 @@
             <!-- Penyakit Tertinggi dan Kedua -->
             @if (!empty($penyakitTertinggi))
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan Kemungkinan
-                        Alternatif
-                        Pertama</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan kemungkinan
+                        <strong>(Alternatif
+                            Pertama)</strong>
+                    </h3>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
                         <strong class="text-orange-500 2xl:text-xl">Penyakit:</strong> {{ $penyakitTertinggi }}
                     </p>
@@ -121,8 +123,8 @@
 
             @if (!empty($penyakitKedua))
                 <div class="border-t-2 border-orange-400 pt-6 mt-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan Kemungkinan
-                        Altenatif Kedua
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 2xl:text-xl">Penyakit dengan kemungkinan
+                        <strong>(Alternatif Kedua)</strong>
                     </h3>
                     <p class="text-lg text-gray-700 mb-2 2xl:text-xl">
                         <strong class="text-orange-500 2xl:text-xl">Penyakit:</strong> {{ $penyakitKedua }}

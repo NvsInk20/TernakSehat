@@ -44,8 +44,9 @@ public function answerQuestion(Request $request)
     session(['answered_gejala' => $answeredGejala]);
 
     // Ambil semua penyakit dan aturan
-    $penyakit = penyakit::all();
-    $aturan = AturanPenyakit::all();
+    $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+
 
     foreach ($penyakit as $p) {
         $aturanPenyakit = $aturan->where('kode_penyakit', $p->kode_penyakit);
@@ -123,8 +124,9 @@ public function showResult()
     }
 
     // Ambil data penyakit dan aturan
-    $penyakit = penyakit::all();
-    $aturan = AturanPenyakit::all();
+    $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+
 
     $diagnosaUtama = null;
     $kemungkinan = [];
@@ -245,6 +247,9 @@ public function showResult()
     ]);
 }
 
+
+
+
     public function getDiagnosaHasil()
 {
     // Ambil jawaban gejala yang sudah disimpan di sesi
@@ -265,8 +270,9 @@ public function showResult()
             'kemungkinan' => [],
         ]);
     }
-    $penyakit = penyakit::all();
-    $aturan = AturanPenyakit::all();
+    $penyakit = penyakit::has('aturanPenyakit')->get(); // Hanya penyakit dengan aturan
+    $aturan = AturanPenyakit::with(['gejala', 'penyakit', 'solusi'])->get();
+
 
     $diagnosaUtama = null;
     $kemungkinan = [];
