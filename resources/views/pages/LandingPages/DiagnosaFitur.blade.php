@@ -55,7 +55,7 @@
 
 
     <!-- Panduan Diagnosa Penyakit -->
-    <section id="diagnosa" class="py-10 2xl:max-w-[90%] 2xl:mx-auto">
+    <section id="diagnosa" class="py-10 2xl:max-w-[90%] 2xl:mx-auto xl:mb-6">
         <div class="container mx-auto h-[47rem] xl:h-[31rem] flex-col 2xl:h-[60rem] 2xl:max-w-max">
             <h2 class="text-center text-2xl xl:text-2xl 2xl:text-6xl mx-auto font-bold text-orange-500 mb-5">Diagnosa
                 Penyakit</h2>

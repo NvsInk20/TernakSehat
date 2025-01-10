@@ -83,7 +83,7 @@
     </section>
     {{-- Section 1 --}}
     <section id="diagnosa"
-        class="py-10 mt-48 md:mt-14 2xl:mt-72 h-[1rem] mb-[1rem] 2xl:mb-[22rem] md:-mb-[40%] 2xl:h-[15rem] 2xl:max-w-[90%] 2xl:mx-auto xl:h-[52rem] sm:mt-52">
+        class="py-10 mt-72 md:mt-14 2xl:mt-72 h-[1rem] mb-[1rem] 2xl:mb-[22rem] md:-mb-[40%] 2xl:h-[15rem] 2xl:max-w-[90%] 2xl:mx-auto xl:h-[52rem] sm:mt-52">
         <div class="container mx-auto flex-col 2xl:max-w-full 2xl:h-[37rem]">
             <div
                 class="flex flex-col xl:w-full md:w-11/12 2xl:h-full md:mx-auto sm:w-11/12 sm:mx-auto lg:w-11/12 lg:mx-auto md:flex-row items-center bg-orange-300 shadow-lg rounded-lg p-5">
@@ -136,7 +136,7 @@
         </div>
     </section>
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500  text-center 2xl:p-10 2xl:text-2xl md:mt-10 text-white lg:mt-auto">
+    <footer class="p-5 bg-orange-500  text-center 2xl:p-10 2xl:text-2xl md:mt-10 mt-14 text-white lg:mt-auto">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 
