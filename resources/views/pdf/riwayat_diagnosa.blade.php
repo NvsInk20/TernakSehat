@@ -122,7 +122,7 @@
         <div class="header">
             <h1>Hasil Riwayat Pemeriksaan Diagnosa</h1>
             <p><strong>Kode Sapi:</strong> {{ $riwayat->kode_sapi }}</p>
-            <p><strong>Tanggal Diagnosa:</strong> {{ $riwayat->created_at->format('d M Y') }}</p>
+            <p><strong>Tanggal Diagnosa:</strong> {{ $riwayat->created_at->translatedFormat('d F Y, H:i') }}</p>
             <p><strong>Waktu Diagnosa:</strong> {{ $riwayat->created_at->format('H:i') }} WIB</p>
         </div>
 
