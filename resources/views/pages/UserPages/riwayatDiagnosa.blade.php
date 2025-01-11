@@ -58,7 +58,7 @@
             <form method="GET" action="{{ route('riwayatDiagnosa.showRiwayat', $kode_user) }}" class="mx-4">
                 <div class="flex items-center space-x-2">
                     <input type="text" name="search" value="{{ $search ?? '' }}"
-                        placeholder="Cari nama penyakit ..."
+                        placeholder="Cari (YYYY-MM-DD, Januari, 2025)"
                         class="px-4 py-2 border rounded-md text-black focus:ring-2 focus:ring-blue-400 focus:outline-none" />
                     <button type="submit"
                         class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">
@@ -88,7 +88,7 @@
                                 {{ $loop->iteration + $riwayatPaginated->firstItem() - 1 }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
-                                {{ $riwayat->created_at->format('d M Y, H:i') }}
+                                {{ $riwayat->created_at->translatedFormat('d F Y, H:i') }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
                                 {{ $riwayat->kode_riwayat }}

@@ -53,7 +53,7 @@
             <form method="GET" action="{{ route('riwayatDiagnosa.index') }}" class="w-full sm:w-auto mt-4 sm:mt-0">
                 <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
                     <input type="text" name="search" value="{{ $search ?? '' }}"
-                        placeholder="Cari nama penyakit ..."
+                        placeholder="Cari (YYYY-MM-DD, Januari, 2025)"
                         class="w-full sm:w-auto px-4 py-2 border rounded-md text-black text-sm sm:text-base 2xl:text-xl focus:ring-2 focus:ring-blue-400 focus:outline-none" />
                     <button type="submit"
                         class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white text-sm sm:text-base 2xl:text-xl rounded-md hover:bg-blue-700 focus:outline-none">
@@ -82,7 +82,7 @@
                                 {{ $loop->iteration + $riwayatPaginated->firstItem() - 1 }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
-                                {{ $riwayat->created_at->format('d M Y, H:i') }}
+                                {{ $riwayat->created_at->translatedFormat('d F Y, H:i') }}
                             </td>
                             <td class="px-4 py-3 border border-gray-300">
                                 {{ $riwayat->nama }}
@@ -147,7 +147,8 @@
                 @forelse ($riwayatPaginated as $riwayat)
                     <div class="border  w-[21rem] rounded-lg p-4 mb-4 shadow-md bg-gray-100">
                         <p><strong>No:</strong> {{ $loop->iteration + $riwayatPaginated->firstItem() - 1 }}</p>
-                        <p><strong>Tanggal Diagnosa:</strong> {{ $riwayat->created_at->format('d M Y, H:i') }}</p>
+                        <p><strong>Tanggal Diagnosa:</strong>
+                            {{ $riwayat->created_at->translatedFormat('d F Y, H:i') }}</p>
                         <p><strong>Nama Pengguna:</strong> {{ $riwayat->nama }}</p>
                         <p><strong>Kode Sapi:</strong> {{ $riwayat->kode_sapi }}</p>
                         <p><strong>Hasil Diagnosa:</strong>

@@ -22,19 +22,37 @@ class RiwayatDiagnosaController extends Controller
     // Ambil input pencarian dari pengguna
     $search = $request->input('search');
 
-    // Ambil data riwayat diagnosa untuk pengguna yang sedang login
+    // Query utama
     $riwayatPaginated = RiwayatDiagnosa::where('kode_user', auth()->user()->kode_user) // Ambil berdasarkan pengguna yang login
-        ->with('user') // Memuat relasi user jika diperlukan
         ->when($search, function ($query, $search) {
-            // Gunakan 'like' hanya pada kolom yang relevan, pastikan kata kunci tepat pada nama penyakit atau bagian utama.
-            return $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%") // Pencarian di nama penyakit
-                  ->orWhere('penyakit_utama', 'like', "%{$search}%") // Pencarian di penyakit utama
-                  ->orWhere('penyakit_alternatif_1', 'like', "%{$search}%") // Pencarian di penyakit alternatif 1
-                  ->orWhere('penyakit_alternatif_2', 'like', "%{$search}%"); // Pencarian di penyakit alternatif 2
-            });
+            // Cek apakah input berupa tanggal lengkap (format: YYYY-MM-DD)
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $search)) {
+                $query->whereDate('created_at', $search); // Pencarian tanggal penuh
+            }
+            // Cek apakah input berupa tahun saja (format: YYYY)
+            elseif (preg_match('/^\d{4}$/', $search)) {
+                $query->whereYear('created_at', $search); // Pencarian berdasarkan tahun
+            }
+            // Cek apakah input berupa bulan (angka: 1-12 atau nama bulan)
+            elseif (is_numeric($search) && intval($search) >= 1 && intval($search) <= 12) {
+                $query->whereMonth('created_at', $search); // Pencarian berdasarkan angka bulan
+            } else {
+                // Mapping nama bulan ke angka (untuk pencarian bulan dalam bahasa Indonesia)
+                $bulanMap = [
+                    'januari' => 1, 'februari' => 2, 'maret' => 3, 'april' => 4,
+                    'mei' => 5, 'juni' => 6, 'juli' => 7, 'agustus' => 8,
+                    'september' => 9, 'oktober' => 10, 'november' => 11, 'desember' => 12,
+                    'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4,
+                    'mei' => 5, 'jun' => 6, 'jul' => 7, 'agu' => 8,
+                    'sep' => 9, 'okt' => 10, 'nov' => 11, 'des' => 12
+                ];
+                $searchLower = strtolower($search);
+                if (array_key_exists($searchLower, $bulanMap)) {
+                    $query->whereMonth('created_at', $bulanMap[$searchLower]);
+                }
+            }
         })
-        ->orderBy('No', 'asc')
+        ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
         ->paginate(10)
         ->withQueryString(); // Sertakan query string untuk pencarian di URL
 
@@ -44,6 +62,7 @@ class RiwayatDiagnosaController extends Controller
         'search' => $search,
     ]);
 }
+
 
 
     public function indexDiagnosa()
@@ -242,21 +261,59 @@ class RiwayatDiagnosaController extends Controller
 
     public function showRiwayat(Request $request, $kode_user)
 {
-    $query = RiwayatDiagnosa::where('kode_user', $kode_user); // Mengambil data berdasarkan kode_user
+    // Membuat query utama berdasarkan pengguna yang dipilih
+    $query = RiwayatDiagnosa::where('kode_user', $kode_user); // Membatasi data hanya untuk pengguna tertentu
 
     // Menambahkan logika pencarian
     if ($request->has('search') && !empty($request->search)) {
         $search = $request->input('search');
-        $query->where('penyakit_utama', 'like', "%{$search}%")
-            ->orWhere('penyakit_alternatif_1', 'like', "%{$search}%")
-            ->orWhere('penyakit_alternatif_2', 'like', "%{$search}%");
+
+        // Tambahkan filter pencarian
+        $query->where(function ($q) use ($search) {
+            // Pencarian berdasarkan penyakit
+            $q->where('penyakit_utama', 'like', "%{$search}%")
+              ->orWhere('penyakit_alternatif_1', 'like', "%{$search}%")
+              ->orWhere('penyakit_alternatif_2', 'like', "%{$search}%");
+
+            // Logika tambahan untuk pencarian waktu
+            $q->orWhere(function ($subQuery) use ($search) {
+                // Cek apakah input berupa tanggal lengkap (format: YYYY-MM-DD)
+                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $search)) {
+                    $subQuery->whereDate('created_at', $search); // Pencarian tanggal penuh
+                }
+                // Cek apakah input berupa tahun saja (format: YYYY)
+                elseif (preg_match('/^\d{4}$/', $search)) {
+                    $subQuery->whereYear('created_at', $search); // Pencarian berdasarkan tahun
+                }
+                // Cek apakah input berupa angka bulan (1-12) atau nama bulan (bahasa Indonesia)
+                elseif (is_numeric($search) && intval($search) >= 1 && intval($search) <= 12) {
+                    $subQuery->whereMonth('created_at', $search); // Pencarian berdasarkan angka bulan
+                } else {
+                    // Mapping nama bulan ke angka (untuk pencarian bulan dalam bahasa Indonesia)
+                    $bulanMap = [
+                        'januari' => 1, 'februari' => 2, 'maret' => 3, 'april' => 4,
+                        'mei' => 5, 'juni' => 6, 'juli' => 7, 'agustus' => 8,
+                        'september' => 9, 'oktober' => 10, 'november' => 11, 'desember' => 12,
+                        'jan' => 1, 'feb' => 2, 'mar' => 3, 'apr' => 4,
+                        'mei' => 5, 'jun' => 6, 'jul' => 7, 'agu' => 8,
+                        'sep' => 9, 'okt' => 10, 'nov' => 11, 'des' => 12
+                    ];
+                    $searchLower = strtolower($search);
+                    if (array_key_exists($searchLower, $bulanMap)) {
+                        $subQuery->whereMonth('created_at', $bulanMap[$searchLower]);
+                    }
+                }
+            });
+        });
     }
+
+    // Menyimpan URL sebelumnya untuk navigasi
     if (url()->previous() !== url()->current()) {
         session(['previous_url' => url()->previous()]);
     }
 
     // Menambahkan paginasi ke query
-    $riwayatPaginated = $query->paginate(10);
+    $riwayatPaginated = $query->orderBy('created_at', 'desc')->paginate(10);
 
     // Cek apakah permintaan AJAX
     if ($request->ajax()) {
@@ -268,9 +325,11 @@ class RiwayatDiagnosaController extends Controller
         'title' => 'Riwayat Diagnosa',
         'riwayatPaginated' => $riwayatPaginated,
         'kode_user' => $kode_user,
+        'search' => $request->search ?? '',
         'activePage' => 'pages.UserPages.riwayatDiagnosa',
     ]);
 }
+
 
 public function chartData()
 {
