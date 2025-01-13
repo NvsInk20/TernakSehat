@@ -82,15 +82,44 @@
                     </div>
 
                     <!-- Input Password -->
-                    <div class="mb-6">
+                    <div class="mb-6 relative">
                         <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
                         <input id="password" name="password" type="password" placeholder="Masukkan password"
                             class="w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('password') border-red-500 @enderror"
                             required>
+                        <button type="button" id="togglePassword"
+                            class="absolute inset-y-0 right-2 mt-7 flex items-center px-2 text-gray-500 hover:text-gray-700">
+                            <!-- Ikon mata dengan coretan dinamis -->
+                            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" class="w-6 h-6">
+                                <!-- Bentuk mata -->
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12m0 0a3 3 0 11-6 0 3 3 0 016 0zm6-0.5c0-3.5-4-6.5-9-6.5S3 8.5 3 12s4 6.5 9 6.5 9-3 9-6.5z" />
+                                <!-- Coretan dinamis -->
+                                <path id="eyeSlash" class="hidden" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M4 4l16 16" />
+                            </svg>
+                        </button>
                         @error('password')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <script>
+                        const togglePassword = document.querySelector('#togglePassword');
+                        const passwordInput = document.querySelector('#password');
+                        const eyeSlash = document.querySelector('#eyeSlash');
+
+                        togglePassword.addEventListener('click', function() {
+                            // Toggle the input type
+                            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                            passwordInput.setAttribute('type', type);
+
+                            // Toggle the coretan pada ikon mata
+                            eyeSlash.classList.toggle('hidden');
+                        });
+                    </script>
+
 
                     @if ($errors->has('login'))
                         <div class="text-red-500 text-sm mb-4">

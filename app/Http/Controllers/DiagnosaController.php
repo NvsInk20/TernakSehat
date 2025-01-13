@@ -437,7 +437,7 @@ public function showResult()
     ]);
 
     // Redirect dengan pesan sukses
-    return redirect()->back()->with('success', 'Hasil diagnosa berhasil disimpan.');
+    return redirect()->route('riwayatDiagnosa.index')->with('success', 'Hasil diagnosa berhasil disimpan.');
 }
 
 
