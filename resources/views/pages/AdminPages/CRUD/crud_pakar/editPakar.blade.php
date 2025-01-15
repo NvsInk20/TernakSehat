@@ -91,24 +91,79 @@
                 @enderror
             </div>
 
-            <!-- Password Field -->
-            <div class="mb-6">
+            <!-- Password Field (Optional) -->
+            <div class="relative mb-6">
                 <label for="password" class="block text-gray-700 text-sm font-medium">Password</label>
-                <input type="password" id="password" name="password"
-                    class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
-                    placeholder="Kosongkan jika tidak ingin mengubah">
+                <div class="relative">
+                    <input type="password" id="password" name="password"
+                        class="mt-2 h-12 w-full pr-12 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                        placeholder="Kosongkan jika tidak ingin mengubah">
+                    <button type="button" id="togglePassword"
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700">
+                        <!-- Ikon mata -->
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12m0 0a3 3 0 11-6 0 3 3 0 016 0zm6-0.5c0-3.5-4-6.5-9-6.5S3 8.5 3 12s4 6.5 9 6.5 9-3 9-6.5z" />
+                            <path id="eyeSlash" class="hidden" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M4 4l16 16" />
+                        </svg>
+                    </button>
+                </div>
                 @error('password')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
 
-            <!-- Password Confirmation Field -->
-            <div class="mb-6">
+            <!-- Confirm Password Field -->
+            <div class="relative mb-6">
                 <label for="password_confirmation" class="block text-gray-700 text-sm font-medium">Konfirmasi
                     Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation"
-                    class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500">
+                <div class="relative">
+                    <input type="password" id="password_confirmation" name="password_confirmation"
+                        class="mt-2 h-12 w-full pr-12 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
+                        placeholder="Masukkan ulang password">
+                    <button type="button" id="toggleConfirmPassword"
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700">
+                        <!-- Ikon mata -->
+                        <svg id="eyeIconConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12m0 0a3 3 0 11-6 0 3 3 0 016 0zm6-0.5c0-3.5-4-6.5-9-6.5S3 8.5 3 12s4 6.5 9 6.5 9-3 9-6.5z" />
+                            <path id="eyeSlashConfirmPassword" class="hidden" stroke-linecap="round"
+                                stroke-linejoin="round" stroke-width="2" d="M4 4l16 16" />
+                        </svg>
+                    </button>
+                </div>
+                @error('password_confirmation')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                @enderror
             </div>
+
+            <script>
+                // Password toggle
+                const togglePassword = document.querySelector('#togglePassword');
+                const passwordInput = document.querySelector('#password');
+                const eyeSlash = document.querySelector('#eyeSlash');
+
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    eyeSlash.classList.toggle('hidden');
+                });
+
+                // Confirm Password toggle
+                const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+                const confirmPasswordInput = document.querySelector('#password_confirmation');
+                const eyeSlashConfirmPassword = document.querySelector('#eyeSlashConfirmPassword');
+
+                toggleConfirmPassword.addEventListener('click', function() {
+                    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPasswordInput.setAttribute('type', type);
+                    eyeSlashConfirmPassword.classList.toggle('hidden');
+                });
+            </script>
+
 
             <!-- Submit Button -->
             <div class="flex justify-center">
@@ -129,7 +184,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
             </a>
         </div>

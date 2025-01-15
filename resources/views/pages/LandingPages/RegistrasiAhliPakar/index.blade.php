@@ -75,10 +75,37 @@
                 <input type="password" id="password" name="password" required
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
                     placeholder="Masukkan password">
+                <button type="button" id="togglePassword"
+                    class="absolute inset-y-0 right-2 mt-7 flex items-center px-2 text-gray-500 hover:text-gray-700">
+                    <!-- Ikon mata dengan coretan dinamis -->
+                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" class="w-6 h-6">
+                        <!-- Bentuk mata -->
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12m0 0a3 3 0 11-6 0 3 3 0 016 0zm6-0.5c0-3.5-4-6.5-9-6.5S3 8.5 3 12s4 6.5 9 6.5 9-3 9-6.5z" />
+                        <!-- Coretan dinamis -->
+                        <path id="eyeSlash" class="hidden" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" d="M4 4l16 16" />
+                    </svg>
+                </button>
                 @error('password')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>
+            <script>
+                const togglePassword = document.querySelector('#togglePassword');
+                const passwordInput = document.querySelector('#password');
+                const eyeSlash = document.querySelector('#eyeSlash');
+
+                togglePassword.addEventListener('click', function() {
+                    // Toggle the input type
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+
+                    // Toggle the coretan pada ikon mata
+                    eyeSlash.classList.toggle('hidden');
+                });
+            </script>
 
             <!-- Confirm Password Field -->
             <div class="relative mb-6">
@@ -86,10 +113,38 @@
                 <input type="password" id="password_confirmation" name="password_confirmation" required
                     class="form-control mt-2 peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
                     placeholder="Masukkan ulang password">
+                <button type="button" id="toggleConfirmPassword"
+                    class="absolute inset-y-0 right-2 mt-7 flex items-center px-2 text-gray-500 hover:text-gray-700">
+                    <!-- Ikon mata dengan coretan dinamis -->
+                    <svg id="eyeIconConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <!-- Bentuk mata -->
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12m0 0a3 3 0 11-6 0 3 3 0 016 0zm6-0.5c0-3.5-4-6.5-9-6.5S3 8.5 3 12s4 6.5 9 6.5 9-3 9-6.5z" />
+                        <!-- Coretan dinamis -->
+                        <path id="eyeSlashConfirmPassword" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M4 4l16 16" />
+                    </svg>
+                </button>
                 @error('password_confirmation')
                     <div class="text-red-600 text-sm">{{ $message }}</div>
                 @enderror
             </div>
+
+            <script>
+                const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+                const confirmPasswordInput = document.querySelector('#password_confirmation');
+                const eyeSlashConfirmPassword = document.querySelector('#eyeSlashConfirmPassword');
+
+                toggleConfirmPassword.addEventListener('click', function() {
+                    // Toggle the input type
+                    const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPasswordInput.setAttribute('type', type);
+
+                    // Toggle the coretan pada ikon mata
+                    eyeSlashConfirmPassword.classList.toggle('hidden');
+                });
+            </script>
 
             <!-- Dokumen Pendukung Field (Untuk Ahli Pakar) -->
             <div class="relative mb-6" x-data="{ role: '{{ old('role', 'ahli pakar') }}' }" x-show="role === 'ahli pakar'">
