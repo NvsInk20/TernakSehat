@@ -90,7 +90,7 @@
                             penyakit sapi beserta penyebab dan pencegahannya untuk meningkatkan kesehatan hewan.</p>
                         <button
                             class="mt-6 bg-orange-400 text-white 2xl:text-2xl font-semibold py-2 px-6 2xl:py-4 2xl:px-8  rounded-full hover:bg-orange-500">
-                            <a href="/User/penyakit">Cek Penyakit</a></button>
+                            <a href="/User/penyakit">Cek Data Penyakit</a></button>
                     </div>
                 </div>
             </div>
@@ -103,23 +103,28 @@
                             </div>
                             <div
                                 class="relative bg-white border 2xl:mt-20 border-black 2xl:text-3xl px-4 2xl:px-10 2xl:py-5 py-2 rounded-lg text-black text-lg xl:text-2xl font-semibold">
-                                Manfaat Sistem
+                                Panduan Pengecekan
                             </div>
                         </div>
                     </div>
-                    <div class="flexitems-center mt-16" id="footerContent">
+                    <div class="flex items-center mt-16" id="footerContent">
                         <div class="relative inline-block 2xl:ml-[11rem]">
                             <div class="absolute -bottom-2 2xl:mt-1 -right-2 bg-orange-500 rounded-lg w-full h-full">
                             </div>
                             <div
                                 class="relative bg-white text-md 2xl:text-2xl xl:text-xl xl:ml-2 xl:w-[38rem] -ml-12 w-[18rem] 2xl:w-[47rem] border border-black px-4 py-2 rounded-lg text-black font-semibold">
-                                <p>
-                                    sistem ini bisa membantu peternak mengambil langkah cepat dalam menangani penyakit,
-                                    mencegah penyebaran penyakit lebih lanjut, serta mengurangi risiko kerugian ekonomi
-                                    akibat penyakit yang terlambat diobati. Selain itu, sistem pakar juga dapat
-                                    meningkatkan produktivitas dan efisiensi peternakan karena memungkinkan pengelolaan
-                                    kesehatan ternak yang lebih baik dan tepat waktu.
+                                <p class="text-justify">
+                                    Sistem ini juga dirancang untuk membantu peternak dalam memberikan data panduan
+                                    pengecekan gejala penyakit, agar peternak dapat dengan mudah
+                                    mengidentifikasi gejala penyakit dengan baik dan benar. Untuk
+                                    mendapatkan data pengecekan gejala, silahkan cetak data panduan yang tersedia
+                                    melalui <strong>cetak panduan gejala</strong> berikut
                                 </p>
+                                <a href="{{ route('gejala.cetakPdf') }}"
+                                    class="mt-7 mb-7 max-w-max text-base xl:my-4 2xl:my-5 flex justify-start bg-orange-400 text-white 2xl:text-2xl font-semibold py-2 px-6 2xl:py-3 2xl:px-8  rounded-full hover:bg-orange-500">
+                                    Cetak Panduan Gejala
+                                </a>
+
                             </div>
                         </div>
                     </div>

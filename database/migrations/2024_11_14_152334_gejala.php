@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gejala', function (Blueprint $table) {
-            $table->unsignedBigInteger('No'); // kolom ID auto-increment
-            $table->string('kode_gejala'); // kolom untuk nama gejala
-            $table->string('nama_gejala'); // kolom untuk deskripsi gejala
+            $table->unsignedBigInteger('No'); // kolom No
+            $table->string('kode_gejala'); // kolom untuk kode gejala
+            $table->string('nama_gejala'); // kolom untuk nama gejala
+            $table->string('deskripsi')->nullable(); // kolom untuk deskripsi gejala
+            $table->text('foto_dokumen')->nullable(); // kolom untuk deskripsi gejala
+            $table->text('deskripsi_panduan')->nullable(); // kolom untuk deskripsi gejala
             $table->timestamps(); // kolom created_at dan updated_at
 
             $table->primary('kode_gejala');

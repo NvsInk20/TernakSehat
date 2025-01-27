@@ -39,11 +39,11 @@
             <nav class="mb-6 flex flex-wrap justify-center 2xl:mt-7 space-x-3">
                 <a href="{{ route('login') }}"
                     class="hover:bg-white text-base sm:text-lg sm:space-x-1 xl:text-[180%] xl:mt-[10%] 2xl:text-5xl hover:text-black border border-transparent hover:border-white rounded px-3 py-1">
-                    Login
+                    Masuk
                 </a>
                 <a href="#ContainerTengah"
                     class="hover:bg-white text-base sm:text-lg sm:space-x-1 xl:text-[180%] xl:mt-[10%] 2xl:text-5xl hover:text-black border border-transparent hover:border-white rounded px-3 py-1">
-                    Daftar Menu
+                    Panduan
                 </a>
                 <a href="#ContainerBawah"
                     class="hover:bg-white text-base sm:text-lg sm:space-x-1 xl:text-[180%] xl:mt-[10%] 2xl:text-5xl hover:text-black border border-transparent hover:border-white rounded px-3 py-1">
@@ -62,7 +62,7 @@
         <section class="text-center max-w-5xl mx-auto xl:max-w-screen-xl 2xl:max-w-screen-xl">
             <h2
                 class="relative inline-block xl:text-[2em] px-10 sm:px-14 xl:mb-20 py-2 sm:py-4 mt-6 sm:mt-10 text-lg sm:text-2xl 2xl:text-5xl font-bold border border-black bg-white">
-                Menu
+                Panduan
                 <span class="absolute inset-0 -z-10 -rotate-6 bg-orange-500 translate-x-2 translate-y-3"></span>
             </h2>
             <div class="flex flex-wrap justify-center mt-16 xl:mt-20 2xl:mt-40 gap-6 sm:gap-8 2xl:gap-12">

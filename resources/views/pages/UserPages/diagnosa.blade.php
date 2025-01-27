@@ -53,6 +53,13 @@
                     Apakah sapi mengalami {{ $question->gejala->nama_gejala }}?
                 </p>
 
+                <!-- Tambahkan field deskripsi opsional -->
+                @if (!empty($question->gejala->deskripsi))
+                    <p class="text-gray-500 italic text-sm 2xl:text-lg mb-6">
+                        Deskripsi: {{ $question->gejala->deskripsi }}
+                    </p>
+                @endif
+
                 <!-- Hapus keterangan 'Opsional' atau 'Wajib dijawab' jika tidak ingin ditampilkan -->
                 <form action="{{ route('diagnosa.answer') }}" method="POST">
                     @csrf

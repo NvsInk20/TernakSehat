@@ -68,11 +68,12 @@
         <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Tambah Gejala</h1>
 
         <!-- Form untuk Menambah Penyakit -->
-        <form action="{{ route('gejala.addItems') }}" method="POST">
+        <form action="{{ route('gejala.addItems') }}" method="POST" enctype="multipart/form-data"
+            x-data="{ items: [] }">
             @csrf
-
             <input type="hidden" name="No" value="{{ $nextNo }}">
-            <!-- Kode Penyakit Field -->
+
+            <!-- Kode Gejala Field -->
             <div class="mb-6">
                 <label for="kode_gejala" class="block text-gray-700 text-sm font-medium">Kode Gejala</label>
                 <input type="text" id="kode_gejala" name="kode_gejala" required
@@ -82,7 +83,6 @@
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
-
 
             <!-- Nama Gejala Field -->
             <div class="mb-6">
@@ -94,14 +94,60 @@
                 @enderror
             </div>
 
-            <!-- Submit Button -->
+            <!-- Field Deskripsi -->
+            <div class="mb-6">
+                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi singkat <span
+                        class="text-red-500">(Opsional)</span></label>
+                <textarea id="deskripsi" name="deskripsi"
+                    class="mt-2 w-full h-32 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 resize-none"></textarea>
+                @error('deskripsi')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Foto Dokumen dan Deskripsi -->
+            <div class="mb-6 space-y-4">
+                <label class="block text-sm font-medium text-gray-700">Foto Dokumen
+                    dan Deskripsi Panduan <span class="text-red-500">(Opsional)</span></label>
+                <template x-for="(item, index) in items" :key="item.id">
+                    <div class="space-y-2 border border-gray-400 rounded-lg px-4 py-3">
+                        <!-- Input Gambar -->
+                        <div class="flex items-center space-x-4">
+                            <input type="file" :name="'foto_dokumen[' + index + ']'" accept="image/*" required
+                                class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                            <!-- Tombol Hapus -->
+                            <button type="button"
+                                class="bg-red-500 text-white px-3 py-2 ml-auto rounded-md hover:bg-red-600"
+                                @click="items = items.filter(i => i.id !== item.id)">
+                                Hapus
+                            </button>
+                        </div>
+                        <!-- Input Deskripsi -->
+                        <textarea :name="'deskripsi_panduan[' + index + ']'" placeholder="Deskripsi gambar" required
+                            class="block w-full h-20 border-gray-400 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500 resize-none"></textarea>
+
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- Tombol Tambah Gambar -->
+            <div class="flex justify-center mb-6">
+                <button type="button" @click="items.push({ id: Date.now() })"
+                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-300">
+                    Tambah Gambar
+                </button>
+            </div>
+
+            <!-- Tombol Submit -->
             <div class="flex justify-center">
                 <button type="submit"
-                    class="bg-orange-500 text-white text-sm px-6 py-3 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-200">
-                    Tambah Gejala
+                    class="bg-orange-500 text-white px-6 py-3 rounded-md hover:bg-orange-600 focus:ring-2 focus:ring-orange-300">
+                    Simpan Gejala
                 </button>
             </div>
         </form>
+
 
         @php
             // Menentukan rute dashboard berdasarkan peran pengguna
@@ -121,7 +167,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
             </a>
         </div>

@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PakarController;
 use App\Http\Controllers\GejalaController;
-use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\DiagnosaController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PenyakitController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RekomendasiController;
 use App\Http\Controllers\AturanPenyakitController;
 use App\Http\Controllers\RiwayatDiagnosaController;
 
@@ -58,10 +59,11 @@ Route::put('/admin/pakar/{kode_ahliPakar}/toggle-status', [PakarController::clas
 
 // User Pages (with auth middleware)
 Route::middleware(['auth'])->group(function () {
-
+    
     Route::middleware(['auth', 'role:user'])->group(function () {
-    // User Pages
-    Route::view('/User/Dashboard', 'pages.UserPages.dashboard')->name('user.dashboard');
+        // User Pages
+    Route::get('/gejala/cetakPdf', [GejalaController::class, 'cetakPdf'])->name('gejala.cetakPdf');
+    Route::get('/User/Dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/User/penyakit', [AturanPenyakitController::class, 'indexUser'])->name('user.aturanPenyakit');
     Route::get('/user/riwayat-diagnosa', [RiwayatDiagnosaController::class, 'index'])->name('riwayatDiagnosa.index');
     Route::delete('/riwayat-diagnosa/{kode_riwayat}', [RiwayatDiagnosaController::class, 'destroy'])->name('riwayatDiagnosa.destroy');
@@ -150,6 +152,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gejala/{kode_gejala}/edit', [GejalaController::class, 'edit'])->name('gejala.edit');
     Route::put('/gejala/{kode_gejala}', [GejalaController::class, 'update'])->name('gejala.update');
     Route::delete('/gejala/{kode_gejala}', [GejalaController::class, 'destroy'])->name('gejala.destroy');
+    Route::post('/hapus-gambar', [GejalaController::class, 'hapusGambar'])->name('hapus-gambar');
+
+
     
     // Solusi Pages By : Admin
     Route::get('/Admin/solusi', [RekomendasiController::class, 'index'])->name('Admin.solusi');
@@ -196,6 +201,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ahli_pakar/gejala/{kode_gejala}/edit', [GejalaController::class, 'editByPakar'])->name('gejalaPakar.edit');
     Route::put('/ahli_pakar/gejala/{kode_gejala}', [GejalaController::class, 'updateByPakar'])->name('gejalaPakar.update');
     Route::delete('/ahli_pakar/gejala/{kode_gejala}', [GejalaController::class, 'destroyByPakar'])->name('gejalaPakar.destroy');
+    Route::post('/hapus-gambar', [GejalaController::class, 'hapusGambar'])->name('hapus-gambar');
     
     // Solusi Pages By : Pakar
     Route::get('/ahli_pakar/solusi', [RekomendasiController::class, 'indexByPakar'])->name('Pakar.solusi');

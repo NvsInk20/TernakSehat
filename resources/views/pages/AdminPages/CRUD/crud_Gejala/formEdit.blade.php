@@ -68,7 +68,8 @@
         <h1 class="text-3xl font-semibold text-center mb-6 text-gray-800">Edit Gejala</h1>
 
         <!-- Form untuk Mengedit Gejala -->
-        <form action="{{ route('gejala.update', ['kode_gejala' => $gejala->kode_gejala]) }}" method="POST">
+        <form action="{{ route('gejala.update', ['kode_gejala' => $gejala->kode_gejala]) }}" method="POST"
+            enctype="multipart/form-data" x-data="{ items: [] }">
             @csrf
             @method('PUT')
 
@@ -90,6 +91,148 @@
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
+            <!-- Field Deskripsi -->
+            <div class="mb-6">
+                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi singkat <span
+                        class="text-red-500">(Opsional)</span></label>
+                <textarea id="deskripsi" name="deskripsi"
+                    class="mt-2 w-full h-32 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 resize-none">{{ old('deskripsi', $gejala->deskripsi) }}</textarea>
+                @error('deskripsi')
+                    <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-6 space-y-4">
+                <label class="block text-sm font-medium text-gray-700">Foto Dokumen dan Deskripsi Panduan <span
+                        class="text-red-500">(Opsional)</span></label>
+                @foreach ($fotoDokumen as $index => $foto)
+                    <div class="space-y-2 border rounded-lg border-gray-600 p-4 shadow-sm relative"
+                        x-data="{ showDelete: false }">
+                        <!-- Gambar Lama -->
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold mb-2 flex justify-between items-center">
+                                Gambar Lama
+                                <!-- Tombol Hapus -->
+                                <!-- Tombol Hapus pada gambar lama -->
+                                <button type="button"
+                                    class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-150 ease-in-out"
+                                    onclick="removeItemAndDeleteFromStorage({{ $index }}, '{{ $foto }}')">
+                                    Hapus
+                                </button>
+
+                            </p>
+                            <div class="p-3 bg-gray-100 rounded-md shadow-sm">
+                                <!-- Nama Gambar -->
+                                <p class="text-gray-700 text-sm font-medium mb-2">Deskripsi : <span
+                                        class="text-blue-600">Gambar Gejala</span></p>
+                                <!-- Gambar -->
+                                <img src="{{ asset('storage/' . $foto) }}" alt="Foto Dokumen"
+                                    class="w-32 h-32 rounded-md shadow mb-3">
+
+                            </div>
+                        </div>
+
+
+                        <!-- Input Gambar Baru -->
+                        <input type="file" name="foto_dokumen[{{ $index }}]" accept="image/*"
+                            class="block w-full border-gray-300 rounded-md shadow-sm mt-2">
+
+                        <!-- Deskripsi Panduan -->
+                        <textarea name="deskripsi_panduan[{{ $index }}]"
+                            class="block w-full h-20 border-gray-300 rounded-md shadow-sm mt-2">{{ old('deskripsi_panduan.' . $index, $deskripsiPanduan[$index] ?? '') }}</textarea>
+                    </div>
+                @endforeach
+
+                <!-- Tombol Tambah -->
+                <div class="flex justify-center">
+                    <button type="button" id="add-item"
+                        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-300">
+                        Tambah Gambar
+                    </button>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('add-item').addEventListener('click', function() {
+                    const container = document.querySelector('.mb-6.space-y-4');
+
+                    const newItem = document.createElement('div');
+                    newItem.classList.add('space-y-2', 'border', 'rounded-lg', 'p-4', 'shadow-sm', 'relative',
+                        'border-gray-700');
+                    newItem.innerHTML = `
+    <div class="flex items-center space-x-4">
+        <input type="file" name="foto_dokumen[]" accept="image/*" class="block w-full border-gray-300 rounded-md shadow-sm mt-2">
+        <button type="button" class="ml-auto bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 delete-item">
+            Hapus
+        </button>
+    </div>
+    <textarea name="deskripsi_panduan[]" class="block w-full h-20 border-gray-300 rounded-md shadow-sm mt-2"></textarea>
+    `;
+
+                    container.insertBefore(newItem, document.getElementById('add-item').parentElement);
+
+                    const deleteButton = newItem.querySelector('.delete-item');
+                    deleteButton.addEventListener('click', function() {
+                        newItem.remove(); // Hapus elemen DOM
+                    });
+                });
+
+                // Menghapus item gambar lama dengan konfirmasi
+                function removeItemAndDeleteFromStorage(index, foto) {
+                    const confirmation = window.confirm("Apakah Anda yakin ingin menghapus gambar ini?");
+                    if (confirmation) {
+                        // Cari elemen container gambar di halaman berdasarkan index
+                        const container = document.querySelectorAll('.space-y-2')[index];
+
+                        // Kirim permintaan ke server untuk menghapus gambar dari storage
+                        fetch('/hapus-gambar', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    foto: foto
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Tampilkan notifikasi sukses
+                                    alert('Gambar berhasil dihapus dari penyimpanan');
+
+                                    // Hapus elemen gambar dari DOM setelah gambar berhasil dihapus
+                                    if (container) {
+                                        container.remove(); // Hapus elemen DOM dari halaman
+                                    }
+
+                                    // Memperbarui data gambar yang tersisa di halaman
+                                    updateImageData();
+                                } else {
+                                    // Tampilkan notifikasi error jika gagal
+                                    alert('Gagal menghapus gambar dari penyimpanan');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Terjadi kesalahan saat menghapus gambar.');
+                            });
+                    }
+                }
+
+                // Fungsi untuk memperbarui data gambar yang tersisa di halaman setelah penghapusan
+                function updateImageData() {
+                    // Mendapatkan semua elemen gambar di halaman
+                    const images = document.querySelectorAll('.space-y-2');
+
+                    // Update logika di sini untuk memperbarui data gambar yang tersisa jika perlu
+                    // Misalnya, Anda bisa meng-update daftar gambar atau melakukan pengolahan lainnya
+                    // Namun, jika hanya ingin memperbarui tampilan halaman, maka cukup memastikan
+                    // bahwa elemen gambar yang telah dihapus tidak lagi muncul di halaman.
+                }
+            </script>
+
+
 
             <!-- Submit Button -->
             <div class="flex justify-center">
@@ -117,7 +260,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="w-6 h-6 ml-2 transform transition-transform duration-300 group-hover:translate-x-40">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
             </a>
         </div>
