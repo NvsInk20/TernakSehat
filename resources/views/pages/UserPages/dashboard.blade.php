@@ -149,7 +149,7 @@
         });
     </script>
     <!-- Footer -->
-    <footer class="p-5 bg-orange-500 text-center text-white mt-16 xl:mt-0 2xl:mt-0 2xl:text-xl">
+    <footer class="p-5 bg-orange-500 text-center text-white mt-24 xl:mt-0 2xl:mt-0 2xl:text-xl">
         <p class="font-medium">Ternak Sehat © {{ date('Y') }}</p>
     </footer>
 </body>
