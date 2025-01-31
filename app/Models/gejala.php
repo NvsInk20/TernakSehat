@@ -13,10 +13,15 @@ class gejala extends Model
     protected $primaryKey = 'kode_gejala'; // Primary key adalah kode_penyakit
     public $incrementing = false; // Non-incrementing primary key
     protected $keyType = 'string'; // Tipe primary key adalah string
-    protected $fillable = ['No', 'kode_gejala','nama_gejala', 'deskripsi', 'foto_dokumen', 'deskripsi_panduan'];
+    protected $fillable = ['No', 'kode_gejala','nama_gejala', 'deskripsi'];
 
     public function aturanPenyakit()
     {
         return $this->hasMany(AturanPenyakit::class, 'kode_gejala', 'kode_gejala');
+    }
+
+    public function PanduanGejala()
+    {
+        return $this->hasMany(PanduanGejala::class, 'kode_gejala', 'kode_gejala');
     }
 }

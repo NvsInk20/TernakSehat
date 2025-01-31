@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('kode_gejala'); // kolom untuk kode gejala
             $table->string('nama_gejala'); // kolom untuk nama gejala
             $table->string('deskripsi')->nullable(); // kolom untuk deskripsi gejala
-            $table->text('foto_dokumen')->nullable(); // kolom untuk deskripsi gejala
-            $table->text('deskripsi_panduan')->nullable(); // kolom untuk deskripsi gejala
             $table->timestamps(); // kolom created_at dan updated_at
 
             $table->primary('kode_gejala');

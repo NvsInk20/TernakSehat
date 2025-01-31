@@ -93,8 +93,8 @@
             </div>
             <!-- Field Deskripsi -->
             <div class="mb-6">
-                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi singkat <span
-                        class="text-red-500">(Opsional)</span></label>
+                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi Singkat Pengecekan
+                    Gejala <span class="text-red-500">(Opsional)</span></label>
                 <textarea id="deskripsi" name="deskripsi"
                     class="mt-2 w-full h-32 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 resize-none">{{ old('deskripsi', $gejala->deskripsi) }}</textarea>
                 @error('deskripsi')
@@ -103,20 +103,25 @@
             </div>
 
             <div class="mb-6 space-y-4">
-                <label class="block text-sm font-medium text-gray-700">Foto Dokumen dan Deskripsi Panduan <span
-                        class="text-red-500">(Opsional)</span></label>
+                <label class="block text-sm font-medium text-gray-700">Foto Dokumen
+                    dan Deskripsi Lengkap Pengecekan Gejala <span class="text-red-500">(Opsional)</span></label>
                 @foreach ($fotoDokumen as $index => $foto)
                     <div class="space-y-2 border rounded-lg border-gray-600 p-4 shadow-sm relative"
                         x-data="{ showDelete: false }">
                         <!-- Gambar Lama -->
                         <div class="mb-4">
+                            <!-- Nomor Urut -->
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-gray-700">Panduan ke
+                                    -<span>{{ $loop->iteration }}</span></span>
+                            </div>
                             <p class="text-sm font-semibold mb-2 flex justify-between items-center">
                                 Gambar Lama
                                 <!-- Tombol Hapus -->
                                 <!-- Tombol Hapus pada gambar lama -->
                                 <button type="button"
                                     class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-150 ease-in-out"
-                                    onclick="removeItemAndDeleteFromStorage({{ $index }}, '{{ $foto }}')">
+                                    onclick="removeItemAndDeleteFromStorage({{ $index }}, '{{ $foto }}', '{{ $gejala->kode_gejala }}')">
                                     Hapus
                                 </button>
 
@@ -159,15 +164,20 @@
                     const newItem = document.createElement('div');
                     newItem.classList.add('space-y-2', 'border', 'rounded-lg', 'p-4', 'shadow-sm', 'relative',
                         'border-gray-700');
+                    // Calculate the panduan number based on the current items already in the container
+                    const panduanNumber = container.querySelectorAll('.space-y-2').length + 1;
                     newItem.innerHTML = `
-    <div class="flex items-center space-x-4">
-        <input type="file" name="foto_dokumen[]" accept="image/*" class="block w-full border-gray-300 rounded-md shadow-sm mt-2">
-        <button type="button" class="ml-auto bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 delete-item">
-            Hapus
-        </button>
-    </div>
-    <textarea name="deskripsi_panduan[]" class="block w-full h-20 border-gray-300 rounded-md shadow-sm mt-2"></textarea>
-    `;
+                                            <div class="flex items-center space-x-2">
+                            <span class="font-bold text-gray-700">Panduan ke -<span>${panduanNumber}</span></span>
+                        </div>
+                    <div class="flex items-center space-x-4">
+                        <input type="file" name="foto_dokumen[]" accept="image/*" class="block w-full border-gray-300 rounded-md shadow-sm mt-2">
+                        <button type="button" class="ml-auto bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 delete-item">
+                            Hapus
+                        </button>
+                    </div>
+                    <textarea name="deskripsi_panduan[]" class="block w-full h-20 border-gray-300 rounded-md shadow-sm mt-2"></textarea>
+                    `;
 
                     container.insertBefore(newItem, document.getElementById('add-item').parentElement);
 
@@ -178,47 +188,49 @@
                 });
 
                 // Menghapus item gambar lama dengan konfirmasi
-                function removeItemAndDeleteFromStorage(index, foto) {
-                    const confirmation = window.confirm("Apakah Anda yakin ingin menghapus gambar ini?");
+                function removeItemAndDeleteFromStorage(index, foto, kodeGejala) {
+                    const confirmation = window.confirm("Apakah Anda yakin ingin menghapus gambar dan deskripsi ini?");
                     if (confirmation) {
-                        // Cari elemen container gambar di halaman berdasarkan index
-                        const container = document.querySelectorAll('.space-y-2')[index];
-
-                        // Kirim permintaan ke server untuk menghapus gambar dari storage
+                        console.log(JSON.stringify({
+                            foto: foto,
+                            kode_gejala: kodeGejala
+                        }))
                         fetch('/hapus-gambar', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
+                                    "Accept": "application/json",
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
                                 body: JSON.stringify({
-                                    foto: foto
-                                })
+                                    foto: foto,
+                                    kode_gejala: kodeGejala
+                                }),
                             })
-                            .then(response => response.json())
+                            .then(response => {
+                                if (!response.ok) {
+                                    return response.text().then(text => {
+                                        throw new Error(text);
+                                    });
+                                }
+                                return response.json();
+                            })
                             .then(data => {
+                                console.log(data)
                                 if (data.success) {
-                                    // Tampilkan notifikasi sukses
-                                    alert('Gambar berhasil dihapus dari penyimpanan');
-
-                                    // Hapus elemen gambar dari DOM setelah gambar berhasil dihapus
-                                    if (container) {
-                                        container.remove(); // Hapus elemen DOM dari halaman
-                                    }
-
-                                    // Memperbarui data gambar yang tersisa di halaman
-                                    updateImageData();
+                                    alert('Gambar berhasil dihapus.');
+                                    location.reload();
                                 } else {
-                                    // Tampilkan notifikasi error jika gagal
-                                    alert('Gagal menghapus gambar dari penyimpanan');
+                                    alert('Gagal menghapus gambar: ' + data.message);
                                 }
                             })
                             .catch(error => {
-                                console.error('Error:', error);
-                                alert('Terjadi kesalahan saat menghapus gambar.');
+                                alert('Terjadi kesalahan: ' + error.message);
                             });
+
                     }
                 }
+
 
                 // Fungsi untuk memperbarui data gambar yang tersisa di halaman setelah penghapusan
                 function updateImageData() {

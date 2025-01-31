@@ -55,7 +55,7 @@
 
                 <!-- Tambahkan field deskripsi opsional -->
                 @if (!empty($question->gejala->deskripsi))
-                    <p class="text-gray-500 italic text-sm 2xl:text-lg mb-6">
+                    <p class="text-gray-500 italic text-sm max-w-md 2xl:text-lg mb-6 break-words whitespace-normal">
                         Deskripsi: {{ $question->gejala->deskripsi }}
                     </p>
                 @endif

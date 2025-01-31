@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use PDF;
 use App\Models\gejala;
+use App\Models\PanduanGejala;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GejalaController extends Controller
 {
@@ -91,43 +93,52 @@ class GejalaController extends Controller
     $validated = $request->validate([
         'kode_gejala' => 'required|unique:gejala,kode_gejala',
         'nama_gejala' => 'required',
-        'No' => 'required|integer',  // Validasi nomor urut (No)
+        'No' => 'required|integer',  // Pastikan kolom ini ada di database
         'deskripsi' => 'nullable|string',
-        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk multiple file gambar
-        'deskripsi_panduan.*' => 'nullable|string', // Validasi deskripsi panduan untuk tiap gambar
     ]);
 
-    // Array untuk menyimpan path foto dan deskripsi panduan
-    $fotoDokumen = [];
-    $deskripsiPanduan = [];
+    // Simpan data Gejala
+    $gejala = gejala::create([
+        'kode_gejala' => $validated['kode_gejala'],
+        'nama_gejala' => $validated['nama_gejala'],
+        'deskripsi' => $validated['deskripsi'] ?? null,  // Pastikan deskripsi tersimpan
+        'No' => $validated['No'], // Simpan nomor urut
+    ]);
 
-    // Proses setiap file foto dan deskripsi panduan
-    if ($request->hasFile('foto_dokumen')) {
-        foreach ($request->file('foto_dokumen') as $index => $file) {
-            // Menyimpan foto_dokumen
-            $fotoPath = $file->store('foto_gejala', 'public');
-            $fotoDokumen[] = $fotoPath;
+    // Simpan PanduanGejala jika ada data
+    if (isset($validated['deskripsi_panduan']) || $request->hasFile('foto_dokumen')) {
+    $fotoFiles = $request->file('foto_dokumen');
+    $deskripsiPanduan = $request->input('deskripsi_panduan', []);
 
-            // Menyimpan deskripsi panduan untuk tiap gambar
-            $deskripsiPanduan[] = $request->deskripsi_panduan[$index] ?? '';
-        }
+    // Pastikan deskripsi_panduan berbentuk array
+    if (!is_array($deskripsiPanduan)) {
+        $deskripsiPanduan = [$deskripsiPanduan];
     }
 
-    // Menyimpan data gejala termasuk foto_dokumen
-    gejala::create([
-        'No' => $request->No,  // Menyimpan nomor urut yang telah dihitung
-        'kode_gejala' => $request->kode_gejala,
-        'nama_gejala' => $request->nama_gejala,
-        'deskripsi' => $request->deskripsi,
-        'foto_dokumen' => implode(',', $fotoDokumen), // Menyimpan path gambar sebagai string yang dipisahkan koma
-        'deskripsi_panduan' => implode('|', $deskripsiPanduan), // Menyimpan deskripsi panduan sebagai string
-    ]);
+    // Looping sesuai jumlah data yang diinput
+    $totalData = max(count($deskripsiPanduan), is_array($fotoFiles) ? count($fotoFiles) : 0);
+    
+    for ($i = 0; $i < $totalData; $i++) {
+        $fotoPath = null;
 
-    // Mengarahkan kembali ke halaman daftar penyakit dengan pesan sukses
+        // Cek apakah ada file yang diupload pada indeks ini
+        if (is_array($fotoFiles) && isset($fotoFiles[$i])) {
+            $fotoPath = $fotoFiles[$i]->store('panduan_gejala', 'public');
+        }
+
+        // Simpan ke dalam tabel PanduanGejala
+        PanduanGejala::create([
+            'kode_gejala' => $gejala->kode_gejala,
+            'foto_dokumen' => $fotoPath ?? null,
+            'deskripsi_panduan' => $deskripsiPanduan[$i] ?? null,
+        ]);
+    }
+    }
+
+
+    // Redirect kembali ke halaman input dengan pesan sukses
     return redirect()->route('gejala.create')->with('success', 'Gejala berhasil ditambahkan!');
 }
-
-
 
     /**
      * Menampilkan form untuk mengedit penyakit berdasarkan ID
@@ -137,11 +148,18 @@ class GejalaController extends Controller
     // Ambil data gejala berdasarkan kode_gejala
     $gejala = gejala::where('kode_gejala', $kode_gejala)->firstOrFail();
 
-    // Pecah data foto_dokumen menjadi array
-    $fotoDokumen = $gejala->foto_dokumen ? explode(',', $gejala->foto_dokumen) : [];
-    
-    // Pecah data deskripsi_panduan menjadi array
-    $deskripsiPanduan = $gejala->deskripsi_panduan ? explode('|', $gejala->deskripsi_panduan) : [];
+    // Ambil semua PanduanGejala yang terkait dengan kode_gejala
+    $panduan = PanduanGejala::where('kode_gejala', $gejala->kode_gejala)->get();
+
+    // Siapkan array untuk menyimpan foto dan deskripsi
+    $fotoDokumen = [];
+    $deskripsiPanduan = [];
+
+    // Looping semua data PanduanGejala yang ditemukan
+    foreach ($panduan as $item) {
+        $fotoDokumen[] = $item->foto_dokumen; // Menyimpan setiap foto_dokumen
+        $deskripsiPanduan[] = $item->deskripsi_panduan; // Menyimpan setiap deskripsi_panduan
+    }
 
     // Kirim data ke view
     return view('pages.AdminPages.CRUD.crud_Gejala.formEdit', [
@@ -151,127 +169,131 @@ class GejalaController extends Controller
         'title' => 'Edit Gejala',
     ]);
 }
+
+// Tangani semua error agar tidak menampilkan halaman HTML
 public function hapusGambar(Request $request)
 {
-    $request->validate([
-        'foto' => 'required|string',
-    ]);
-
-    $foto = $request->input('foto');
-    $path = storage_path('app/public/' . $foto);
-
     try {
-        // Hapus file gambar dari penyimpanan
-        if (file_exists($path)) {
-            unlink($path); // Menghapus file dari storage
+        $validated = $request->validate([
+            'foto' => 'required|string',
+            'kode_gejala' => 'required|string'
+        ]);
+
+        $panduanGejala = PanduanGejala::where('kode_gejala', $validated['kode_gejala'])
+                                      ->where('foto_dokumen', $validated['foto'])
+                                      ->first();
+
+        if (!$panduanGejala) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+        }
+
+        // Gunakan path relatif dari storage Laravel
+        $filePath = 'panduan_gejala/' . basename($panduanGejala->foto_dokumen);
+
+        Log::info('Mencoba menghapus file: ' . storage_path('app/public/' . $filePath));
+
+        // Periksa apakah file ada di storage
+        if (Storage::disk('public')->exists($filePath)) {
+            Storage::disk('public')->delete($filePath);
+            Log::info('File berhasil dihapus: ' . $filePath);
         } else {
-            return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
+            Log::warning('File tidak ditemukan: ' . $filePath);
         }
 
-        // Hapus data gambar dari kolom foto_dokumen di database
-        $gejala = Gejala::where('foto_dokumen', 'like', '%' . $foto . '%')->first();
-        if ($gejala) {
-            // Pecah string menjadi array
-            $fileList = explode(',', $gejala->foto_dokumen);
+        // Hapus dari database
+        $panduanGejala->delete();
 
-            // Hapus file yang sesuai dari array
-            $fileList = array_filter($fileList, function ($file) use ($foto) {
-                return trim($file) !== $foto;
-            });
+        return response()->json([
+            'success' => true,
+            'message' => 'Data dan gambar berhasil dihapus'
+        ]);
+    } catch (\Throwable $e) {
+        Log::error('Terjadi kesalahan saat menghapus gambar: ' . $e->getMessage());
 
-            // Gabungkan kembali array menjadi string
-            $gejala->foto_dokumen = implode(',', $fileList);
-
-            // Hapus deskripsi jika tidak ada file yang tersisa
-            if (empty($fileList)) {
-                $gejala->deskripsi_panduan = null;
-            }
-
-            // Simpan perubahan di database
-            $gejala->save();
-        }
-
-        return response()->json(['success' => true, 'message' => 'Gambar berhasil dihapus.']);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Gagal menghapus gambar.', 'error' => $e->getMessage()]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+        ], 500);
     }
 }
-    /**
-     * Memperbarui data penyakit berdasarkan kode_gejala.
-     */
-    public function update(Request $request, $kode_gejala)
+
+public function update(Request $request, $kode_gejala)
 {
     // Validasi input
     $request->validate([
         'nama_gejala' => 'required|string|max:255',
         'deskripsi' => 'nullable|string',
-        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk multiple file gambar
-        'deskripsi_panduan.*' => 'nullable|string', // Validasi deskripsi panduan untuk tiap gambar
-        'hapus_gambar.*' => 'nullable|integer', // Validasi untuk gambar yang ingin dihapus
+        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'deskripsi_panduan.*' => 'nullable|string',
     ]);
 
-    // Cari gejala berdasarkan kode_gejala
+    // Ambil data gejala berdasarkan kode_gejala
     $gejala = gejala::where('kode_gejala', $kode_gejala)->firstOrFail();
-    // Hapus gambar yang tidak ada di input terbaru
-    $existingPhotos = explode(',', $gejala->foto_dokumen);
-    $newPhotos = $request->input('foto_dokumen', []);
 
-    $photosToDelete = array_diff($existingPhotos, $newPhotos);
-
-    foreach ($photosToDelete as $photo) {
-        if (Storage::exists('public/' . $photo)) {
-            Storage::delete('public/' . $photo);
-        }
-    }
-
-    // Ambil data foto_dokumen dan deskripsi_panduan yang ada
-    $fotoDokumen = $gejala->foto_dokumen ? explode(',', $gejala->foto_dokumen) : [];
-    $deskripsiPanduan = $gejala->deskripsi_panduan ? explode('|', $gejala->deskripsi_panduan) : [];
-
-    // Hapus gambar yang dipilih untuk dihapus
-    if ($request->has('hapus_gambar')) {
-        foreach ($request->hapus_gambar as $index) {
-            // Hapus file dari storage
-            if (isset($fotoDokumen[$index])) {
-                \Storage::disk('public')->delete($fotoDokumen[$index]);
-                unset($fotoDokumen[$index]);
-                unset($deskripsiPanduan[$index]);
-            }
-        }
-
-        // Reset array untuk menghapus celah
-        $fotoDokumen = array_values($fotoDokumen);
-        $deskripsiPanduan = array_values($deskripsiPanduan);
-    }
-
-    // Proses pengunggahan gambar baru
-    if ($request->hasFile('foto_dokumen')) {
-        foreach ($request->file('foto_dokumen') as $index => $file) {
-            // Simpan gambar baru
-            $fotoPath = $file->store('foto_gejala', 'public');
-            $fotoDokumen[] = $fotoPath;
-
-            // Simpan deskripsi panduan baru
-            $deskripsiPanduan[] = $request->deskripsi_panduan[$index] ?? '';
-        }
-    }
-
-    // Update data gejala
+    // Update data gejala tanpa menghapus yang tidak berubah
     $gejala->update([
         'nama_gejala' => $request->input('nama_gejala'),
         'deskripsi' => $request->input('deskripsi'),
-        'foto_dokumen' => implode(',', $fotoDokumen), // Gabungkan kembali menjadi string
-        'deskripsi_panduan' => implode('|', $deskripsiPanduan), // Gabungkan kembali menjadi string
     ]);
 
-    // Redirect dengan pesan sukses
+    // Ambil semua data panduan gejala lama
+    $existingGuides = PanduanGejala::where('kode_gejala', $gejala->kode_gejala)->get();
+
+    foreach ($existingGuides as $index => $panduan) {
+        // Periksa apakah ada perubahan deskripsi
+        if (isset($request->deskripsi_panduan[$index])) {
+            $panduan->deskripsi_panduan = $request->deskripsi_panduan[$index];
+        }
+
+        // Cek apakah ada gambar baru diunggah untuk panduan ini
+        if ($request->hasFile("foto_dokumen.$index")) {
+            $file = $request->file("foto_dokumen.$index");
+
+            // Hapus gambar lama jika ada gambar baru diunggah
+            if ($panduan->foto_dokumen) {
+                $oldPhotoPath = public_path('storage/' . $panduan->foto_dokumen);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
+            }
+
+            // Simpan gambar baru
+            $newFilePath = $file->store('panduan_gejala', 'public');
+            $panduan->foto_dokumen = $newFilePath;
+        }
+
+        // Simpan perubahan pada data panduan
+        $panduan->save();
+    }
+
+    // **Tambahkan data baru jika pengguna menambahkan panduan baru**
+    if ($request->has('deskripsi_panduan')) {
+        foreach ($request->deskripsi_panduan as $index => $deskripsi) {
+            if (!isset($existingGuides[$index])) { // Jika index belum ada, berarti data baru
+                $newFotoPath = null;
+
+                // Jika ada gambar baru diunggah
+                if ($request->hasFile("foto_dokumen.$index")) {
+                    $file = $request->file("foto_dokumen.$index");
+                    $newFotoPath = $file->store('panduan_gejala', 'public');
+                }
+
+                // Simpan data baru ke database
+                PanduanGejala::create([
+                    'kode_gejala' => $gejala->kode_gejala,
+                    'foto_dokumen' => $newFotoPath,
+                    'deskripsi_panduan' => $deskripsi,
+                ]);
+            }
+        }
+    }
+
     return redirect()->route('gejala.edit', ['kode_gejala' => $kode_gejala])
         ->with('success', 'Gejala berhasil diperbarui!');
 }
-
-
-
-
     /**
      * Menghapus penyakit berdasarkan ID
      */
@@ -349,41 +371,51 @@ public function hapusGambar(Request $request)
      */
     public function storeByPakar(Request $request)
     {
-        // Validasi input
+     // Validasi input
     $validated = $request->validate([
         'kode_gejala' => 'required|unique:gejala,kode_gejala',
         'nama_gejala' => 'required',
-        'No' => 'required|integer',  // Validasi nomor urut (No)
+        'No' => 'required|integer',  // Pastikan kolom ini ada di database
         'deskripsi' => 'nullable|string',
-        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk multiple file gambar
-        'deskripsi_panduan.*' => 'nullable|string', // Validasi deskripsi panduan untuk tiap gambar
     ]);
 
-    // Array untuk menyimpan path foto dan deskripsi panduan
-    $fotoDokumen = [];
-    $deskripsiPanduan = [];
+    // Simpan data Gejala
+    $gejala = gejala::create([
+        'kode_gejala' => $validated['kode_gejala'],
+        'nama_gejala' => $validated['nama_gejala'],
+        'deskripsi' => $validated['deskripsi'] ?? null,  // Pastikan deskripsi tersimpan
+        'No' => $validated['No'], // Simpan nomor urut
+    ]);
 
-    // Proses setiap file foto dan deskripsi panduan
-    if ($request->hasFile('foto_dokumen')) {
-        foreach ($request->file('foto_dokumen') as $index => $file) {
-            // Menyimpan foto_dokumen
-            $fotoPath = $file->store('foto_gejala', 'public');
-            $fotoDokumen[] = $fotoPath;
+    // Simpan PanduanGejala jika ada data
+    if (isset($validated['deskripsi_panduan']) || $request->hasFile('foto_dokumen')) {
+    $fotoFiles = $request->file('foto_dokumen');
+    $deskripsiPanduan = $request->input('deskripsi_panduan', []);
 
-            // Menyimpan deskripsi panduan untuk tiap gambar
-            $deskripsiPanduan[] = $request->deskripsi_panduan[$index] ?? '';
-        }
+    // Pastikan deskripsi_panduan berbentuk array
+    if (!is_array($deskripsiPanduan)) {
+        $deskripsiPanduan = [$deskripsiPanduan];
     }
 
-    // Menyimpan data gejala termasuk foto_dokumen
-    gejala::create([
-        'No' => $request->No,  // Menyimpan nomor urut yang telah dihitung
-        'kode_gejala' => $request->kode_gejala,
-        'nama_gejala' => $request->nama_gejala,
-        'deskripsi' => $request->deskripsi,
-        'foto_dokumen' => implode(',', $fotoDokumen), // Menyimpan path gambar sebagai string yang dipisahkan koma
-        'deskripsi_panduan' => implode('|', $deskripsiPanduan), // Menyimpan deskripsi panduan sebagai string
-    ]);
+    // Looping sesuai jumlah data yang diinput
+    $totalData = max(count($deskripsiPanduan), is_array($fotoFiles) ? count($fotoFiles) : 0);
+    
+    for ($i = 0; $i < $totalData; $i++) {
+        $fotoPath = null;
+
+        // Cek apakah ada file yang diupload pada indeks ini
+        if (is_array($fotoFiles) && isset($fotoFiles[$i])) {
+            $fotoPath = $fotoFiles[$i]->store('panduan_gejala', 'public');
+        }
+
+        // Simpan ke dalam tabel PanduanGejala
+        PanduanGejala::create([
+            'kode_gejala' => $gejala->kode_gejala,
+            'foto_dokumen' => $fotoPath ?? null,
+            'deskripsi_panduan' => $deskripsiPanduan[$i] ?? null,
+        ]);
+    }
+    }
 
     // Mengarahkan kembali ke halaman daftar penyakit dengan pesan sukses
     return redirect()->route('gejalaPakar.create')->with('success', 'Gejala berhasil ditambahkan!');
@@ -395,14 +427,21 @@ public function hapusGambar(Request $request)
      */
     public function editByPakar($kode_gejala)
     {
-        // Ambil data gejala berdasarkan kode_gejala
+       // Ambil data gejala berdasarkan kode_gejala
     $gejala = gejala::where('kode_gejala', $kode_gejala)->firstOrFail();
 
-    // Pecah data foto_dokumen menjadi array
-    $fotoDokumen = $gejala->foto_dokumen ? explode(',', $gejala->foto_dokumen) : [];
-    
-    // Pecah data deskripsi_panduan menjadi array
-    $deskripsiPanduan = $gejala->deskripsi_panduan ? explode('|', $gejala->deskripsi_panduan) : [];
+    // Ambil semua PanduanGejala yang terkait dengan kode_gejala
+    $panduan = PanduanGejala::where('kode_gejala', $gejala->kode_gejala)->get();
+
+    // Siapkan array untuk menyimpan foto dan deskripsi
+    $fotoDokumen = [];
+    $deskripsiPanduan = [];
+
+    // Looping semua data PanduanGejala yang ditemukan
+    foreach ($panduan as $item) {
+        $fotoDokumen[] = $item->foto_dokumen; // Menyimpan setiap foto_dokumen
+        $deskripsiPanduan[] = $item->deskripsi_panduan; // Menyimpan setiap deskripsi_panduan
+    }
 
     // Kirim data ke view
     return view('pages.PakarPages.CRUD.crud_Gejala.formEdit', [
@@ -418,68 +457,74 @@ public function hapusGambar(Request $request)
      */
     public function updateByPakar(Request $request, $kode_gejala)
     {
-        // Validasi input
+       // Validasi input
     $request->validate([
         'nama_gejala' => 'required|string|max:255',
         'deskripsi' => 'nullable|string',
-        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi untuk multiple file gambar
-        'deskripsi_panduan.*' => 'nullable|string', // Validasi deskripsi panduan untuk tiap gambar
-        'hapus_gambar.*' => 'nullable|integer', // Validasi untuk gambar yang ingin dihapus
+        'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'deskripsi_panduan.*' => 'nullable|string',
     ]);
 
-    // Cari gejala berdasarkan kode_gejala
+    // Ambil data gejala berdasarkan kode_gejala
     $gejala = gejala::where('kode_gejala', $kode_gejala)->firstOrFail();
-    // Hapus gambar yang tidak ada di input terbaru
-    $existingPhotos = explode(',', $gejala->foto_dokumen);
-    $newPhotos = $request->input('foto_dokumen', []);
 
-    $photosToDelete = array_diff($existingPhotos, $newPhotos);
-
-    foreach ($photosToDelete as $photo) {
-        if (Storage::exists('public/' . $photo)) {
-            Storage::delete('public/' . $photo);
-        }
-    }
-
-    // Ambil data foto_dokumen dan deskripsi_panduan yang ada
-    $fotoDokumen = $gejala->foto_dokumen ? explode(',', $gejala->foto_dokumen) : [];
-    $deskripsiPanduan = $gejala->deskripsi_panduan ? explode('|', $gejala->deskripsi_panduan) : [];
-
-    // Hapus gambar yang dipilih untuk dihapus
-    if ($request->has('hapus_gambar')) {
-        foreach ($request->hapus_gambar as $index) {
-            // Hapus file dari storage
-            if (isset($fotoDokumen[$index])) {
-                \Storage::disk('public')->delete($fotoDokumen[$index]);
-                unset($fotoDokumen[$index]);
-                unset($deskripsiPanduan[$index]);
-            }
-        }
-
-        // Reset array untuk menghapus celah
-        $fotoDokumen = array_values($fotoDokumen);
-        $deskripsiPanduan = array_values($deskripsiPanduan);
-    }
-
-    // Proses pengunggahan gambar baru
-    if ($request->hasFile('foto_dokumen')) {
-        foreach ($request->file('foto_dokumen') as $index => $file) {
-            // Simpan gambar baru
-            $fotoPath = $file->store('foto_gejala', 'public');
-            $fotoDokumen[] = $fotoPath;
-
-            // Simpan deskripsi panduan baru
-            $deskripsiPanduan[] = $request->deskripsi_panduan[$index] ?? '';
-        }
-    }
-
-    // Update data gejala
+    // Update data gejala tanpa menghapus yang tidak berubah
     $gejala->update([
         'nama_gejala' => $request->input('nama_gejala'),
         'deskripsi' => $request->input('deskripsi'),
-        'foto_dokumen' => implode(',', $fotoDokumen), // Gabungkan kembali menjadi string
-        'deskripsi_panduan' => implode('|', $deskripsiPanduan), // Gabungkan kembali menjadi string
     ]);
+
+    // Ambil semua data panduan gejala lama
+    $existingGuides = PanduanGejala::where('kode_gejala', $gejala->kode_gejala)->get();
+
+    foreach ($existingGuides as $index => $panduan) {
+        // Periksa apakah ada perubahan deskripsi
+        if (isset($request->deskripsi_panduan[$index])) {
+            $panduan->deskripsi_panduan = $request->deskripsi_panduan[$index];
+        }
+
+        // Cek apakah ada gambar baru diunggah untuk panduan ini
+        if ($request->hasFile("foto_dokumen.$index")) {
+            $file = $request->file("foto_dokumen.$index");
+
+            // Hapus gambar lama jika ada gambar baru diunggah
+            if ($panduan->foto_dokumen) {
+                $oldPhotoPath = public_path('storage/' . $panduan->foto_dokumen);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
+            }
+
+            // Simpan gambar baru
+            $newFilePath = $file->store('panduan_gejala', 'public');
+            $panduan->foto_dokumen = $newFilePath;
+        }
+
+        // Simpan perubahan pada data panduan
+        $panduan->save();
+    }
+
+    // **Tambahkan data baru jika pengguna menambahkan panduan baru**
+    if ($request->has('deskripsi_panduan')) {
+        foreach ($request->deskripsi_panduan as $index => $deskripsi) {
+            if (!isset($existingGuides[$index])) { // Jika index belum ada, berarti data baru
+                $newFotoPath = null;
+
+                // Jika ada gambar baru diunggah
+                if ($request->hasFile("foto_dokumen.$index")) {
+                    $file = $request->file("foto_dokumen.$index");
+                    $newFotoPath = $file->store('panduan_gejala', 'public');
+                }
+
+                // Simpan data baru ke database
+                PanduanGejala::create([
+                    'kode_gejala' => $gejala->kode_gejala,
+                    'foto_dokumen' => $newFotoPath,
+                    'deskripsi_panduan' => $deskripsi,
+                ]);
+            }
+        }
+    }
 
     // Redirect dengan pesan sukses
     return redirect()->route('gejalaPakar.edit', ['kode_gejala' => $kode_gejala])
@@ -505,13 +550,23 @@ public function hapusGambar(Request $request)
 
     public function cetakPdf()
 {
-    $gejala = gejala::all(); // Ambil semua data gejala
+    // Ambil semua data gejala
+    $gejala = gejala::all();
 
+    // Ambil data panduan gejala terkait untuk setiap gejala
+    foreach ($gejala as $item) {
+        // Mengambil data foto_dokumen dan deskripsi_panduan terkait dengan gejala
+        $item->panduanGejala = PanduanGejala::where('kode_gejala', $item->kode_gejala)->get();
+    }
+
+    // Buat PDF dengan data gejala dan panduan gejala
     $pdf = PDF::loadView('pdf.gejala', compact('gejala'))
         ->setPaper('a4', 'portrait'); // Set kertas A4 dengan orientasi portrait
 
+    // Kembalikan PDF sebagai stream untuk didownload atau ditampilkan
     return $pdf->stream('Panduan_Gejala.pdf');
 }
+
 
     // /**
     //  * Menghapus beberapa penyakit yang dipilih

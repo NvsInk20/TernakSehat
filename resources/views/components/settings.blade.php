@@ -187,7 +187,7 @@
                 <!-- Spesialis Field -->
                 <div class="mb-6">
                     <label for="spesialis" class="block text-gray-700 text-sm font-medium">Spesialis</label>
-                    <input type="text" id="spesialis" name="spesialis"
+                    <input type="text" id="spesialis" name="spesialis" required
                         class="mt-2 h-12 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500"
                         value="{{ old('spesialis', $spesialis) }}">
                     @error('spesialis')

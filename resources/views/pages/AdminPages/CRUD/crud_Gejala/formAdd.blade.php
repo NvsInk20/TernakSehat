@@ -96,8 +96,8 @@
 
             <!-- Field Deskripsi -->
             <div class="mb-6">
-                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi singkat <span
-                        class="text-red-500">(Opsional)</span></label>
+                <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi Singkat Pengecekan
+                    Gejala <span class="text-red-500">(Opsional)</span></label>
                 <textarea id="deskripsi" name="deskripsi"
                     class="mt-2 w-full h-32 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 resize-none"></textarea>
                 @error('deskripsi')
@@ -105,28 +105,36 @@
                 @enderror
             </div>
 
+
             <!-- Foto Dokumen dan Deskripsi -->
             <div class="mb-6 space-y-4">
-                <label class="block text-sm font-medium text-gray-700">Foto Dokumen
-                    dan Deskripsi Panduan <span class="text-red-500">(Opsional)</span></label>
+                <label class="block text-sm font-medium text-gray-700">
+                    Foto Dokumen dan Deskripsi Lengkap Pengecekan Gejala <span class="text-red-500">(Opsional)</span>
+                </label>
+
                 <template x-for="(item, index) in items" :key="item.id">
                     <div class="space-y-2 border border-gray-400 rounded-lg px-4 py-3">
+                        <!-- Nomor Urut -->
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-gray-700">Panduan ke -<span x-text="index + 1"></span></span>
+                        </div>
+
                         <!-- Input Gambar -->
                         <div class="flex items-center space-x-4">
                             <input type="file" :name="'foto_dokumen[' + index + ']'" accept="image/*" required
                                 class="block w-full border-gray-300 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500">
+
                             <!-- Tombol Hapus -->
                             <button type="button"
                                 class="bg-red-500 text-white px-3 py-2 ml-auto rounded-md hover:bg-red-600"
-                                @click="items = items.filter(i => i.id !== item.id)">
+                                @click="items.splice(index, 1)">
                                 Hapus
                             </button>
                         </div>
+
                         <!-- Input Deskripsi -->
                         <textarea :name="'deskripsi_panduan[' + index + ']'" placeholder="Deskripsi gambar" required
                             class="block w-full h-20 border-gray-400 rounded-md shadow-sm focus:border-orange-500 focus:ring-orange-500 resize-none"></textarea>
-
-
                     </div>
                 </template>
             </div>
@@ -138,6 +146,7 @@
                     Tambah Gambar
                 </button>
             </div>
+
 
             <!-- Tombol Submit -->
             <div class="flex justify-center">
