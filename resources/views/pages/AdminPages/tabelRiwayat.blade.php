@@ -76,7 +76,7 @@
                     <form method="GET" action="{{ route('riwayatUser') }}" class="relative mr-3">
                         <input
                             class="bg-white w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                            placeholder="Cari user..." name="search" value="{{ request('search') }}" />
+                            placeholder="Cari nama..." name="search" value="{{ request('search') }}" />
                         <button
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 flex items-center justify-center bg-white rounded cursor-pointer"
                             type="submit">

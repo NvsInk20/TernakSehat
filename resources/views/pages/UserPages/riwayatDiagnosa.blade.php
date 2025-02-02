@@ -36,8 +36,18 @@
         @include('components.dropSettings')
     </div>
 
+    @php
+        // Menentukan rute dashboard berdasarkan peran pengguna
+        $dashboardRoute = match (auth()->user()->role) {
+            'admin' => 'riwayatUser',
+            'user' => 'user.dashboard',
+            'ahli pakar' => 'Pakar.gejala',
+            default => 'login', // Default redirect jika peran tidak dikenali
+        };
+    @endphp
+
     <div class="flex items-center 2xl:space-x-[40rem] xl:space-x-[20rem] ml-24 my-16">
-        <a href="{{ session('previous_url', route('dashboard')) }}"
+        <a href="{{ route($dashboardRoute) }}"
             class="flex items-center justify-center p-3 rounded-lg border border-blue-500 text-blue-500 
     hover:bg-blue-500 hover:text-white transition duration-300 group">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

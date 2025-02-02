@@ -98,7 +98,7 @@
             <div class="mb-6">
                 <label for="deskripsi" class="block text-gray-700 text-sm font-medium">Deskripsi Singkat Pengecekan
                     Gejala <span class="text-red-500">(Opsional)</span></label>
-                <textarea id="deskripsi" name="deskripsi"
+                <textarea id="deskripsi" name="deskripsi" placeholder="Maksimal 155 karakter"
                     class="mt-2 w-full h-32 border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 resize-none"></textarea>
                 @error('deskripsi')
                     <div class="text-red-600 text-sm mt-1">{{ $message }}</div>

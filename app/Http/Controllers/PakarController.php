@@ -155,7 +155,7 @@ class PakarController extends Controller
     $pakar = AhliPakar::where('kode_ahliPakar', $kode_ahliPakar)->first();
 
     if (!$pakar) {
-        return redirect()->route('admin.pakars')->withErrors('Ahli Pakar tidak ditemukan.');
+        return redirect()->route('admin.pakar')->withErrors('Ahli Pakar tidak ditemukan.');
     }
 
     // Hapus data pengguna
@@ -164,7 +164,7 @@ class PakarController extends Controller
     // Hapus juga data relasinya di tabel akun_pengguna (opsional, jika ada)
     AkunPengguna::where('kode_ahliPakar', $kode_ahliPakar)->delete();
 
-    return redirect()->route('admin.pakars')->with('success', 'Ahli Pakar berhasil dihapus.');
+    return redirect()->route('admin.pakar')->with('success', 'Ahli Pakar berhasil dihapus.');
 }
 
 

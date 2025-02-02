@@ -94,7 +94,7 @@ class GejalaController extends Controller
         'kode_gejala' => 'required|unique:gejala,kode_gejala',
         'nama_gejala' => 'required',
         'No' => 'required|integer',  // Pastikan kolom ini ada di database
-        'deskripsi' => 'nullable|string',
+        'deskripsi' => 'nullable|string|max:155',
     ]);
 
     // Simpan data Gejala
@@ -225,7 +225,7 @@ public function update(Request $request, $kode_gejala)
     // Validasi input
     $request->validate([
         'nama_gejala' => 'required|string|max:255',
-        'deskripsi' => 'nullable|string',
+        'deskripsi' => 'nullable|string|max:155',
         'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'deskripsi_panduan.*' => 'nullable|string',
     ]);
@@ -376,7 +376,7 @@ public function update(Request $request, $kode_gejala)
         'kode_gejala' => 'required|unique:gejala,kode_gejala',
         'nama_gejala' => 'required',
         'No' => 'required|integer',  // Pastikan kolom ini ada di database
-        'deskripsi' => 'nullable|string',
+        'deskripsi' => 'nullable|string|max:155',
     ]);
 
     // Simpan data Gejala
@@ -460,7 +460,7 @@ public function update(Request $request, $kode_gejala)
        // Validasi input
     $request->validate([
         'nama_gejala' => 'required|string|max:255',
-        'deskripsi' => 'nullable|string',
+        'deskripsi' => 'nullable|string|max:155',
         'foto_dokumen.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'deskripsi_panduan.*' => 'nullable|string',
     ]);

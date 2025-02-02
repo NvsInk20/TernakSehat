@@ -164,8 +164,7 @@
         </table>
 
         <div class="footer">
-            <p>Hasil diagnosa ini bersifat informatif dan <span class="highlight">bukan pengganti</span> konsultasi
-                langsung dengan dokter hewan.</p>
+            <p>Hasil diagnosa ini berdasarkan data yang telah didapatkan dari ahli pakar dokter hewan.</p>
             <p>Ternak Sehat &copy; 2024</p>
         </div>
     </div>

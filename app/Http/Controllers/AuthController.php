@@ -82,6 +82,10 @@ class AuthController extends Controller
             $filePath = $request->file('dokumen_pendukung')->store('dokumen_pendukung', 'public');
             $validatedData['dokumen_pendukung'] = $filePath;
         }
+        // Jika role adalah "ahli pakar", simpan session flash untuk notifikasi admin
+        if ($validatedData['role'] === 'ahli pakar') {
+            session()->flash('expert_registered', 'Ada ahli pakar baru yang perlu dikonfirmasi!');
+        }
 
         // Tentukan nomor urut untuk user/ahli pakar
         if ($validatedData['role'] === 'ahli pakar') {
@@ -133,7 +137,11 @@ class AuthController extends Controller
         }
 
         // Redirect ke halaman login
-        return redirect()->route('login')->with('success', 'Registrasi berhasil!');
+        if ($validatedData['role'] === 'ahli pakar') {
+            return redirect()->route('login')->with('success', 'Registrasi berhasil! Mohon tunggu persetujuan dari admin sebelum dapat login.');
+        } else {
+            return redirect()->route('login')->with('success', 'Registrasi berhasil!');
+        }
     }
     public function editProfile($kode_auth)
 {
@@ -344,6 +352,9 @@ class AuthController extends Controller
         // Simpan pesan sukses ke dalam session flash
         session()->flash('success', 'Login berhasil! Selamat datang, ' . $user->nama);
 
+        // Ambil jumlah ahli pakar yang belum dikonfirmasi
+        $jumlahAhliPakarBaru = AhliPakar::where('status', 'inactive')->count();
+
         // Redirect berdasarkan role
         switch ($user->role) {
             case 'ahli pakar':
@@ -351,7 +362,9 @@ class AuthController extends Controller
             case 'user':
                 return redirect()->intended('/User/Dashboard');
             case 'admin':
-                return redirect()->intended('/Admin/Dashboard');
+                return redirect()->intended('/Admin/Dashboard')
+                ->with('jumlahAhliPakarBaru', $jumlahAhliPakarBaru)
+                ->with('expert_registered', 'Ada ahli pakar baru yang perlu dikonfirmasi!');
             default:
                 return redirect()->route('login')->withErrors(['login' => 'Role tidak dikenali.']);
         }

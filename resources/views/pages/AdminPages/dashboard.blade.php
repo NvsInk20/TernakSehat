@@ -13,6 +13,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" href="/images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,6 +233,26 @@
             } catch (error) {
                 console.error('Error fetching chart data:', error);
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                let loginNotif = document.querySelector('[x-data="{ show: true }"]');
+                if (loginNotif) {
+                    loginNotif.style.display = 'none';
+
+                    // Cek jika ada notifikasi expert_registered setelah login notifikasi hilang
+                    @if (session('jumlahAhliPakarBaru') > 0)
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Ahli Pakar Baru!',
+                            text: '{{ session('expert_registered') }}',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                    @endif
+                }
+            }, 5000);
         });
     </script>
 
